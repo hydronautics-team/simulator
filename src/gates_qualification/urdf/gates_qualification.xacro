@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<robot
+  name="gates_qualification" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find gates_qualification)/urdf/materials.xacro" />
+  <xacro:include filename="$(find gates_qualification)/urdf/gates_qualification.gazebo" />
+
+  <link
+    name="Base_parent_link">
+    <inertial>
+      <origin
+        xyz="-0.0057743 0.049442 0.091345"
+        rpy="0 0 0" />
+      <mass
+        value="229.59" />
+      <inertia
+        ixx="67.29"
+        ixy="0.0045203"
+        ixz="-0.13062"
+        iyy="103.67"
+        iyz="2.5554"
+        izz="106.2" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Base_parent_link.STL" />
+      </geometry>
+      <material
+        name="white">
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Base_parent_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Left_link">
+    <inertial>
+      <origin
+        xyz="-0.73 0.75 2.8423E-19"
+        rpy="0 0 0" />
+      <mass
+        value="14.812" />
+      <inertia
+        ixx="2.7787"
+        ixy="-4.2936E-34"
+        ixz="0"
+        iyy="0.0029624"
+        iyz="7.3896E-34"
+        izz="2.7787" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Left_link.STL" />
+      </geometry>
+      <material
+        name="orange">
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Left_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left_part"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="Base_parent_link" />
+    <child
+      link="Left_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Right_link">
+    <inertial>
+      <origin
+        xyz="0.73 0.75 9.5828E-19"
+        rpy="0 0 0" />
+      <mass
+        value="14.812" />
+      <inertia
+        ixx="2.7787"
+        ixy="-4.2936E-34"
+        ixz="0"
+        iyy="0.0029624"
+        iyz="-8.1642E-34"
+        izz="2.7787" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Right_link.STL" />
+      </geometry>
+      <material
+        name="orange">
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://gates_qualification/meshes/Right_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right_part"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="Base_parent_link" />
+    <child
+      link="Right_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/>
+
+  <!--param name="ROV_model_full" command="$(find xacro)/xacro.py '$(find ROV_model_full)/urdf/ROV_model_full.xacro'"/>
+
+  <param name="Swimming_pool_final" command="$(find xacro)/xacro.py '$(find Swimming_pool_final)/urdf/Swimming_pool_final.xacro'"/>
+
+  <param name="starting_gates" command="$(find xacro)/xacro.py '$(find starting_gates)/urdf/starting_gates.xacro'"/>
+
+  <param name="Gates_qualification" command="$(find xacro)/xacro.py '$(find Gates_qualification)/urdf/Gates_qualification.xacro'"/>
+
+  <param name="Buckets" command="$(find xacro)/xacro.py '$(find Buckets)/urdf/Buckets.xacro'"/-->
+
+  <!-- send fake joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="False"/>
+  </node>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+  <!-- Show in Rviz   -->
+  <!--node name="rviz" pkg="rviz" type="rviz"/-->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find auv_rviz)/launch/auv_rv_v2.rviz"/>
+
+</launch>
