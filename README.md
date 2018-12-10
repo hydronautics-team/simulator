@@ -28,8 +28,8 @@ UV has IMU sensor
 model_move_plugin was written to move UV. Through publishing twist messages you can control robots's planar movements and its hight. Odom message can inform you about robot's position, orientation and twist parameters.
 
 ## Will be added
-UE4 integration 
-Depth sensor
+- UE4 integration 
+- Depth sensor
 
 ## Will be fixed
 Bad physics. Buoyancy and hydrodynamic plugins will be fixed.
