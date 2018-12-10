@@ -9,9 +9,9 @@ UV has 3 cameras:
 
 Cameras' topics:
 
-	>/stereo/camera/left/image_raw
-	>/stereo/camera/right/image_raw
-	>/ROV_model_URDF/camera_bottom/image_raw
+	/stereo/camera/left/image_raw
+	/stereo/camera/right/image_raw
+	/ROV_model_URDF/camera_bottom/image_raw
 
 To run cameras write in terminal:
 
@@ -29,6 +29,7 @@ model_move_plugin was written to move UV. Through publishing twist messages you 
 
 ## Will be added
 UE4 integration 
+Depth sensor
 
 ## Will be fixed
 Bad physics. Buoyancy and hydrodynamic plugins will be fixed.
