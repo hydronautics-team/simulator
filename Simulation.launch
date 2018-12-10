@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!--If world configuration is NOT saved-->  
+  <include file="$(find auv_gazebo)/launch/pool.launch" />
+  <include file="$(find auv_gazebo)/launch/bottom_objects.launch" />
+  <!--include file="$(find auv_gazebo)/launch/AUV_spawn.launch" /-->
+
+  <!--If world configuration is saved-->  
+  <!--
+  <include file="$(find auv_gazebo)/launch/world.launch" />
+  -->
+
+</launch>
