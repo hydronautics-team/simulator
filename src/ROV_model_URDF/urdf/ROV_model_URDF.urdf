@@ -1,0 +1,627 @@
+<?xml version="1.0"?>
+<robot
+  name="ROV_model_URDF">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.016963 -0.044368 -7.3439E-06"
+        rpy="0 0 0" />
+      <mass
+        value="5.5151" />
+      <inertia
+        ixx="0.12433"
+        ixy="-0.0012054"
+        ixz="-6.9971E-05"
+        iyy="0.19334"
+        iyz="5.3973E-06"
+        izz="0.14096" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="motor_L_front_D_Link">
+    <inertial>
+      <origin
+        xyz="4.5639E-07 2.482E-07 -0.041714"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077402" />
+      <inertia
+        ixx="2.207E-06"
+        ixy="2.6918E-10"
+        ixz="-7.3425E-12"
+        iyy="2.2072E-06"
+        iyz="8.6802E-12"
+        izz="3.2145E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_L_front_D_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_L_front_D_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="-0.106438289639293 -0.184356525525989 -0.0662499999998972"
+      rpy="1.5707963267949 5.30270106023008E-17 1.0471975511966" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_L_front_D_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_R_front_D_Link">
+    <inertial>
+      <origin
+        xyz="2.883E-07 1.2141E-07 -0.0098117"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077403" />
+      <inertia
+        ixx="2.2066E-06"
+        ixy="6.0721E-11"
+        ixz="-1.7606E-12"
+        iyy="2.2076E-06"
+        iyz="4.1044E-12"
+        izz="3.2146E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_R_front_D_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_R_front_D_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="-0.13406681603541 0.168405188373878 -0.0662499999998972"
+      rpy="1.57079632679489 -9.62897566595719E-16 2.09439510239319" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_R_front_D_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_L_back_D_Link">
+    <inertial>
+      <origin
+        xyz="1.1098E-07 7.8497E-07 0.0052"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077405" />
+      <inertia
+        ixx="2.2071E-06"
+        ixy="-2.4826E-10"
+        ixz="3.3276E-11"
+        iyy="2.2071E-06"
+        iyz="-1.8173E-11"
+        izz="3.2146E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_L_back_D_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_L_back_D_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="0.154040619555901 -0.169573961316496 -0.0662499999999438"
+      rpy="-1.5707963267949 1.22883701498207 -1.04733226504605" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_L_back_D_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_R_back_down">
+    <inertial>
+      <origin
+        xyz="4.5644E-07 2.4836E-07 0.043456"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077402" />
+      <inertia
+        ixx="2.207E-06"
+        ixy="2.6926E-10"
+        ixz="-7.3443E-12"
+        iyy="2.2072E-06"
+        iyz="8.6815E-12"
+        izz="3.2145E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_R_back_down.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_R_back_down.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="0.120907599867261 0.188697368313432 -0.0662499999999711"
+      rpy="1.5707963267949 5.30311344070253E-17 1.04733226504604" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_R_back_down" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_front_Up_Link">
+    <inertial>
+      <origin
+        xyz="-6.6319E-07 -3.3255E-07 -0.050773"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077405" />
+      <inertia
+        ixx="2.2061E-06"
+        ixy="-7.4844E-10"
+        ixz="1.1643E-12"
+        iyy="2.208E-06"
+        iyz="3.6885E-11"
+        izz="3.2146E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_front_Up_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_front_Up_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="-0.116214176459713 0 0.116214176459712"
+      rpy="0.615479708670381 0.523598775598298 0.955316618124507" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_front_Up_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_left_Up_Link">
+    <inertial>
+      <origin
+        xyz="8.519E-07 1.7249E-07 0.020407"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077404" />
+      <inertia
+        ixx="2.2069E-06"
+        ixy="4.8494E-10"
+        ixz="-3.205E-11"
+        iyy="2.2073E-06"
+        iyz="-1.9709E-12"
+        izz="3.2146E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_left_Up_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_left_Up_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="0.0243050184490748 -0.127833197513738 0.0738045309959282"
+      rpy="2.61799387799149 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_left_Up_Link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="motor_right_Up_Link">
+    <inertial>
+      <origin
+        xyz="5.3561E-07 5.0663E-07 0.020407"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077398" />
+      <inertia
+        ixx="2.2059E-06"
+        ixy="-9.1583E-10"
+        ixz="-5.9101E-15"
+        iyy="2.208E-06"
+        iyz="4.8677E-12"
+        izz="3.2143E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_right_Up_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_right_Up_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="0.0243050184616294 0.127141154313793 0.0734049796681489"
+      rpy="-2.75617386210078 -0.363703942686316 0.719865395922136" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_right_Up_Link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="motor_back_Up_Link">
+    <inertial>
+      <origin
+        xyz="1.0177E-06 9.7054E-07 -0.0023075"
+        rpy="0 0 0" />
+      <mass
+        value="0.0077396" />
+      <inertia
+        ixx="2.206E-06"
+        ixy="-7.4361E-10"
+        ixz="1.4344E-12"
+        iyy="2.2078E-06"
+        iyz="7.3175E-12"
+        izz="3.2142E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_back_Up_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/motor_back_Up_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor"
+    type="revolute">
+    <origin
+      xyz="0.211458331086115 0 0.0739440069961818"
+      rpy="0.615479708670381 -0.523598775598297 -0.955316618124506" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_back_Up_Link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="batteries_Link">
+    <inertial>
+      <origin
+        xyz="-0.16192 0.015259 -0.0066458"
+        rpy="0 0 0" />
+      <mass
+        value="7.7644" />
+      <inertia
+        ixx="0.044234"
+        ixy="0.018251"
+        ixz="-6.4111E-05"
+        iyy="0.24465"
+        iyz="5.7908E-06"
+        izz="0.2267" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/batteries_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/batteries_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="batteries_Joint"
+    type="fixed">
+    <origin
+      xyz="0 -0.162638026855217 -0.217"
+      rpy="1.5707963267949 -0.0900809160675066 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="batteries_Link" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="main_housing_Link">
+    <inertial>
+      <origin
+        xyz="0.002228 -1.1102E-16 2.9442E-15"
+        rpy="0 0 0" />
+      <mass
+        value="7.9374" />
+      <inertia
+        ixx="0.024341"
+        ixy="5.6185E-17"
+        ixz="8.9912E-16"
+        iyy="0.15267"
+        iyz="-4.3449E-31"
+        izz="0.15267" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/main_housing_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/main_housing_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="main_housing_Joint"
+    type="fixed">
+    <origin
+      xyz="0 0.000633048491818372 -0.0747500000000039"
+      rpy="1.5707963267949 -1.22460635382238E-16 -3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="main_housing_Link" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="buoyancy_Link">
+    <inertial>
+      <origin
+        xyz="0.027317 0.045953 -3.6831E-05"
+        rpy="0 0 0" />
+      <mass
+        value="1.0875" />
+      <inertia
+        ixx="0.010769"
+        ixy="-0.00027532"
+        ixz="-5.7297E-06"
+        iyy="0.022695"
+        iyz="1.2915E-06"
+        izz="0.012737" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/buoyancy_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.84314 0.81569 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://ROV_model_URDF/meshes/buoyancy_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="buoyancy_Joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="buoyancy_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

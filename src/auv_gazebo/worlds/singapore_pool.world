@@ -1,0 +1,984 @@
+<?xml version="1.0" ?>
+<sdf version='1.6'>
+  <world name='water'>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>110 130 150 255</ambient>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <shadows>1</shadows>
+      <background>0.7 0.7 0.7 1</background>
+    </scene>
+    <light name='sun1' type='directional'>
+      <pose frame=''>25 12.5 50 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0.3 0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+    </light>
+    <light name='sun_diffuse' type='directional'>
+      <pose frame=''>25 12.5 1.8 0 -0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0 0 0 1</specular>
+      <direction>-0.3 -0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+    </light>
+    <model name='world_ned'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <static>1</static>
+      <link name='world_ned'>
+        <gravity>0</gravity>
+        <pose frame=''>0 0 0 -3.14159 -0 1.5708</pose>
+        <visual name='N_visual'>
+          <pose frame=''>0.25 0 0 1.5708 -0 1.5708</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='E_visual'>
+          <pose frame=''>0 0.25 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='D_visual'>
+          <pose frame=''>0 0 0.25 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='sea_surface'>
+      <static>1</static>
+      <link name='sea_bottom'>
+        <visual name='ocean_surface'>
+          <pose frame=''>25 12.5 0 0 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>0.052 0.025 0.07</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/waves.material</uri>
+              <name>UUVSimulator/SimpleWaves</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='ocean_below'>
+          <pose frame=''>25 12.5 0 3.14 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>0.052 0.025 0.07</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/StaticWater</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>0 0 2.9 0 -0 0</pose>
+    </model>
+    <model name='ground_plane_0'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <pose frame=''>0.497681 0 0 0 -0 0</pose>
+    </model>
+<!--
+  Cool stuff but not needed now   
+
+  <plugin name='underwater_current_plugin' filename='libuuv_underwater_current_ros_plugin.so'>
+      <namespace>hydrodynamics</namespace>
+      <constant_current>
+        <topic>current_velocity</topic>
+        <velocity>
+          <mean>0</mean>
+          <min>0</min>
+          <max>0</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </velocity>
+        <horizontal_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </horizontal_angle>
+        <vertical_angle>
+          <mean>0</mean>
+          <min>-3.141592653589793238</min>
+          <max>3.141592653589793238</max>
+          <mu>0.0</mu>
+          <noiseAmp>0.0</noiseAmp>
+        </vertical_angle>
+      </constant_current>
+    </plugin>
+
+    <plugin name='sc_interface' filename='libuuv_sc_ros_interface_plugin.so'/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+-->
+    <model name='pool'>
+      <link name='Base_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0 0 0.75567 0 -0 0</pose>
+          <mass>1.2379e+07</mass>
+          <inertia>
+            <ixx>9.3556e+08</ixx>
+            <ixy>-5.1e-07</ixy>
+            <ixz>2.8051e-08</ixz>
+            <iyy>3.1435e+09</iyy>
+            <iyz>6.3008e-08</iyz>
+            <izz>4.0668e+09</izz>
+          </inertia>
+        </inertial>
+        <collision name='Base_link_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/pool/meshes/pool_final.DAE</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Base_link_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/pool/meshes/pool_final.DAE</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>25 12.5 0 0 -0 0</pose>
+    </model>
+    <model name='flare'>
+      <link name='base_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>250</mass>
+          <inertia>
+            <ixx>2.70025</ixx>
+            <ixy>-0.00065535</ixy>
+            <ixz>-0.00028377</ixz>
+            <iyy>2.00731</iyy>
+            <iyz>-0.0082089</iyz>
+            <izz>2.69672</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/flare/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/flare/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Yellow</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>40 15 2 0 -0 0</pose>
+    </model>
+    <model name='gates_qualification'>
+      <link name='Base_parent_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005114 0.043791 0.166619 0 -0 0</pose>
+          <mass>259.214</mass>
+          <inertia>
+            <ixx>84.2945</ixx>
+            <ixy>0.0120116</ixy>
+            <ixz>-0.230412</ixz>
+            <iyy>136.398</iyy>
+            <iyz>3.40993</iyz>
+            <izz>122.058</izz>
+          </inertia>
+        </inertial>
+        <collision name='Base_parent_link_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Left_link_collision_1'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Right_link_collision_2'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Base_parent_link_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Left_link_visual_1'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Right_link_visual_2'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_qualification/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>10 4 2 0 0 -1.5708</pose>
+    </model>
+    <model name='gates_final'>
+      <link name='Base_parent_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005114 0.043999 0.168428 0 -0 0</pose>
+          <mass>259.211</mass>
+          <inertia>
+            <ixx>84.1328</ixx>
+            <ixy>0.0120685</ixy>
+            <ixz>-0.229913</ixz>
+            <iyy>136.173</iyy>
+            <iyz>1.97802</iyz>
+            <izz>122.116</izz>
+          </inertia>
+        </inertial>
+        <collision name='Base_parent_link_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Left_link_collision_1'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Right_link_collision_2'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Base_parent_link_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Left_link_visual_1'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Right_link_visual_2'>
+          <pose frame=''>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/gates_final/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>25 8 2 0 -0 0</pose>
+    </model>
+    <model name='buckets'>
+      <link name='base_green'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>2.71459 -0.001357 0.222916 0 -0 0</pose>
+          <mass>1959.16</mass>
+          <inertia>
+            <ixx>350.977</ixx>
+            <ixy>0.710796</ixy>
+            <ixz>2.07091</ixz>
+            <iyy>10147.4</iyy>
+            <iyz>-1.39101</iyz>
+            <izz>10345.1</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_green_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/base_green.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_1_Link_collision_1'>
+          <pose frame=''>-0.29023 0.001865 0 1.5708 -0 1.6399</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_1_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_2_Link_collision_2'>
+          <pose frame=''>1.7098 0.001865 0 1.5708 -0 1.6354</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_2_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_3_Link_collision_3'>
+          <pose frame=''>3.7098 0.001865 0 1.5708 0 1.5454</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_3_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_4_Link_collision_4'>
+          <pose frame=''>5.7098 0.001865 0 1.5708 -0 1.5822</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_4_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_green_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/base_green.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_1_Link_visual_1'>
+          <pose frame=''>-0.29023 0.001865 0 1.5708 -0 1.6399</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_1_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_2_Link_visual_2'>
+          <pose frame=''>1.7098 0.001865 0 1.5708 -0 1.6354</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_2_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_3_Link_visual_3'>
+          <pose frame=''>3.7098 0.001865 0 1.5708 0 1.5454</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_3_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_4_Link_visual_4'>
+          <pose frame=''>5.7098 0.001865 0 1.5708 -0 1.5822</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/buckets/meshes/Bucket_4_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <velocity_decay/>
+        <velocity_decay/>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>31 23 2 0 -0 0</pose>
+    </model>
+    <model name='starting_gates'>
+      <link name='starting_gates::base_link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.69 -2e-06 0 0 -0 0</pose>
+          <mass>30</mass>
+          <inertia>
+            <ixx>17.78</ixx>
+            <ixy>-1.5236e-10</ixy>
+            <ixz>0.000122</ixz>
+            <iyy>17.78</iyy>
+            <iyz>0.000122</iyz>
+            <izz>35.549</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/starting_gates/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/pavel/AUV/AUV/simple_simulation/src/starting_gates/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>0</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>35 0.8 2 0 -0 0</pose>
+    </model>
+    <state world_name='water'>
+      <sim_time>195 747000000</sim_time>
+      <real_time>206 741515222</real_time>
+      <wall_time>1543839611 374583957</wall_time>
+      <iterations>195747</iterations>
+      <model name='buckets'>
+        <pose frame=''>31 22.9987 1.00826 1e-06 -0 0.000299</pose>
+        <scale>1 1 1</scale>
+        <link name='base_green'>
+          <pose frame=''>31 22.9987 1.00826 1e-06 -0 0.000299</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0.006191 -0.091856 -2.68728 0.397858 0.026793 0</acceleration>
+          <wrench>12.1299 -179.961 -5264.81 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='flare'>
+        <pose frame=''>40.0001 15.0001 0.999619 -1e-06 -1e-06 -2.8e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose frame=''>40.0001 15.0001 0.999619 -1e-06 -1e-06 -2.8e-05</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -2450 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='gates_final'>
+        <pose frame=''>25 7.99995 1.00998 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_parent_link'>
+          <pose frame=''>25 7.99995 1.00998 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>6.2e-05 6.8e-05 -4.06365 -4.5e-05 0.000246 0</acceleration>
+          <wrench>0.015954 0.01763 -1053.34 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='gates_qualification'>
+        <pose frame=''>10.0001 4 1.39261 7e-05 -0 -1.5708</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_parent_link'>
+          <pose frame=''>10.0001 4 1.39261 7e-05 -0 -1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>9.6e-05 0.161694 -3.2638 -0.064136 5.7e-05 0.001989</acceleration>
+          <wrench>0.024965 41.9134 -846.023 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane_0'>
+        <pose frame=''>0.497681 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.497681 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pool'>
+        <pose frame=''>25 12.5 -3.3e-05 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_link'>
+          <pose frame=''>25 12.5 -3.3e-05 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0.042775 2e-06 -4.14802 -3e-06 0.056605 0</acceleration>
+          <wrench>529510 27.4565 -5.13484e+07 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='sea_surface'>
+        <pose frame=''>0 0 2.9 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='sea_bottom'>
+          <pose frame=''>0 0 2.9 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='starting_gates'>
+        <pose frame=''>34.996 0.801274 3.13267 -0.011059 -0.025096 0.000139</pose>
+        <scale>1 1 1</scale>
+        <link name='starting_gates::base_link'>
+          <pose frame=''>34.996 0.801274 3.13267 -0.011059 -0.025096 0.000139</pose>
+          <velocity>-1e-06 0 0.002254 -9e-05 -0.000203 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='world_ned'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='world_ned'>
+          <pose frame=''>0 0 0 -3.14159 -0 1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun1'>
+        <pose frame=''>25 12.5 50 0 -0 0</pose>
+      </light>
+      <light name='sun_diffuse'>
+        <pose frame=''>25 12.5 1.8 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>37.0465 -71.4025 55.0722 0 0.651643 1.48572</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

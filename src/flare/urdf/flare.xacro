@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot
+  name="flare" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find flare)/urdf/materials.xacro" />
+  <xacro:include filename="$(find flare)/urdf/flare.gazebo" />
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="250" />
+      <inertia
+        ixx="2.70025"
+        ixy="-0.00065535"
+        ixz="-0.00028377"
+        iyy="2.0073069"
+        iyz="-0.0082089"
+        izz="2.69672" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://flare/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://flare/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

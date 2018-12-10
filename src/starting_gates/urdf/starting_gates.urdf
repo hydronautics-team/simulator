@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot
+  name="starting_gates">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.69 -1.6711E-06 2.1413E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="17.78"
+        ixy="-1.5236E-10"
+        ixz="0.000122"
+        iyy="17.78"
+        iyz="0.000122"
+        izz="35.549" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://starting_gates/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://starting_gates/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>
