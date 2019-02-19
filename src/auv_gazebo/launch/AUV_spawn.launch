@@ -28,6 +28,6 @@
   args="-urdf -param base -x 60 -y 10 -z 2 -R 0 -P 0 -Y 0 -model base" /-->
 
   <node name="ROV_model_URDF_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param ROV_model_URDF -x 25 -y 12 -z 1 -R 1.5708 -P 0 -Y 0 -model ROV_model_URDF" />
+  args="-urdf -param ROV_model_URDF -x 35.7 -y 0.8 -z 2.8 -R 1.5708 -P 0 -Y 1.5708 -model ROV_model_URDF" />
 
 </launch>

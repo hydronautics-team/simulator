@@ -38,6 +38,7 @@
 
   <gazebo reference="base_link">
     <material>Gazebo/Orange</material>
+    <!--gravity>0</gravity-->
   </gazebo>
 <!--
   <gazebo reference="camera">
