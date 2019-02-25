@@ -7,6 +7,15 @@ UV has 3 cameras:
 - 2 front cameras (stereo_vision)
 - 1 bottom camera
 
+To start simulator and launch environment:
+```sh
+$ roslaunch Simulation.launch
+```
+To spawn vehicle:
+```
+$ UV_spawn.launch
+```
+
 Cameras' topics:
 
 	/stereo/camera/left/image_raw
@@ -33,7 +42,7 @@ UV has IMU sensor
 model_move_plugin was written to move UV. Through publishing twist messages you can control robots's planar movements and its hight. Odom message can inform you about robot's position, orientation and twist parameters.
 
 ## Will be added
-- UE4 integration 
+- Unity3D integration (using this https://github.com/siemens/ros-sharp)
 - Depth sensor
 
 ## Will be fixed
