@@ -2,19 +2,19 @@
 <launch>
 
 
-  <param name="gates_final" command="$(find xacro)/xacro.py '$(find gates_final)/urdf/gates_final.xacro'"/> 
+  <param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> 
 
-  <param name="buckets" command="$(find xacro)/xacro.py '$(find buckets)/urdf/buckets.xacro'"/>
+  <param name="buckets" command="$(find xacro)/xacro '$(find buckets)/urdf/buckets.xacro'"/>
 
-  <param name="gates_qualification" command="$(find xacro)/xacro.py '$(find gates_qualification)/urdf/gates_qualification.xacro'"/>
+  <param name="gates_qualification" command="$(find xacro)/xacro '$(find gates_qualification)/urdf/gates_qualification.xacro'"/>
 
-  <param name="starting_gates" command="$(find xacro)/xacro.py '$(find starting_gates)/urdf/starting_gates.xacro'"/>
+  <param name="starting_gates" command="$(find xacro)/xacro '$(find starting_gates)/urdf/starting_gates.xacro'"/>
 
-  <param name="flare" command="$(find xacro)/xacro.py '$(find flare)/urdf/flare.xacro'"/>
+  <param name="flare" command="$(find xacro)/xacro '$(find flare)/urdf/flare.xacro'"/>
 
-  <!--param name="base" command="$(find xacro)/xacro.py '$(find base)/urdf/base.xacro'"/-->
+  <!--param name="base" command="$(find xacro)/xacro '$(find base)/urdf/base.xacro'"/-->
 
-  <!--param name="ROV_model_URDF" command="$(find xacro)/xacro.py '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/--> 
+  <!--param name="ROV_model_URDF" command="$(find xacro)/xacro '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/--> 
 
 
   <!--node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
