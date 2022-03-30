@@ -1,28 +1,25 @@
-# AUV-ROV_simple_simulator
-Simple simulator based on Gazebo for testing control algorithms 
+# Hydronautics simulator
+Simple simulator based on [Dave](https://github.com/Field-Robotics-Lab/dave) for testing control algorithms 
 
-## Building and running
-**Warning!** Currently simulator is broken on ROS Noetic. As a workaround, consider to use Docker (see corresponding section).
+## Building
 
-### Standard way
-To build simulator, use standard `catkin_make` command. To run the simulator, use launch file:
+1. 	```sh
+	git submodule init
+	git submodule update
+	```
 
+2. [Build](https://github.com/Field-Robotics-Lab/dave/wiki/Install-Directly-on-Host) dave
+
+3. 	```sh
+	catkin_make
+	```
+
+## Running
+
+To run the simulator, use launch file:
 ```sh
 roslaunch Simulation.launch
 ```
-
-### Docker
-Solution for Docker is based on [following instruction](https://answers.ros.org/question/300113/docker-how-to-use-rviz-and-gazebo-from-a-container/). You need to have installed Docker and `nvidia-docker2` runtime, see [section 2 of following instruction](https://cnvrg.io/how-to-setup-docker-and-nvidia-docker-2-0-on-ubuntu-18-04/) to install it (you probably should skip step with re-installing the drivers). Currently, this solutions works only with Nvidia GPU.
-
-Build Docker image with command:
-```sh
-docker build --rm -t auv-rov-simulator .
-```
-To run simulator in Docker, run ROS master in separate terminal using `roscore` command or by running some *.launch* files. Then, Run our script:
-```sh
-./run_docker_gui.sh
-```
-If everything is ok, simulator window will appear after some seconds. All topics and services from simulator will be accessible from host since simulator uses host's ROS master (see the script source). If you face any problems, first try to see [the original instruction](https://answers.ros.org/question/300113/docker-how-to-use-rviz-and-gazebo-from-a-container/).
 
 ## Cameras
 UV has 3 cameras:
