@@ -19,7 +19,7 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
-  <param name="pool" command="$(find xacro)/xacro.py '$(find pool)/urdf/pool.xacro'"/>
+  <param name="pool" command="$(find xacro)/xacro '$(find pool)/urdf/pool.xacro'"/>
 
   <node name="pool_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
   args="-urdf -param pool -x 25 -y 12.5 -z 0 -R 0 -P 0 -Y 0 -model pool" />

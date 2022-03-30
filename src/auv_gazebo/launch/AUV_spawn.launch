@@ -11,11 +11,11 @@
   <!-- Publish state and tf for in relation to the world frame -->
 
 
-  <!--param name="gates_final" command="$(find xacro)/xacro.py '$(find gates_final)/urdf/gates_final.xacro'"/> 
+  <!--param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> 
 
-  <param name="base" command="$(find xacro)/xacro.py '$(find base)/urdf/base.xacro'"/-->
+  <param name="base" command="$(find xacro)/xacro '$(find base)/urdf/base.xacro'"/-->
 
-  <param name="ROV_model_URDF" command="$(find xacro)/xacro.py '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/> 
+  <param name="ROV_model_URDF" command="$(find xacro)/xacro '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/> 
 
 
   <!--node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
