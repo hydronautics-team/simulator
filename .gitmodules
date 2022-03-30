@@ -1,0 +1,3 @@
+[submodule "src/dave"]
+	path = src/dave
+	url = https://github.com/Field-Robotics-Lab/dave.git
