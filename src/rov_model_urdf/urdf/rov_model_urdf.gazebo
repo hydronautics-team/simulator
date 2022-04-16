@@ -183,7 +183,7 @@
         <alwaysOn>1</alwaysOn>
         <visualize>true</visualize>
         <updateRate>30</updateRate>
-        <cameraName>ROV_model_URDF/camera_front</cameraName>
+        <cameraName>rov_model_urdf/camera_front</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera_front</frameName>
@@ -280,7 +280,7 @@
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
-        <cameraName>ROV_model_URDF/camera_bottom</cameraName>
+        <cameraName>rov_model_urdf/camera_bottom</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera_bottom</frameName>

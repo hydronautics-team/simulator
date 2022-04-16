@@ -10,7 +10,7 @@
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
-    args="-file $(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro -urdf -model ROV_model_URDF"
+    args="-file $(find rov_model_urdf)/urdf/rov_model_urdf.xacro -urdf -model rov_model_urdf"
     output="screen" />
   <node
     name="fake_joint_calibration"

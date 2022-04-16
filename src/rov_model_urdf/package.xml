@@ -1,10 +1,10 @@
 <package>
-  <name>ROV_model_URDF</name>
+  <name>rov_model_urdf</name>
   <version>1.0.0</version>
   <description>
-    <p>URDF Description package for ROV_model_URDF</p>
+    <p>URDF Description package for rov_model_urdf</p>
     <p>This package contains configuration data, 3D models and launch files
-for ROV_model_URDF robot</p>
+for rov_model_urdf robot</p>
   </description>
   <author>Kopanev Pavel</author>
   <maintainer email="kopanev-pavel-spb@yandex.ru" />
