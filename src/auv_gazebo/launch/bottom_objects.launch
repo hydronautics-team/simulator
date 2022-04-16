@@ -14,7 +14,7 @@
 
   <!--param name="base" command="$(find xacro)/xacro '$(find base)/urdf/base.xacro'"/-->
 
-  <!--param name="ROV_model_URDF" command="$(find xacro)/xacro '$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro'"/--> 
+  <!--param name="rov_model_urdf" command="$(find xacro)/xacro '$(find rov_model_urdf)/urdf/rov_model_urdf.xacro'"/-->
 
 
   <!--node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
@@ -39,6 +39,6 @@
   args="-urdf -param base -x 60 -y 10 -z 2 -R 0 -P 0 -Y 0 -model base" /-->
 
   <!--node name="ROV_model_URDF_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param ROV_model_URDF -x 35 -y 12 -z 4 -R 0 -P 0 -Y 0 -model ROV_model_URDF" /-->
+  args="-urdf -param rov_model_urdf -x 35 -y 12 -z 4 -R 0 -P 0 -Y 0 -model rov_model_urdf" /-->
 
 </launch>

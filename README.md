@@ -33,14 +33,14 @@ Cameras' topics:
 
 	/stereo/camera/left/image_raw
 	/stereo/camera/right/image_raw
-	/ROV_model_URDF/camera_bottom/image_raw
+	/rov_model_urdf/camera_bottom/image_raw
 
 To run cameras write in terminal:
 
 ```sh
 $ rosrun image_view image_view image:=/stereo/camera/left/image_raw
 $ rosrun image_view image_view image:=/stereo/camera/right/image_raw
-$ rosrun image_view image_view image:=/ROV_model_URDF/camera_bottom/image_raw
+$ rosrun image_view image_view image:=/rov_model_urdf/camera_bottom/image_raw
 ```
 To run calibration write in terminal:
 
