@@ -1,0 +1,2180 @@
+<sdf version='1.7'>
+  <world name='water'>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>110 130 150 255</ambient>
+      <shadows>1</shadows>
+      <background>0.7 0.7 0.7 1</background>
+      <fog>
+      <color>0.1 0.2 0.7 1.0</color>
+      <type>linear</type>
+      <density>50</density>
+      <start>1</start>
+      <end>40</end>
+      </fog>
+    </scene>
+    <light name='sun1' type='directional'>
+      <pose>25 12.5 50 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0.3 0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+      <attenuation>
+        <range>10</range>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <light name='sun_diffuse' type='directional'>
+      <pose>25 12.5 1.8 0 -0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0 0 0 1</specular>
+      <direction>-0.3 -0.3 -1</direction>
+      <cast_shadows>0</cast_shadows>
+      <attenuation>
+        <range>10</range>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='world_ned'>
+      <pose>0 0 0 0 -0 0</pose>
+      <static>1</static>
+      <link name='world_ned'>
+        <gravity>0</gravity>
+        <pose>0 0 0 -3.14159 -0 1.5708</pose>
+        <visual name='N_visual'>
+          <pose>0.25 0 0 1.5708 -0 1.5708</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='E_visual'>
+          <pose>0 0.25 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='D_visual'>
+          <pose>0 0 0.25 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Blue</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='sea_surface'>
+      <static>1</static>
+      <link name='sea_bottom'>
+        <visual name='ocean_surface'>
+          <pose>0 0 0 0 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>2 2 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/waves.material</uri>
+              <name>UUVSimulator/SimpleWaves</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='ocean_below'>
+          <pose>0 0 0 3.14 -0 0</pose>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://Media/models/sea_surface_1000m_x_1000m.dae</uri>
+              <scale>2 2 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://Media/materials/scripts/water.material</uri>
+              <name>UUVSimulator/StaticWater</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>0 0 2.9 0 -0 0</pose>
+    </model>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>3.02647 1.13932 -0.494446 0 0.12761 0.350537</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <state world_name='water'>
+      <sim_time>8 480000000</sim_time>
+      <real_time>0 429377586</real_time>
+      <wall_time>1650476516 108761918</wall_time>
+      <iterations>492</iterations>
+      <model name='buckets'>
+        <pose>31 23 -1.89169 7e-06 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='base_green'>
+          <pose>31 23 -1.89169 7e-06 -0 0</pose>
+          <velocity>2.8e-05 0.00185 -0.010713 0.001489 -2.1e-05 0</velocity>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -19199.8 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='flare'>
+        <pose>40 15 -1.90034 6e-06 -5e-06 0</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>40 15 -1.90034 6e-06 -5e-06 0</pose>
+          <velocity>0 0 -0.009601 4.5e-05 -2.9e-05 -0</velocity>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -2450 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='gates_final'>
+        <pose>25.0001 7.9999 -1.89 0 -0 5.8e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_parent_link'>
+          <pose>25.0001 7.9999 -1.89 0 -0 5.8e-05</pose>
+          <velocity>0 -0 0.009795 0 -0 0</velocity>
+          <acceleration>-1.8e-05 -1e-06 19.5921 6e-06 -9.8e-05 0</acceleration>
+          <wrench>-0.004542 -0.000291 5078.48 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='gates_qualification'>
+        <pose>10 4 -1.50737 7e-05 -0 -1.5708</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_parent_link'>
+          <pose>10 4 -1.50737 7e-05 -0 -1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pool'>
+        <pose>25 12.5 -2.9 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Base_link'>
+          <pose>25 12.5 -2.9 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='red_flare'>
+        <pose>26.5932 5.40297 -1.35047 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>26.5932 5.40297 -1.35047 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='rov_model_urdf'>
+        <pose>35.7 0.799814 2.7967 1.57076 -0.001643 1.5708</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>35.7 0.799814 2.7967 1.57076 -0.001643 1.5708</pose>
+          <velocity>-0.00016 -0.005944 -0.013118 0.006674 -0.00018 4e-06</velocity>
+          <acceleration>0 4e-06 -0.027298 0.014666 -0.000281 1.4e-05</acceleration>
+          <wrench>3e-06 9.4e-05 -0.60513 0 -0 0</wrench>
+        </link>
+        <link name='motor_L_back_D_Link'>
+          <pose>35.5304 0.645882 2.73019 1.91545 -0.001403 2.09427</pose>
+          <velocity>-2.7e-05 -0.001036 -0.014253 -0.000521 0.012286 2.4e-05</velocity>
+          <acceleration>-1.5e-05 -0.000608 -0.02945 0.002153 0.018964 9.4e-05</acceleration>
+          <wrench>-0 -5e-06 -0.000228 0 -0 0</wrench>
+        </link>
+        <link name='motor_L_front_D_Link'>
+          <pose>35.5156 0.90636 2.73062 1.57224 5e-06 -0.523592</pose>
+          <velocity>-2.7e-05 -0.001037 -0.014164 0.005083 -0.002935 -1e-06</velocity>
+          <acceleration>-1.8e-05 -0.000628 -0.025313 0.010459 -0.006038 -3.1e-05</acceleration>
+          <wrench>-0 -5e-06 -0.000196 0 -0 0</wrench>
+        </link>
+        <link name='motor_R_back_down'>
+          <pose>35.8887 0.679016 2.73026 1.5708 -0.001443 1.04734</pose>
+          <velocity>-2.8e-05 -0.001037 -0.012615 0.005084 -0.002934 -1e-06</velocity>
+          <acceleration>-1.5e-05 -0.000606 -0.029327 0.014863 -0.006686 -2.4e-05</acceleration>
+          <wrench>-0 -5e-06 -0.000227 0 -0 0</wrench>
+        </link>
+        <link name='motor_R_front_D_Link'>
+          <pose>35.8684 0.933991 2.73068 1.5708 -0.001403 2.0944</pose>
+          <velocity>-2.8e-05 -0.001037 -0.012782 0.004928 0.002845 9e-06</velocity>
+          <acceleration>-1.8e-05 -0.000626 -0.025193 0.014412 0.006486 3.9e-05</acceleration>
+          <wrench>-0 -5e-06 -0.000195 0 -0 0</wrench>
+        </link>
+        <link name='motor_back_Up_Link'>
+          <pose>35.7 0.588235 2.8703 2.35617 -0.787041 1.57084</pose>
+          <velocity>-5.4e-05 -0.002036 -0.01472 0.006674 -9.2e-05 9.2e-05</velocity>
+          <acceleration>-6.5e-05 -0.002506 -0.030147 0.019996 -0.000183 0.000183</acceleration>
+          <wrench>-1e-06 -1.9e-05 -0.000233 0 -0 0</wrench>
+        </link>
+        <link name='motor_front_Up_Link'>
+          <pose>35.7 0.915837 2.9131 2.35765 -0.783759 -1.57083</pose>
+          <velocity>-9.9e-05 -0.003691 -0.014039 0.006674 -0.004192 0.004003</velocity>
+          <acceleration>-7.2e-05 -0.002641 -0.025132 0.020009 -0.005936 0.005526</acceleration>
+          <wrench>-1e-06 -2e-05 -0.000195 0 -0 0</wrench>
+        </link>
+        <link name='motor_left_Up_Link'>
+          <pose>35.5722 0.775388 2.87046 1.57469 -1.04723 -0.002848</pose>
+          <velocity>-7.2e-05 -0.002679 -0.013549 0.007898 -0.000183 0.002124</velocity>
+          <acceleration>-6.1e-05 -0.002297 -0.027604 0.021141 -0.000369 4.8e-05</acceleration>
+          <wrench>-0 -1.8e-05 -0.000214 0 -0 0</wrench>
+        </link>
+        <link name='motor_right_Up_Link'>
+          <pose>35.8271 0.775389 2.87007 0.787106 -1.04716 -3.13874</pose>
+          <velocity>-7.2e-05 -0.002676 -0.013525 0.009101 -0.000173 -0.004199</velocity>
+          <acceleration>-6.1e-05 -0.00229 -0.027502 0.023845 -0.000369 -0.002799</acceleration>
+          <wrench>-0 -1.8e-05 -0.000213 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='sea_surface'>
+        <pose>-0.010151 0.014428 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='sea_bottom'>
+          <pose>-0.010151 0.014428 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='starting_gates'>
+        <pose>35 0.8 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>35 0.8 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box'>
+        <pose>30.8587 1.32696 0.5 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>30.8587 1.32696 0.5 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_box_1,4'>
+        <pose>35.6921 0.744559 0.5 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>35.6921 0.744559 0.5 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_cylinder'>
+        <pose>27.3421 7.22832 0.5 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>27.3421 7.22832 0.5 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='unit_cylinder_4mm_d'>
+        <pose>25.0919 7.89355 -1.10843 -3.11421 0.005954 1.57501</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>25.0919 7.89355 -1.10843 -3.11421 0.005954 1.57501</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='world_ned'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='world_ned'>
+          <pose>0 0 0 -3.14159 -0 1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun1'>
+        <pose>25 12.5 50 0 -0 0</pose>
+      </light>
+      <light name='sun_diffuse'>
+        <pose>25 12.5 1.8 0 -0 0</pose>
+      </light>
+    </state>
+    <model name='pool'>
+      <link name='Base_link'>
+        <inertial>
+          <pose>-0 0 0.75567 0 -0 0</pose>
+          <mass>1.2379e+07</mass>
+          <inertia>
+            <ixx>9.3556e+08</ixx>
+            <ixy>-5.1e-07</ixy>
+            <ixz>2.8051e-08</ixz>
+            <iyy>3.1435e+09</iyy>
+            <iyz>6.3008e-08</iyz>
+            <izz>4.0668e+09</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <visual name='Base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/pool/meshes/pool_final.DAE</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <shader type='pixel'/>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='Base_link_collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>/home/grigorian/simulator/src/pool/meshes/pool_final.DAE</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>0 0 -2.9 0 -0 0</pose>
+    </model>
+    <model name='buckets'>
+      <link name='base_green'>
+        <inertial>
+          <pose>2.71459 -0.001357 0.222916 0 -0 0</pose>
+          <mass>1959.16</mass>
+          <inertia>
+            <ixx>350.977</ixx>
+            <ixy>0.710796</ixy>
+            <ixz>2.07091</ixz>
+            <iyy>10147.4</iyy>
+            <iyz>-1.39101</iyz>
+            <izz>10345.1</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_green_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/base_green.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_1_Link_collision_1'>
+          <pose>-0.29023 0.001865 0 1.5708 -0 1.6399</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_1_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_2_Link_collision_2'>
+          <pose>1.7098 0.001865 0 1.5708 -0 1.6354</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_2_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_3_Link_collision_3'>
+          <pose>3.7098 0.001865 0 1.5708 0 1.5454</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_3_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_green_fixed_joint_lump__Bucket_4_Link_collision_4'>
+          <pose>5.7098 0.001865 0 1.5708 -0 1.5822</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_4_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_green_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/base_green.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_1_Link_visual_1'>
+          <pose>-0.29023 0.001865 0 1.5708 -0 1.6399</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_1_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_2_Link_visual_2'>
+          <pose>1.7098 0.001865 0 1.5708 -0 1.6354</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_2_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_3_Link_visual_3'>
+          <pose>3.7098 0.001865 0 1.5708 0 1.5454</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_3_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_green_fixed_joint_lump__Bucket_4_Link_visual_4'>
+          <pose>5.7098 0.001865 0 1.5708 -0 1.5822</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/buckets/meshes/Bucket_4_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>31 23 1 0 -0 0</pose>
+    </model>
+    <model name='rov_model_urdf'>
+      <link name='base_link'>
+        <inertial>
+          <pose>-0.006574 -0.111478 0.00023 0 -0 0</pose>
+          <mass>22.1675</mass>
+          <inertia>
+            <ixx>0.529357</ixx>
+            <ixy>0.00558888</ixy>
+            <ixz>-1.79151e-05</ixz>
+            <iyy>0.613762</iyy>
+            <iyz>-0.000203251</iyz>
+            <izz>0.495575</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/collision_model.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__batteries_Link_visual_1'>
+          <pose>0 -0.217 -0.162638 0.090081 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/batteries_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__buoyancy_Link_visual_2'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/buoyancy_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__camera_bottom_visual_3'>
+          <pose>-0.01 -0.17 0 0 0 -1.5708</pose>
+          <geometry>
+            <box>
+              <size>0.005 0.005 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__camera_front_left_visual_4'>
+          <pose>0.25 -0.08 -0.03 -1.5708 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005 0.005 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__camera_front_right_visual_5'>
+          <pose>0.25 -0.08 0.03 -1.5708 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005 0.005 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_link_fixed_joint_lump__main_housing_Link_visual_6'>
+          <pose>0 -0.07475 0.000633 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/main_housing_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Turquoise</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>0</gravity>
+        <sensor name='imu_sensor' type='imu'>
+          <always_on>1</always_on>
+          <update_rate>100</update_rate>
+          <visualize>1</visualize>
+          <topic>__default_topic__</topic>
+          <plugin name='imu_plugin' filename='libgazebo_ros_imu_sensor.so'>
+            <topicName>imu_sensor</topicName>
+            <bodyName>base_link</bodyName>
+            <updateRateHZ>10.0</updateRateHZ>
+            <gaussianNoise>0.0</gaussianNoise>
+            <xyzOffset>0 0 0</xyzOffset>
+            <rpyOffset>0 0 0</rpyOffset>
+            <frameName>base_link</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0 0 0 0 -0 0</pose>
+          <imu/>
+        </sensor>
+        <gravity>1</gravity>
+        <gravity>1</gravity>
+        <gravity>0</gravity>
+        <sensor name='camera_bottom' type='camera'>
+          <update_rate>30</update_rate>
+          <camera name='bottom'>
+            <pose>-0.21 -0.17 0 -1.5708 -0 -1.5708</pose>
+            <horizontal_fov>1.39626</horizontal_fov>
+            <image>
+              <width>800</width>
+              <height>800</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <visualize>1</visualize>
+            <always_on>1</always_on>
+          </camera>
+          <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>rov_model_urdf/camera_bottom</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_bottom</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.2 0 0 0 -0 0</pose>
+        </sensor>
+        <gravity>1</gravity>
+        <sensor name='stereo_camera' type='multicamera'>
+          <update_rate>30</update_rate>
+          <camera name='left'>
+            <pose>0.05 -0.08 -0.03 -1.5708 0 0</pose>
+            <horizontal_fov>1.39626</horizontal_fov>
+            <image>
+              <width>800</width>
+              <height>800</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+          </camera>
+          <camera name='right'>
+            <pose>0.05 -0.08 0.03 -1.5708 0 0</pose>
+            <horizontal_fov>1.39626</horizontal_fov>
+            <image>
+              <width>800</width>
+              <height>800</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+          </camera>
+          <plugin name='stereo_camera_controller' filename='libgazebo_ros_multicamera.so'>
+            <alwaysOn>1</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>stereo/camera</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>left_camera_optical_frame</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.2 0 0 0 -0 0</pose>
+        </sensor>
+        <gravity>1</gravity>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor1' type='revolute'>
+        <pose relative_to='base_link'>0.106438 -0.06625 -0.184357 3.14159 -1.0472 -3.14159</pose>
+        <parent>base_link</parent>
+        <child>motor_L_front_D_Link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_L_front_D_Link'>
+        <pose relative_to='motor1'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 -0.041714 0 -0 0</pose>
+          <mass>0.0077402</mass>
+          <inertia>
+            <ixx>2.207e-06</ixx>
+            <ixy>2.6918e-10</ixy>
+            <ixz>-7.3425e-12</ixz>
+            <iyy>2.2072e-06</iyy>
+            <iyz>8.6802e-12</iyz>
+            <izz>3.2145e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_L_front_D_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_L_front_D_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor2' type='revolute'>
+        <pose relative_to='base_link'>0.134067 -0.06625 0.168405 0 0.523599 0</pose>
+        <parent>base_link</parent>
+        <child>motor_R_front_D_Link</child>
+        <axis>
+          <xyz>-1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_R_front_D_Link'>
+        <pose relative_to='motor2'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.009812 0 0 0 -0 0</pose>
+          <mass>0.0077403</mass>
+          <inertia>
+            <ixx>3.2146e-06</ixx>
+            <ixy>-4.1044e-12</ixy>
+            <ixz>1.7606e-12</ixz>
+            <iyy>2.2076e-06</iyy>
+            <iyz>6.0721e-11</iyz>
+            <izz>2.2066e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_R_front_D_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_R_front_D_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor3' type='revolute'>
+        <pose relative_to='base_link'>-0.154041 -0.06625 -0.169574 0.341959 0.523464 0</pose>
+        <parent>base_link</parent>
+        <child>motor_L_back_D_Link</child>
+        <axis>
+          <xyz>-1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_L_back_D_Link'>
+        <pose relative_to='motor3'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.0052 -0 1e-06 0 -0 0</pose>
+          <mass>0.0077405</mass>
+          <inertia>
+            <ixx>3.2146e-06</ixx>
+            <ixy>3.3276e-11</ixy>
+            <ixz>1.8173e-11</ixz>
+            <iyy>2.2071e-06</iyy>
+            <iyz>2.4826e-10</iyz>
+            <izz>2.2071e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_L_back_D_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_L_back_D_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor4' type='revolute'>
+        <pose relative_to='base_link'>-0.120908 -0.06625 0.188697 0 -0.523464 0</pose>
+        <parent>base_link</parent>
+        <child>motor_R_back_down</child>
+        <axis>
+          <xyz>-1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_R_back_down'>
+        <pose relative_to='motor4'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.043456 0 0 0 -0 0</pose>
+          <mass>0.0077402</mass>
+          <inertia>
+            <ixx>3.2145e-06</ixx>
+            <ixy>-8.6815e-12</ixy>
+            <ixz>7.3443e-12</ixz>
+            <iyy>2.2072e-06</iyy>
+            <iyz>2.6926e-10</iyz>
+            <izz>2.207e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_R_back_down_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_R_back_down.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor5' type='revolute'>
+        <pose relative_to='base_link'>0.116214 0.116214 0 -2.35619 -0 2.35619</pose>
+        <parent>base_link</parent>
+        <child>motor_front_Up_Link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_front_Up_Link'>
+        <pose relative_to='motor5'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.050773 1e-06 0 0 -0 0</pose>
+          <mass>0.0077405</mass>
+          <inertia>
+            <ixx>3.2146e-06</ixx>
+            <ixy>-1.1643e-12</ixy>
+            <ixz>-3.6885e-11</ixz>
+            <iyy>2.2061e-06</iyy>
+            <iyz>-7.4844e-10</iyz>
+            <izz>2.208e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_front_Up_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_front_Up_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor6' type='revolute'>
+        <pose relative_to='base_link'>-0.024305 0.073805 -0.127833 -1.5708 -0.523599 1.5708</pose>
+        <parent>base_link</parent>
+        <child>motor_left_Up_Link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_left_Up_Link'>
+        <pose relative_to='motor6'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.020407 0 1e-06 0 -0 0</pose>
+          <mass>0.0077404</mass>
+          <inertia>
+            <ixx>3.2146e-06</ixx>
+            <ixy>1.9709e-12</ixy>
+            <ixz>3.205e-11</ixz>
+            <iyy>2.2073e-06</iyy>
+            <iyz>4.8494e-10</iyz>
+            <izz>2.2069e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_left_Up_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_left_Up_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor7' type='revolute'>
+        <pose relative_to='base_link'>-0.024305 0.073405 0.127141 0.791597 0.523599 1.5708</pose>
+        <parent>base_link</parent>
+        <child>motor_right_Up_Link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_right_Up_Link'>
+        <pose relative_to='motor7'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.020407 1e-06 -1e-06 0 -0 0</pose>
+          <mass>0.0077398</mass>
+          <inertia>
+            <ixx>3.2143e-06</ixx>
+            <ixy>5.9101e-15</ixy>
+            <ixz>4.8677e-12</ixz>
+            <iyy>2.2059e-06</iyy>
+            <iyz>9.1583e-10</iyz>
+            <izz>2.208e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_right_Up_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_right_Up_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='motor8' type='revolute'>
+        <pose relative_to='base_link'>-0.211458 0.073944 0 0.785398 0 0.785398</pose>
+        <parent>base_link</parent>
+        <child>motor_back_Up_Link</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <effort>100</effort>
+            <velocity>100</velocity>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='motor_back_Up_Link'>
+        <pose relative_to='motor8'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.002308 1e-06 -1e-06 0 -0 0</pose>
+          <mass>0.0077396</mass>
+          <inertia>
+            <ixx>3.2142e-06</ixx>
+            <ixy>7.3175e-12</ixy>
+            <ixz>-1.4344e-12</ixz>
+            <iyy>2.2078e-06</iyy>
+            <iyz>7.4361e-10</iyz>
+            <izz>2.206e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='motor_back_Up_Link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/rov_model_urdf/meshes/motor_back_Up_Link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <plugin name='model_move_plugin' filename='libmodel_move_plugin.so'>
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometryRate>20.0</odometryRate>
+        <robotBaseFrame>base_link</robotBaseFrame>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <static>0</static>
+      <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
+        <alwaysOn>1</alwaysOn>
+        <bodyName>base_link</bodyName>
+        <topicName>imu</topicName>
+        <serviceName>imu_service</serviceName>
+        <gaussianNoise>0.0</gaussianNoise>
+        <updateRate>20.0</updateRate>
+        <frameName>base_link</frameName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <pose>35.7 0.8 2.8 1.5708 -0 1.5708</pose>
+    </model>
+    <model name='gates_final'>
+      <link name='Base_parent_link'>
+        <inertial>
+          <pose>-0.005114 0.043999 0.168428 0 -0 0</pose>
+          <mass>259.211</mass>
+          <inertia>
+            <ixx>84.1328</ixx>
+            <ixy>0.0120685</ixy>
+            <ixz>-0.229913</ixz>
+            <iyy>136.173</iyy>
+            <iyz>1.97802</iyz>
+            <izz>122.116</izz>
+          </inertia>
+        </inertial>
+        <collision name='Base_parent_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Left_link_collision_1'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Right_link_collision_2'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Base_parent_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Left_link_visual_1'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Right_link_visual_2'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_final/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>25 8 2 0 -0 0</pose>
+    </model>
+    <model name='gates_qualification'>
+      <link name='Base_parent_link'>
+        <inertial>
+          <pose>-0.005114 0.043791 0.166619 0 -0 0</pose>
+          <mass>259.214</mass>
+          <inertia>
+            <ixx>84.2945</ixx>
+            <ixy>0.0120116</ixy>
+            <ixz>-0.230412</ixz>
+            <iyy>136.398</iyy>
+            <iyz>3.40993</iyz>
+            <izz>122.058</izz>
+          </inertia>
+        </inertial>
+        <collision name='Base_parent_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Left_link_collision_1'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='Base_parent_link_fixed_joint_lump__Right_link_collision_2'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Base_parent_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Base_parent_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Left_link_visual_1'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Left_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='Base_parent_link_fixed_joint_lump__Right_link_visual_2'>
+          <pose>0 0 0 1.5708 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/gates_qualification/meshes/Right_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>10 4 2 0 0 -1.5708</pose>
+    </model>
+    <model name='flare'>
+      <link name='base_link'>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>250</mass>
+          <inertia>
+            <ixx>2.70025</ixx>
+            <ixy>-0.00065535</ixy>
+            <ixz>-0.00028377</ixz>
+            <iyy>2.00731</iyy>
+            <iyz>-0.0082089</iyz>
+            <izz>2.69672</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/flare/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/flare/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Yellow</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>40 15 2 0 -0 0</pose>
+    </model>
+    <model name='starting_gates'>
+      <link name='base_link'>
+        <inertial>
+          <pose>0.69 -2e-06 0 0 -0 0</pose>
+          <mass>30</mass>
+          <inertia>
+            <ixx>17.78</ixx>
+            <ixy>-1.5236e-10</ixy>
+            <ixz>0.000122</ixz>
+            <iyy>17.78</iyy>
+            <iyz>0.000122</iyz>
+            <izz>35.549</izz>
+          </inertia>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <visual name='base_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/grigorian/simulator/src/starting_gates/meshes/base_link.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='pixel'/>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='base_link_collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>/home/grigorian/simulator/src/starting_gates/meshes/base_link.STL</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>35 0.8 0 0 -0 0</pose>
+    </model>
+    <model name='unit_box_1,4'>
+      <link name='link'>
+        <inertial>
+          <mass>1.40002</mass>
+          <inertia>
+            <ixx>0.233337</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.345343</iyy>
+            <iyz>0</iyz>
+            <izz>0.345343</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.40001 1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.40001 1 1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>36.554 -0.249327 0.5 0 -0 0</pose>
+    </model>
+    <model name='unit_box'>
+      <pose>30.8587 1.32696 0.5 0 -0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name='unit_cylinder_4mm_d'>
+      <link name='link'>
+        <inertial>
+          <mass>0.00301041</mass>
+          <inertia>
+            <ixx>0.00025143</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00025143</iyy>
+            <iyz>0</iyz>
+            <izz>1.13e-06</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <pose>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.027437</radius>
+              <length>1</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>9.56737 3.75934 0.10917 -1.57675 0 0</pose>
+    </model>
+    <model name='red_flare'>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.335626</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.335626</iyy>
+            <iyz>0</iyz>
+            <izz>0.326156</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.075</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Gray</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.7 0.01 0.01 1</ambient>
+            <diffuse>0.7 0.01 0.01 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <pose>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.075</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>26.5932 8.49972 0.5 0 -0 0</pose>
+    </model>
+    <model name='unit_cylinder'>
+      <pose>27.3421 7.22832 0.5 0 -0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>1</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>1</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+  </world>
+</sdf>

@@ -3,18 +3,21 @@ Simple simulator based on [Dave](https://github.com/Field-Robotics-Lab/dave) for
 
 ## Building
 
-1. 	
-    ```sh
+1.  ```sh
     git submodule init
     git submodule update
     ```
 
-2. [Build](https://github.com/Field-Robotics-Lab/dave/wiki/Install-Directly-on-Host) dave
+2.  [Build](https://github.com/Field-Robotics-Lab/dave/wiki/Install-Directly-on-Host) dave
 
-3.
-    ```sh
+3.  ```sh
     catkin_make
     ```
+    
+4.  ```sh
+    source devel/setup.bash 
+    ```
+
 
 ## Running
 

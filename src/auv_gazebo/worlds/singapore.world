@@ -18,12 +18,14 @@
 
     <scene>
       <ambient>110 130 150 255</ambient>
-      <sky>
-        <clouds>
-          <speed>12</speed>
-        </clouds>
-      </sky>
       <shadows>1</shadows>
+      <fog>
+        <color>0.1 0.2 0.3 1.0</color>
+        <type>linear</type>
+        <density>10</density>
+        <start>1</start>
+        <end>40</end>
+      </fog>
     </scene>
 
     <!-- Global light source -->

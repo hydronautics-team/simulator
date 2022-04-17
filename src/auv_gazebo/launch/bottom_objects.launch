@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
-
   <param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> 
 
   <param name="buckets" command="$(find xacro)/xacro '$(find buckets)/urdf/buckets.xacro'"/>
@@ -24,7 +23,7 @@
   args="-urdf -param gates_final -x 25 -y 8 -z 2 -R 0 -P 0 -Y 0 -model gates_final" />
 
   <node name="buckets_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param buckets -x 31 -y 23 -z 2 -R 0 -P 0 -Y 0 -model buckets" />
+  args="-urdf -param buckets -x 31 -y 23 -z 1 -R 0 -P 0 -Y 0 -model buckets" />
 
   <node name="gates_qualification_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
   args="-urdf -param gates_qualification -x 10 -y 4 -z 2 -R 0 -P 0 -Y -1.5708 -model gates_qualification" />
