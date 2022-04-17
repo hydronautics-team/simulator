@@ -5,10 +5,10 @@
   <xacro:arg name="debug" default="0"/>
 
   <!-- Vehicle's namespace -->
-  <xacro:arg name="namespace" default="ROV_model_URDF"/>
+  <xacro:arg name="namespace" default="rov_model_urdf"/>
 
   <!-- Include the ROV macro file -->
-  <!--xacro:include filename="$(find ROV_model_URDF)/urdf/ROV_model_URDF.xacro"/-->
+  <!--xacro:include filename="$(find rov_model_urdf)/urdf/rov_model_urdf.xacro"/-->
 
   <!-- Create the rov_example -->
   <xacro:rov_example_base namespace="$(arg namespace)" debug="$(arg debug)"/>

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(ROV_model_URDF)
+project(rov_model_urdf)
 
 find_package(catkin REQUIRED)
 
