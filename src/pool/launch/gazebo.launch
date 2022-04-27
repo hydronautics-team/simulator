@@ -7,7 +7,7 @@
     type="static_transform_publisher"
     args="0 0 0 0 0 0 base_link base_footprint 40" />
   <node
-    name="spawn_model"
+      name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
     args="-file $(find pool)/urdf/pool.urdf -urdf -model pool"
