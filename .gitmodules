@@ -1,0 +1,3 @@
+[submodule "src/uuv_simulator"]
+	path = src/uuv_simulator
+	url = https://github.com/Field-Robotics-Lab/uuv_simulator.git
