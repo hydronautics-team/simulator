@@ -9,6 +9,7 @@ Simple AUV simulator based on [Field-Robotics-Lab/uuv_simulator](https://github.
     ```
 2.
     ```sh
+    source /opt/ros/noetic/setup.bash
     catkin_make
     ```
 
