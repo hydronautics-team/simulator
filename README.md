@@ -1,17 +1,13 @@
 # Hydronautics simulator
-Simple simulator based on [Dave](https://github.com/Field-Robotics-Lab/dave) for testing control algorithms 
+Simple AUV simulator based on [Field-Robotics-Lab/uuv_simulator](https://github.com/Field-Robotics-Lab/uuv_simulator) for testing control algos
 
 ## Building
 
 1. 	
     ```sh
-    git submodule init
-    git submodule update
+    git submodule update --init --recursive
     ```
-
-2. [Build](https://github.com/Field-Robotics-Lab/dave/wiki/Install-Directly-on-Host) dave
-
-3.
+2.
     ```sh
     catkin_make
     ```
@@ -20,6 +16,7 @@ Simple simulator based on [Dave](https://github.com/Field-Robotics-Lab/dave) for
 
 To run the simulator, use launch file:
 ```sh
+source devel/setup.bash
 roslaunch Simulation.launch
 ```
 
@@ -55,7 +52,6 @@ UV has IMU sensor
 model_move_plugin was written to move UV. Through publishing twist messages you can control robots's planar movements and its hight. Odom message can inform you about robot's position, orientation and twist parameters.
 
 ## Will be added
-- Unity3D integration (using this https://github.com/siemens/ros-sharp)
 - Depth sensor
 
 ## Will be fixed
