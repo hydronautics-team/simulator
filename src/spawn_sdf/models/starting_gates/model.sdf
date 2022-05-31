@@ -23,7 +23,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>/home/grigorian/simulator/src/starting_gates/meshes/base_link.STL</uri>
+            <uri>model://starting_gates/meshes/base_link.STL</uri>
           </mesh>
         </geometry>
         <material>
@@ -42,7 +42,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>/home/grigorian/simulator/src/starting_gates/meshes/base_link.STL</uri>
+            <uri>model://starting_gates/meshes/base_link.STL</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

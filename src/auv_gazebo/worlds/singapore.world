@@ -1,11 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.4'>
   <world name='water'>
-    <!--physics name="default_physics" default="true" type="ode">
-      <max_step_size>0.002</max_step_size>
-      <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>500</real_time_update_rate>
-    </physics-->
 
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
@@ -63,48 +58,10 @@
       <pose>0 0 0 0 0 0</pose>
     </include>
 
-
-<!--
-  Cool stuff but not needed now 
-
-    <plugin name="underwater_current_plugin" filename="libuuv_underwater_current_ros_plugin.so">
-      <namespace>hydrodynamics</namespace>
-      <constant_current>
-        <topic>current_velocity</topic>
-        <velocity>
-          <mean>0</mean>
-          <min>0</min>
-          <max>0</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </velocity>
-
-        <horizontal_angle>
-          <mean>0</mean>
-          <min>-3.141592653589793238</min>
-          <max>3.141592653589793238</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </horizontal_angle>
-
-        <vertical_angle>
-          <mean>0</mean>
-          <min>-3.141592653589793238</min>
-          <max>3.141592653589793238</max>
-          <mu>0.0</mu>
-          <noiseAmp>0.0</noiseAmp>
-        </vertical_angle>
-      </constant_current>
-    </plugin>
-
-    <plugin name="sc_interface" filename="libuuv_sc_ros_interface_plugin.so"/>
-
--->
-
     <!-- Focus camera on tall pendulum -->
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>10 10 5 0 -1.152 -0.752002</pose>
+        <pose>5.75113 16.9115 -0.615216 0 0.12 -0.228776</pose>
         <view_controller>orbit</view_controller>
       </camera>
     </gui>
