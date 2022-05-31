@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
+<!--  <param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> -->
 
-  <param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> 
+<!--  <param name="buckets" command="$(find xacro)/xacro '$(find buckets)/urdf/buckets.xacro'"/>-->
 
-  <param name="buckets" command="$(find xacro)/xacro '$(find buckets)/urdf/buckets.xacro'"/>
+<!--  <param name="gates_qualification" command="$(find xacro)/xacro '$(find gates_qualification)/urdf/gates_qualification.xacro'"/>-->
 
-  <param name="gates_qualification" command="$(find xacro)/xacro '$(find gates_qualification)/urdf/gates_qualification.xacro'"/>
+<!--  <param name="starting_gates" command="$(find xacro)/xacro '$(find starting_gates)/urdf/starting_gates.xacro'"/>-->
 
-  <param name="starting_gates" command="$(find xacro)/xacro '$(find starting_gates)/urdf/starting_gates.xacro'"/>
-
-  <param name="flare" command="$(find xacro)/xacro '$(find flare)/urdf/flare.xacro'"/>
+<!--  <param name="flare" command="$(find xacro)/xacro '$(find flare)/urdf/flare.xacro'"/>-->
 
   <!--param name="base" command="$(find xacro)/xacro '$(find base)/urdf/base.xacro'"/-->
 
@@ -23,31 +22,86 @@
 <!--  <node name="$(arg robot_name)_spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"-->
 <!--        args="-file $(arg sdf_robot_file) -sdf -x $(arg x) -y $(arg y) -z $(arg z)  -R $(arg roll) -P $(arg pitch) -Y $(arg yaw) -model $(arg robot_name)"/>-->
 
-  <node name="gates_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param gates_final -x 25 -y 8 -z 2 -R 0 -P 0 -Y 0 -model gates_final" />
+<!--  <node name="gates_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param gates_final -x 25 -y 8 -z 2 -R 0 -P 0 -Y 0 -model gates_final" />-->
 
-  <node name="buckets_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param buckets -x 31 -y 23 -z 2 -R 0 -P 0 -Y 0 -model buckets" />
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="main_gate" />
+        <arg name="x" value="25.0" />
+        <arg name="y" value="8.0" />
+        <arg name="z" value="0.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/main_gate/model.sdf" />
+    </include>
 
-  <node name="gates_qualification_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param gates_qualification -x 10 -y 4 -z 2 -R 0 -P 0 -Y -1.5708 -model gates_qualification" />
+<!--  <node name="buckets_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param buckets -x 31 -y 23 -z 2 -R 0 -P 0 -Y 0 -model buckets" />-->
 
-  <node name="starting_gates_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param starting_gates -x 35 -y 0.8 -z 2.9 -R 0 -P 0 -Y 0 -model starting_gates" />
+<!--  <node name="gates_qualification_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param gates_qualification -x 10 -y 4 -z 2 -R 0 -P 0 -Y -1.5708 -model gates_qualification" />-->
 
-  <node name="flare_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param flare -x 40 -y 15 -z 2 -R 0 -P 0 -Y 0 -model flare" />
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="qualification_gate" />
+        <arg name="x" value="10.0" />
+        <arg name="y" value="4.0" />
+        <arg name="z" value="0.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="1.57079" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/qualification_gate/model.sdf" />
+    </include>
 
-  <include file="$(find red_flare)/launch/spawn_sdf.launch">
-      <arg name="robot_name" value="pillow" />
-      <arg name="x" value="0.0" />
-      <arg name="y" value="0.0" />
-      <arg name="z" value="1.0" />
-      <arg name="roll" value="0"/>
-      <arg name="pitch" value="0"/>
-      <arg name="yaw" value="0.0" />
-      <arg name="sdf_robot_file" value="$(find red_flare)/models/pillow/model.sdf" />
-  </include>
+<!--  <node name="starting_gates_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param starting_gates -x 35 -y 0.8 -z 2.9 -R 0 -P 0 -Y 0 -model starting_gates" />-->
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="starting_gates" />
+        <arg name="x" value="35.0" />
+        <arg name="y" value="0.8" />
+        <arg name="z" value="0.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/starting_gates/model.sdf" />
+    </include>
+
+<!--  <node name="flare_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param flare -x 40 -y 15 -z 2 -R 0 -P 0 -Y 0 -model flare" />-->
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="yellow_flare" />
+        <arg name="x" value="40.0" />
+        <arg name="y" value="15.0" />
+        <arg name="z" value="0.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/yellow_flare/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="buckets" />
+        <arg name="x" value="31.0" />
+        <arg name="y" value="23.0" />
+        <arg name="z" value="-1.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/buckets/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="red_flare" />
+        <arg name="x" value="20.0" />
+        <arg name="y" value="3.0" />
+        <arg name="z" value="0.0" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/red_flare/model.sdf" />
+    </include>
 
   <!--node name="base_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
   args="-urdf -param base -x 60 -y 10 -z 2 -R 0 -P 0 -Y 0 -model base" /-->

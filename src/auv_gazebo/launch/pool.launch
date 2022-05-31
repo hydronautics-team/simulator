@@ -19,10 +19,20 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
-  <param name="pool" command="$(find xacro)/xacro '$(find pool)/urdf/pool.xacro'"/>
+<!--  <param name="pool" command="$(find xacro)/xacro '$(find pool)/urdf/pool.xacro'"/>-->
 
-  <node name="pool_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param pool -x 25 -y 12.5 -z 0 -R 0 -P 0 -Y 0 -model pool" />
+<!--  <node name="pool_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"-->
+<!--  args="-urdf -param pool -x 25 -y 12.5 -z 0 -R 0 -P 0 -Y 0 -model pool" />-->
 
+  <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+    <arg name="robot_name" value="pool" />
+    <arg name="x" value="25.0" />
+    <arg name="y" value="12.5" />
+    <arg name="z" value="-3.1" />
+    <arg name="roll" value="0"/>
+    <arg name="pitch" value="0"/>
+    <arg name="yaw" value="0.0" />
+    <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/pool/model.sdf" />
+  </include>
 
 </launch>

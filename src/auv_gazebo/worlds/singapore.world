@@ -24,6 +24,13 @@
         </clouds>
       </sky>
       <shadows>1</shadows>
+      <fog>
+        <color>0.1 0.2 0.3 1.0</color>
+        <type>linear</type>
+        <density>10</density>
+        <start>1</start>
+        <end>40</end>
+      </fog>
     </scene>
 
     <!-- Global light source -->
@@ -53,58 +60,9 @@
     <!-- Bounding sea surface -->
     <include>
       <uri>model://sea_surface</uri>
-      <pose>0 0 2.9 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
     </include>
 
-  <model name='ground_plane_0'>
-      <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>200 200</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-              </ode>
-            </friction>
-            <bounce/>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <cast_shadows>0</cast_shadows>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>200 200</size>
-            </plane>
-          </geometry>
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
-          </material>
-        </visual>
-        <velocity_decay>
-          <linear>0</linear>
-          <angular>0</angular>
-        </velocity_decay>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose>0.497681 0 0 0 -0 0</pose>
-    </model>
 
 <!--
   Cool stuff but not needed now 
@@ -146,7 +104,7 @@
     <!-- Focus camera on tall pendulum -->
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>22.16 14.2328 2.05593 0 0.152 -0.752002</pose>
+        <pose>10 10 5 0 -1.152 -0.752002</pose>
         <view_controller>orbit</view_controller>
       </camera>
     </gui>

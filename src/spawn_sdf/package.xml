@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>spawn_sdf</name>
+  <version>0.0.0</version>
+  <description>The spawn_sdf package</description>
+  <maintainer email="duckfrost@theconstructsim.com">duckfrost</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+
+
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+  </export>
+</package>
