@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
-  <!-- Debug flag -->
-  <!-- Vehicle's initial pose -->
-  <!-- Mode to open different robot configurations as set the in file
-  nomenclature standard for the files in /robots
-  /robots/<model_name>_<mode>.xacro
-  -->
-  <!-- Vehicle's namespace -->
-  <!-- Publish state and tf for in relation to the world frame -->
-
-
-  <!--param name="gates_final" command="$(find xacro)/xacro '$(find gates_final)/urdf/gates_final.xacro'"/> 
-
-  <param name="base" command="$(find xacro)/xacro '$(find base)/urdf/base.xacro'"/-->
-
   <param name="rov_model_urdf" command="$(find xacro)/xacro '$(find rov_model_urdf)/urdf/rov_model_urdf.xacro'"/>
 
-
-  <!--node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-   args="-urdf -param robot_description -model mybot" />
-
-  <node name="gates_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param gates_final -x 5.05 -y 8.8 -z -58 -R 0.007 -P -0.03 -Y 0.883 -model gates_final" />
-
-  <node name="base_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param base -x 60 -y 10 -z 2 -R 0 -P 0 -Y 0 -model base" /-->
-
   <node name="rov_model_urdf_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param rov_model_urdf -x 35.7 -y 0.8 -z 2.8 -R 1.5708 -P 0 -Y 1.5708 -model rov_model_urdf" />
+  args="-urdf -param rov_model_urdf -x 35.7 -y 0.8 -z -1 -R 1.5708 -P 0 -Y 1.5708 -model rov_model_urdf" />
 
 </launch>
