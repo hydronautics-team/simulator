@@ -4,7 +4,6 @@
   <param name="rov_model_urdf" command="$(find xacro)/xacro '$(find rov_model_urdf)/urdf/rov_model_urdf.xacro'"/>
 
   <node name="rov_model_urdf_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-  args="-urdf -param rov_model_urdf -x 35.7 -y 0.8 -z -1 -R 0 -P 0 -Y 3.14159 -model rov_model_urdf" />
+  args="-urdf -param rov_model_urdf -x 35.7 -y 0.8 -z 2.2 -R 0 -P 0 -Y 3.1415 -model rov_model_urdf" />
 
-<!--  35.7 -y 0.8 -z -1 -R 1.5708 -P 0 -Y 1.5708 -->
 </launch>

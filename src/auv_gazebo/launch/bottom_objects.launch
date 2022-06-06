@@ -5,7 +5,7 @@
         <arg name="robot_name" value="main_gate" />
         <arg name="x" value="25.0" />
         <arg name="y" value="12.0" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -16,7 +16,7 @@
         <arg name="robot_name" value="qualification_gate" />
         <arg name="x" value="10.0" />
         <arg name="y" value="4.0" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="1.57079" />
@@ -27,7 +27,7 @@
         <arg name="robot_name" value="starting_gates" />
         <arg name="x" value="35.0" />
         <arg name="y" value="0.8" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -38,7 +38,7 @@
         <arg name="robot_name" value="yellow_flare_1" />
         <arg name="x" value="42.0" />
         <arg name="y" value="15.0" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -49,7 +49,7 @@
         <arg name="robot_name" value="yellow_flare_2" />
         <arg name="x" value="40.0" />
         <arg name="y" value="12.0" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -60,7 +60,7 @@
         <arg name="robot_name" value="buckets" />
         <arg name="x" value="31.0" />
         <arg name="y" value="23.0" />
-        <arg name="z" value="-1.99" />
+        <arg name="z" value="1.21" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -71,7 +71,7 @@
         <arg name="robot_name" value="red_flare" />
         <arg name="x" value="20.0" />
         <arg name="y" value="6.0" />
-        <arg name="z" value="0.0" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
