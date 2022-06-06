@@ -21,7 +21,7 @@
     <arg name="robot_name" value="pool" />
     <arg name="x" value="25.0" />
     <arg name="y" value="12.5" />
-    <arg name="z" value="-2.99" />
+    <arg name="z" value="0.21" />
     <arg name="roll" value="0"/>
     <arg name="pitch" value="0"/>
     <arg name="yaw" value="0.0" />
