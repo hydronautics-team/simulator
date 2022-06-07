@@ -16,8 +16,8 @@
 /// \file Def.hh
 /// \brief General definitions
 
-#ifndef __UUV_GAZEBO_PLUGINS_DEF_HH__
-#define __UUV_GAZEBO_PLUGINS_DEF_HH__
+#ifndef __UUV_GAZEBO_PLUGINS_AUVSIM_DEF_HH__
+#define __UUV_GAZEBO_PLUGINS_AUVSIM_DEF_HH__
 
 #include <vector>
 #include <string>

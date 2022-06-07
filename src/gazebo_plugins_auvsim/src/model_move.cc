@@ -22,7 +22,7 @@
  * Date: 29 July 2013
  */
 
-#include <gazebo_plugins/model_move.h>
+#include <gazebo_plugins_auvsim/model_move.h>
 
 namespace gazebo
 {
