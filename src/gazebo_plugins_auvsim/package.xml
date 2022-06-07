@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>gazebo_plugins</name>
+  <name>gazebo_plugins_auvsim</name>
   <version>0.0.0</version>
-  <description>The gazebo_plugins package</description>
+  <description>The gazebo_plugins_auvsim package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
