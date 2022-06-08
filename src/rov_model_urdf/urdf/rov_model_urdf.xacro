@@ -12,7 +12,7 @@
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.0162700594279859 -0.0457302941825633 9.22944201185264E-06"
+        xyz="0 0 0"
         rpy="0 0 0" />
       <mass
         value="5.34818886692229" />
@@ -26,11 +26,11 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
+              xyz="0 0.05 -0.25"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/base_link.STL" />
+        <mesh scale="0.001 0.001 0.001"
+          filename="package://rov_model_urdf/meshes/Cousteau.stl" />
       </geometry>
       <material
         name="">
@@ -40,636 +40,84 @@
     </visual>
     <collision>
       <origin
-        xyz="0 0 0"
+        xyz="0 0.05 -0.25"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/collision_model.STL" />
+        <mesh scale="0.001 0.001 0.001"
+          filename="package://rov_model_urdf/meshes/Cousteau.stl" />
       </geometry>
     </collision>
   </link>
-  <link
-    name="motor_L_front_D_Link">
-    <inertial>
-      <origin
-        xyz="4.5639E-07 2.482E-07 -0.041714"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077402" />
-      <inertia
-        ixx="2.207E-06"
-        ixy="2.6918E-10"
-        ixz="-7.3425E-12"
-        iyy="2.2072E-06"
-        iyz="8.6802E-12"
-        izz="3.2145E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_L_front_D_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor1"
-    type="continuous">
-    <origin
-      xyz="0.106438289639293 -0.0662499999998972 -0.184356525525989"
-      rpy="3.14159265358979 -1.0471975511966 -3.14159265358979" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_L_front_D_Link" />
-    <axis
-      xyz="0 0 1" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_R_front_D_Link">
-    <inertial>
-      <origin
-        xyz="0.0098117 1.2141E-07 2.883E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077403" />
-      <inertia
-        ixx="3.2146E-06"
-        ixy="-4.1044E-12"
-        ixz="1.7606E-12"
-        iyy="2.2076E-06"
-        iyz="6.0721E-11"
-        izz="2.2066E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_R_front_D_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor2"
-    type="continuous">
-    <origin
-      xyz="0.13406681603541 -0.0662499999998972 0.168405188373878"
-      rpy="-3.06722563908836E-15 0.523598775598296 -4.4316310164893E-15" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_R_front_D_Link" />
-    <axis
-      xyz="-1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_L_back_D_Link">
-    <inertial>
-      <origin
-        xyz="-0.0052 -1.1098E-07 7.8497E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077405" />
-      <inertia
-        ixx="3.2146E-06"
-        ixy="3.3276E-11"
-        ixz="1.8173E-11"
-        iyy="2.2071E-06"
-        iyz="2.4826E-10"
-        izz="2.2071E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_L_back_D_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor3"
-    type="continuous">
-    <origin
-      xyz="-0.154040619555901 -0.0662499999999438 -0.169573961316496"
-      rpy="0.341959311812831 0.523464061748854 2.02942161282335E-15" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_L_back_D_Link" />
-    <axis
-      xyz="-1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_R_back_down">
-    <inertial>
-      <origin
-        xyz="-0.043456 2.4836E-07 4.5644E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077402" />
-      <inertia
-        ixx="3.2145E-06"
-        ixy="-8.6815E-12"
-        ixz="7.3443E-12"
-        iyy="2.2072E-06"
-        iyz="2.6926E-10"
-        izz="2.207E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_R_back_down.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor4"
-    type="continuous">
-    <origin
-      xyz="-0.120907599867261 -0.0662499999999711 0.188697368313432"
-      rpy="1.37701462783123E-16 -0.523464061748854 -1.91295301123142E-16" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_R_back_down" />
-    <axis
-      xyz="-1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_front_Up_Link">
-    <inertial>
-      <origin
-        xyz="-0.050773 6.6319E-07 3.3255E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077405" />
-      <inertia
-        ixx="3.2146E-06"
-        ixy="-1.1643E-12"
-        ixz="-3.6885E-11"
-        iyy="2.2061E-06"
-        iyz="-7.4844E-10"
-        izz="2.208E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_front_Up_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor5"
-    type="continuous">
-    <origin
-      xyz="0.116214176459713 0.116214176459712 0"
-      rpy="-2.35619449019235 -2.2310901599573E-16 2.35619449019234" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_front_Up_Link" />
-    <axis
-      xyz="1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_left_Up_Link">
-    <inertial>
-      <origin
-        xyz="-0.020407 1.7249E-07 8.519E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077404" />
-      <inertia
-        ixx="3.2146E-06"
-        ixy="1.9709E-12"
-        ixz="3.205E-11"
-        iyy="2.2073E-06"
-        iyz="4.8494E-10"
-        izz="2.2069E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_left_Up_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor6"
-    type="continuous">
-    <origin
-      xyz="-0.0243050184490747 0.0738045309959282 -0.127833197513738"
-      rpy="-1.5707963267949 -0.523598775598307 1.5707963267949" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_left_Up_Link" />
-    <axis
-      xyz="1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_right_Up_Link">
-    <inertial>
-      <origin
-        xyz="-0.020407 5.3561E-07 -5.0663E-07"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077398" />
-      <inertia
-        ixx="3.2143E-06"
-        ixy="5.9101E-15"
-        ixz="4.8677E-12"
-        iyy="2.2059E-06"
-        iyz="9.1583E-10"
-        izz="2.208E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_right_Up_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor7"
-    type="continuous">
-    <origin
-      xyz="-0.0243050184616294 0.0734049796681489 0.127141154313793"
-      rpy="0.791597323195276 0.523598775598302 1.5707963267949" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_right_Up_Link" />
-    <axis
-      xyz="1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="motor_back_Up_Link">
-    <inertial>
-      <origin
-        xyz="-0.0023075 9.7054E-07 -1.0177E-06"
-        rpy="0 0 0" />
-      <mass
-        value="0.0077396" />
-      <inertia
-        ixx="3.2142E-06"
-        ixy="7.3175E-12"
-        ixz="-1.4344E-12"
-        iyy="2.2078E-06"
-        iyz="7.4361E-10"
-        izz="2.206E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/motor_back_Up_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="motor8"
-    type="continuous">
-    <origin
-      xyz="-0.211458331086115 0.0739440069961819 0"
-      rpy="0.785398163397449 -1.69415452362406E-15 0.785398163397453" />
-    <parent
-      link="base_link" />
-    <child
-      link="motor_back_Up_Link" />
-    <axis
-      xyz="1 0 0" />
-    <limit effort="100" velocity="100"/>
-    <joint_properties damping="0.0" friction="0.0"/>
-  </joint>
-  <link
-    name="batteries_Link">
-    <inertial>
-      <origin
-        xyz="-0.0066458 0.015259 0.16192"
-        rpy="0 0 0" />
-      <mass
-        value="7.7644" />
-      <inertia
-        ixx="0.2267"
-        ixy="5.7908E-06"
-        ixz="6.4111E-05"
-        iyy="0.24465"
-        iyz="-0.018251"
-        izz="0.044234" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/batteries_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="batteries_Joint"
-    type="fixed">
-    <origin
-      xyz="0 -0.217 -0.162638026855217"
-      rpy="0.0900809160675066 -2.98185944890368E-17 7.62775137240148E-16" />
-    <parent
-      link="base_link" />
-    <child
-      link="batteries_Link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-    name="main_housing_Link">
-    <inertial>
-      <origin
-        xyz="0.002228 -1.1102E-16 2.9407E-15"
-        rpy="0 0 0" />
-      <mass
-        value="7.9374" />
-      <inertia
-        ixx="0.024341"
-        ixy="5.6185E-17"
-        ixz="8.9997E-16"
-        iyy="0.15267"
-        iyz="-4.3449E-31"
-        izz="0.15267" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/main_housing_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="main_housing_Joint"
-    type="fixed">
-    <origin
-      xyz="0 -0.0747500000000039 0.000633048491818368"
-      rpy="0 0 1.74181659958814E-48" />
-    <parent
-      link="base_link" />
-    <child
-      link="main_housing_Link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-    name="buoyancy_Link">
-    <inertial>
-      <origin
-        xyz="-0.027317 0.045953 3.6831E-05"
-        rpy="0 0 0" />
-      <mass
-        value="1.0875" />
-      <inertia
-        ixx="0.010769"
-        ixy="0.00027532"
-        ixz="-5.7297E-06"
-        iyy="0.022695"
-        iyz="-1.2915E-06"
-        izz="0.012737" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://rov_model_urdf/meshes/buoyancy_Link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.84314 0.81569 0.75294 1" />
-      </material>
-    </visual>
-  </link>
-  <joint
-    name="buoyancy_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0 0"
-      rpy="1.19262238973406E-16 0 -1.22460635382238E-16" />
-    <parent
-      link="base_link" />
-    <child
-      link="buoyancy_Link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <!--plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so"-->
-    <!-- a viscous liquid -->
-    <!--fluid_density>100000</fluid_density--> <!-- THIS shit doesn't work blet -->
-  <!--/plugin-->
 
   <!--Camera front-->
-  <link name="camera_front_left">
-
+  <link name="camera_front">
     <visual>
-      <origin xyz="0.05 -0.08 -0.03" rpy="-1.5708 0 0"/>
+      <origin xyz="0 -0.3 0.1" rpy="0 0 0"/>
       <geometry>
         <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
       <material name="green"/>
     </visual>
+  </link>
 
-    <inertial>
-      <mass value="${cameraMass}" />
-      <origin xyz="0.05 -0.08 0" rpy="-1.5708 0 0"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
+  <!--Camera front sterio-->
+  <link name="camera_front_left">
+    <visual>
+      <origin xyz="0.05 -0.3 0.1" rpy="0 0 -1.5708"/>
+      <geometry>
+        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
   </link>
 
   <link name="camera_front_right">
-
     <visual>
-      <origin xyz="0.05 -0.08 0.03" rpy="-1.5708 0 0"/>
+      <origin xyz="-0.05 -0.3 0.1" rpy="0 0 -1.5708"/>
       <geometry>
         <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
       <material name="green"/>
     </visual>
-
-    <inertial>
-      <mass value="${cameraMass}" />
-      <origin xyz="0.05 -0.08 0" rpy="-1.5708 0 0"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
   </link>
-
-
 
   <!--Camera bottom-->
   <link name="camera_bottom">
-
     <visual>
-      <origin xyz="-0.21 -0.17 0" rpy="0 0 -1.5708"/>
+      <origin xyz="0 -0.2 -0.23" rpy="0 1.5708 0"/>
       <geometry>
         <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
       </geometry>
       <material name="green"/>
     </visual>
-
-    <inertial>
-      <mass value="${cameraMass}" />
-      <origin xyz="-0.21 -0.17 0" rpy="0 0 -1.5708"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
   </link>
-
-
 
   <joint name="camera_joint_fl" type="fixed">
     <axis xyz="0 0 0" />
-    <origin xyz=".2 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="camera_front_left"/>
   </joint>
 
   <joint name="camera_joint_fr" type="fixed">
     <axis xyz="0 0 0" />
-    <origin xyz=".2 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="camera_front_right"/>
   </joint>
 
+  <joint name="camera_joint_f" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_front"/>
+  </joint>
+
   <joint name="camera_joint_b" type="fixed">
     <axis xyz="0 0 0" />
-    <origin xyz=".2 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
     <parent link="base_link"/>
     <child link="camera_bottom"/>
   </joint>
-
-
-  <!--<link name="camera">
-    <sensor name="frameCamera" type="camera">
-      <visualize>1</visualize>
-      <always_on>1</always_on>
-      <pose>-0,196638191291395 -0,0221581849230004 -0,0091250396192709 0 0 3,14159265358979</pose>
-      <camera name="framecamera">
-        <horizontal_fov>1,5707963267949</horizontal_fov>
-        <image>
-          <width>320</width>
-          <height>240</height>
-        </image>
-        <clip>
-            <near>0.1</near>
-            <far>100</far>
-        </clip>
-      </camera>
-    </sensor>
-    
-    <sensor name="frameCamera" type="camera">
-      <visualize>1</visualize>
-      <always_on>1</always_on>
-      <pose>-0,0855936526437231 -0,1471616846135 0,00311933439827019 0 3,51532214561754E-17 4,71238898038469</pose>
-      <camera name="framecamera">
-        <horizontal_fov>1,5707963267949</horizontal_fov>
-        <image>
-          <width>320</width>
-          <height>240</height>
-        </image>
-        <clip>
-          <near>0.1</near>
-          <far>100</far>
-        </clip>
-      </camera>
-    </sensor>
-  </link>-->
 
 </robot>

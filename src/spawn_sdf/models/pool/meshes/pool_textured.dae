@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.78.0 commit date:2017-02-24, commit time:14:33, hash:e92f235283</authoring_tool>
+    </contributor>
+    <created>2018-11-05T09:23:10</created>
+    <modified>2018-11-05T09:23:10</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">49.13434</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear sid="znear">0.1</znear>
+            <zfar sid="zfar">100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+      <extra>
+        <technique profile="blender">
+          <YF_dofdist>0</YF_dofdist>
+          <shiftx>0</shiftx>
+          <shifty>0</shifty>
+        </technique>
+      </extra>
+    </camera>
+  </library_cameras>
+  <library_images/>
+  <library_effects>
+    <effect id="Material_001-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.64 0.64 0.64 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Material_001-material" name="Material_001">
+      <instance_effect url="#Material_001-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Бобышка-Вытянуть2Mesh-mesh" name="Бобышка-Вытянуть2Mesh">
+      <mesh>
+        <source id="Бобышка-Вытянуть2Mesh-mesh-positions">
+          <float_array id="Бобышка-Вытянуть2Mesh-mesh-positions-array" count="60">-984.252 67.71654 492.126 -984.252 67.71654 -492.126 -984.252 118.1102 -492.126 -984.252 118.1102 492.126 -913.3858 67.71654 -492.126 -224.4095 39.37008 -492.126 984.252 39.37008 -492.126 984.252 118.1102 -492.126 -913.3858 67.71654 492.126 984.252 118.1102 492.126 984.252 39.37008 492.126 -224.4095 39.37008 492.126 -1023.622 0 -531.496 -1023.622 0 531.496 -1023.622 118.1102 531.496 -1023.622 118.1102 -531.496 1023.622 0 531.496 1023.622 118.1102 531.496 1023.622 0 -531.496 1023.622 118.1102 -531.496</float_array>
+          <technique_common>
+            <accessor source="#Бобышка-Вытянуть2Mesh-mesh-positions-array" count="20" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Бобышка-Вытянуть2Mesh-mesh-normals">
+          <float_array id="Бобышка-Вытянуть2Mesh-mesh-normals-array" count="33">1 0 0 0 0 1 0 0 1 0 0 -1 0 1 0 -1 0 0 0 1 -3.39252e-7 0 1 3.87717e-7 0 -1 0 0.04110807 0.9991548 0 0.04110807 0.9991548 0</float_array>
+          <technique_common>
+            <accessor source="#Бобышка-Вытянуть2Mesh-mesh-normals-array" count="11" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Бобышка-Вытянуть2Mesh-mesh-map-0">
+          <float_array id="Бобышка-Вытянуть2Mesh-mesh-map-0-array" count="216">0.002812564 0.9278539 0.8433024 0.9278527 0.002809166 0.9557657 0.002809345 0.9557659 0.843302 0.9278525 0.843303 0.9557664 0.9483303 0.9075658 0.9483312 0.8753811 0.9999998 0.9075659 0.9999997 0.907566 0.9483311 0.8753807 1.000001 0 1.000001 0 0.9483311 0.8753809 0.9224947 0.5570467 1.000001 -3.08789e-7 0.922495 0.5570467 0.9224941 -2.47751e-7 0.8691375 0.9075658 0.9208089 0.9075661 0.8691387 0.8753815 0.8691388 0.8753814 0.9208089 0.9075663 0.9208086 -3.18637e-7 0.8691387 0.8753817 0.9208086 0 0.8433043 0.5570471 0.8433039 0.5570471 0.9208087 -1.59563e-7 0.8433041 0 0.8407757 0.5567423 5.14883e-7 0.5567417 0.8407747 -1.21332e-7 0.8407753 -1.2497e-7 0 0.5567423 0 -4.0482e-7 0 -300 2700 -300 0 0 0 0 2700 -300 2700 0 0 -300 5200 -300 0 0 0 0 5200 -300 5200 0 -2700 -300 0 -300 -2700 0 -2700 0 0 -300 0 0 -5200 -300 0 -300 -5200 0 -5200 0 0 -300 0 0 1350 -2600 -1250 -2500 -1350 -2600 -1350 -2600 -1250 -2500 -1250 2500 -1350 -2600 -1250 2500 -1350 2600 -1350 2600 -1250 2500 1250 2500 -1350 2600 1250 2500 1350 2600 1350 2600 1250 2500 1350 -2600 1350 -2600 1250 2500 1250 -2500 1350 -2600 1250 -2500 -1250 -2500 -1350 -2600 1350 -2600 -1350 2600 -1350 2600 1350 -2600 1350 2600 0.8433026 0.9999998 0.002529025 1 0.8433029 0.9579018 0.8433029 0.9579018 0.002528369 1 0.002528071 0.9579014 0 0.8749241 0.8407756 0.8749236 -6.62529e-7 0.907566 -4.04354e-7 0.9075661 0.8407751 0.8749234 0.8407755 0.9075657 3.47274e-7 0.5567418 0.8407755 0.5567422 2.25016e-7 0.8749241 6.06335e-7 0.8749239 0.8407759 0.5567417 0.8407756 0.8749236</float_array>
+          <technique_common>
+            <accessor source="#Бобышка-Вытянуть2Mesh-mesh-map-0-array" count="108" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Бобышка-Вытянуть2Mesh-mesh-vertices">
+          <input semantic="POSITION" source="#Бобышка-Вытянуть2Mesh-mesh-positions"/>
+        </vertices>
+        <polylist material="Material_001-material" count="36">
+          <input semantic="VERTEX" source="#Бобышка-Вытянуть2Mesh-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Бобышка-Вытянуть2Mesh-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Бобышка-Вытянуть2Mesh-mesh-map-0" offset="2" set="0"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>0 0 0 1 0 1 3 0 2 3 0 3 1 0 4 2 0 5 1 1 6 4 1 7 2 1 8 2 1 9 4 1 10 7 1 11 7 2 12 4 2 13 5 2 14 7 1 15 5 1 16 6 1 17 0 3 18 3 3 19 8 3 20 8 3 21 3 3 22 9 3 23 8 3 24 9 3 25 11 3 26 11 3 27 9 3 28 10 3 29 5 4 30 11 4 31 6 4 32 6 4 33 11 4 34 10 4 35 12 5 36 13 5 37 15 5 38 15 5 39 13 5 40 14 5 41 13 1 42 16 1 43 14 1 44 14 1 45 16 1 46 17 1 47 16 0 48 18 0 49 17 0 50 17 0 51 18 0 52 19 0 53 18 3 54 12 3 55 19 3 56 19 3 57 12 3 58 15 3 59 14 4 60 2 4 61 15 4 62 15 4 63 2 4 64 7 4 65 15 6 66 7 6 67 19 6 68 19 4 69 7 4 70 9 4 71 19 4 72 9 4 73 17 4 74 17 7 75 9 7 76 14 7 77 14 4 78 9 4 79 3 4 80 14 4 81 3 4 82 2 4 83 13 8 84 12 8 85 16 8 86 16 8 87 12 8 88 18 8 89 9 5 90 7 5 91 10 5 92 10 5 93 7 5 94 6 5 95 8 4 96 4 4 97 0 4 98 0 4 99 4 4 100 1 4 101 11 9 102 5 9 103 8 9 104 8 10 105 5 10 106 4 10 107</p>
+        </polylist>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Camera" name="Camera" type="NODE">
+        <matrix sid="transform">0.6859207 -0.3240135 0.6515582 7.481132 0.7276763 0.3054208 -0.6141704 -6.50764 0 0.8953956 0.4452714 5.343665 0 0 0 1</matrix>
+        <instance_camera url="#Camera-camera"/>
+      </node>
+      <node id="Swimming_Pool_v2" name="Swimming_Pool_v2" type="NODE">
+        <matrix sid="transform">0.0254 0 0 0 0 0.0254 -1.11027e-9 0 0 1.11027e-9 0.0254 0 0 0 0 1</matrix>
+        <node id="Swimming_Pool_v2_ncl1_1" name="Swimming_Pool_v2_ncl1_1" type="NODE">
+          <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+          <node id="Бобышка-Вытянуть2" name="Бобышка-Вытянуть2" type="NODE">
+            <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+            <instance_geometry url="#Бобышка-Вытянуть2Mesh-mesh" name="Бобышка-Вытянуть2">
+              <bind_material>
+                <technique_common>
+                  <instance_material symbol="Material_001-material" target="#Material_001-material"/>
+                </technique_common>
+              </bind_material>
+            </instance_geometry>
+          </node>
+        </node>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
