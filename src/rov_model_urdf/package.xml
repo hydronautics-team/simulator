@@ -6,8 +6,7 @@
     <p>This package contains configuration data, 3D models and launch files
 for rov_model_urdf robot</p>
   </description>
-  <author>Kopanev Pavel</author>
-  <maintainer email="kopanev-pavel-spb@yandex.ru" />
+  <maintainer email="grishafv@gmail.com">Starykh Gregory</maintainer>
   <license>BSD</license>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roslaunch</build_depend>
