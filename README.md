@@ -1,5 +1,5 @@
 # Hydronautics simulator
-Simple AUV simulator based on [Field-Robotics-Lab/uuv_simulator](https://github.com/Field-Robotics-Lab/uuv_simulator) for testing control algos
+Simple AUV simulator for [SAUVC AUV](https://github.com/hidronautics/sauvc) based on [Field-Robotics-Lab/uuv_simulator](https://github.com/Field-Robotics-Lab/uuv_simulator) for testing control algos
 
 ## Building
 
@@ -22,9 +22,10 @@ roslaunch Simulation.launch
 ```
 
 ## Cameras
-UV has 3 cameras:
+UV has 4 cameras:
 
 - 2 front cameras (stereo_vision)
+- 1 front cameras 
 - 1 bottom camera
 
 Cameras' topics:
@@ -32,6 +33,7 @@ Cameras' topics:
 	/stereo/camera/left/image_raw
 	/stereo/camera/right/image_raw
 	/rov_model_urdf/camera_bottom/image_raw
+	/rov_model_urdf/camera_front/image_raw
 
 To run cameras write in terminal:
 
@@ -39,6 +41,7 @@ To run cameras write in terminal:
 $ rosrun image_view image_view image:=/stereo/camera/left/image_raw
 $ rosrun image_view image_view image:=/stereo/camera/right/image_raw
 $ rosrun image_view image_view image:=/rov_model_urdf/camera_bottom/image_raw
+$ rosrun image_view image_view image:=/rov_model_urdf/camera_front/image_raw
 ```
 To run calibration write in terminal:
 
