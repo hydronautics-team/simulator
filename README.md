@@ -22,10 +22,11 @@ roslaunch Simulation.launch
 ```
 
 ## Cameras
-UV has 4 cameras:
+UV has 5 cameras:
 
 - 2 front cameras (stereo_vision)
-- 1 front cameras 
+- 1 front camera 
+- 1 front depth camera 
 - 1 bottom camera
 
 Cameras' topics:
@@ -34,6 +35,16 @@ Cameras' topics:
 	/stereo/camera/right/image_raw
 	/rov_model_urdf/camera_bottom/image_raw
 	/rov_model_urdf/camera_front/image_raw
+	/rov_model_urdf/camera_depth/color/image_raw
+	/rov_model_urdf/camera_depth/depth/image_raw
+
+To run depth camera visualization write in terminal:
+
+```sh
+rosrun rviz rviz
+```
+
+Then follow the [instruction](https://github.com/osrf/gazebo_tutorials/blob/master/ros_depth_camera/tutorial.md#view-depth-camera-output-in-rviz)
 
 To run cameras write in terminal:
 
