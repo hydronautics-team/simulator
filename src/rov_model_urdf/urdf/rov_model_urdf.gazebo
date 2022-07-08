@@ -21,7 +21,7 @@
   </gazebo-->
 
 
-<!--Description: simulates IMU sensor. Measurements are computed by the ROS plugin,
+  <!--Description: simulates IMU sensor. Measurements are computed by the ROS plugin,
  not by Gazebo. See usage snippet sample below for implementation-->
 
   <gazebo>
@@ -63,7 +63,7 @@
     <sensor type="multicamera" name="stereo_camera">
       <update_rate>30.0</update_rate>
       <camera name="left">
-	    <pose>0.05 -0.3 0.1 0 0 -1.5708</pose>
+        <pose>0.05 -0.3 0.1 0 0 -1.5708</pose>
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
           <width>800</width>
@@ -105,7 +105,7 @@
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <leftframeName>left_camera_optical_frame</leftframeName>
-    <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
+        <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
         <hackBaseline>0.07</hackBaseline>
         <distortionK1>0.0</distortionK1>
         <distortionK2>0.0</distortionK2>
@@ -192,4 +192,46 @@
     </sensor>
   </gazebo>
 
+  <gazebo reference="camera_depth">
+    <sensor name="camera_depth" type="depth">
+      <update_rate>20</update_rate>
+      <camera>
+        <pose>0 -0.3 0.0 0 0 -1.5708</pose>
+        <horizontal_fov>1.047198</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>50</far>
+        </clip>
+      </camera>
+      <plugin name="camera_depth_controller" filename="libgazebo_ros_openni_kinect.so">
+        <baseline>0.2</baseline>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>1.0</updateRate>
+        <cameraName>rov_model_urdf/camera_depth</cameraName>
+        <imageTopicName>/rov_model_urdf/camera_depth/color/image_raw</imageTopicName>
+        <cameraInfoTopicName>/rov_model_urdf/camera_depth/color/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/rov_model_urdf/camera_depth/depth/image_raw</depthImageTopicName>
+        <depthImageInfoTopicName>/rov_model_urdf/camera_depth/depth/camera_info</depthImageInfoTopicName>
+        <pointCloudTopicName>/rov_model_urdf/camera_depth/depth/points</pointCloudTopicName>
+        <frameName>camera_depth</frameName>
+        <pointCloudCutoff>0.01</pointCloudCutoff>
+        <pointCloudCutoffMax>15.0</pointCloudCutoffMax>
+        <distortionK1>0.00000001</distortionK1>
+        <distortionK2>0.00000001</distortionK2>
+        <distortionK3>0.00000001</distortionK3>
+        <distortionT1>0.00000001</distortionT1>
+        <distortionT2>0.00000001</distortionT2>
+        <CxPrime>0</CxPrime>
+        <Cx>0</Cx>
+        <Cy>0</Cy>
+        <focalLength>0</focalLength>
+        <hackBaseline>0</hackBaseline>
+      </plugin>
+    </sensor>
+  </gazebo>
 </robot>
