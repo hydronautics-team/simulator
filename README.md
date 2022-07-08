@@ -20,6 +20,17 @@ To run the simulator, use launch file:
 source devel/setup.bash
 roslaunch Simulation.launch
 ```
+## Run rtabmap mapping
+
+```bash
+roslaunch rtabmap_ros rtabmap.launch \
+rtabmap_args:="--delete_db_on_start" \
+rgb_topic:=/rov_model_urdf/camera_depth/color/image_raw \
+depth_topic:=/rov_model_urdf/camera_depth/depth/image_raw \
+camera_info_topic:=/rov_model_urdf/camera_depth/color/ \
+camera_info frame_id:=camera_depth approx_sync:=false \
+rgbd_sync:=true
+```
 
 ## Cameras
 UV has 5 cameras:

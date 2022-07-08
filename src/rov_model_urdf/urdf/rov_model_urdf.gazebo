@@ -220,7 +220,7 @@
         <pointCloudTopicName>/rov_model_urdf/camera_depth/depth/points</pointCloudTopicName>
         <frameName>camera_depth</frameName>
         <pointCloudCutoff>0.01</pointCloudCutoff>
-        <pointCloudCutoffMax>15.0</pointCloudCutoffMax>
+        <pointCloudCutoffMax>50.0</pointCloudCutoffMax>
         <distortionK1>0.00000001</distortionK1>
         <distortionK2>0.00000001</distortionK2>
         <distortionK3>0.00000001</distortionK3>
