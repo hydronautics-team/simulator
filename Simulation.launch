@@ -5,7 +5,4 @@
   <include file="$(find auv_gazebo)/launch/bottom_objects.launch" />
   <include file="$(find auv_gazebo)/launch/AUV_spawn.launch" />
 
-  <!-- Connection with simulator -->
-  <node pkg="stingray_communication" name="gazebo_bridge" type="gazebo_bridge" output="$(arg ros_output)" respawn="true" />
-
 </launch>
