@@ -18,7 +18,7 @@
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose>0 0 10 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <gravity>0</gravity>
       <visual name='visual'>
         <geometry>
@@ -50,8 +50,8 @@
         <pose>0 0 0 0 1 0</pose>
         <geometry>
           <cylinder>
-            <radius>0.02</radius>
-            <length>0.8</length>
+            <radius>0.04</radius>
+            <length>0.1</length>
           </cylinder>
         </geometry>
         <surface>
