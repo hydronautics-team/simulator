@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <node name="tile_odometer_node" pkg="tile_odometer" type="tile_odometer_node">
+        <param name="image_topic"       type="string" value="/rov_model_urdf/camera_bottom/image_raw"/>
+        <param name="camera_info_topic" type="string" value="/rov_model_urdf/camera_bottom/camera_info"/>
+        <param name="imu_topic"         type="string" value="/imu_sensor"/>
+        <param name="tile_width"        type="double" value="0.2"/>
+        <param name="tile_height"       type="double" value="0.1"/>
+        <param name="water_level"       type="double" value="2"/>
+    </node>
+    
+</launch>

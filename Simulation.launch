@@ -4,5 +4,6 @@
   <include file="$(find auv_gazebo)/launch/pool.launch" />
   <include file="$(find auv_gazebo)/launch/bottom_objects.launch" />
   <include file="$(find auv_gazebo)/launch/AUV_spawn.launch" />
+  <include file="$(find tile_odometer)/launch/tile_odometer.launch" />
 
 </launch>
