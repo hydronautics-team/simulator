@@ -38,7 +38,7 @@
         <arg name="robot_name" value="yellow_flare_1" />
         <arg name="x" value="42.0" />
         <arg name="y" value="15.0" />
-        <arg name="z" value="3.3" />
+        <arg name="z" value="13.3" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -49,12 +49,34 @@
         <arg name="robot_name" value="yellow_flare_2" />
         <arg name="x" value="40.0" />
         <arg name="y" value="12.0" />
-        <arg name="z" value="3.3" />
+        <arg name="z" value="13.3" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
         <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/yellow_flare/model.sdf" />
     </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+            <arg name="robot_name" value="pinger_buckets" />
+            <arg name="x" value="34.4" />
+            <arg name="y" value="23.0" />
+            <arg name="z" value="1.3" />
+            <arg name="roll" value="0"/>
+            <arg name="pitch" value="0"/>
+            <arg name="yaw" value="0.0" />
+            <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/pinger/model.sdf" />
+        </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+                <arg name="robot_name" value="pinger_flare" />
+                <arg name="x" value="40.0" />
+                <arg name="y" value="13.0" />
+                <arg name="z" value="1.25" />
+                <arg name="roll" value="0"/>
+                <arg name="pitch" value="0"/>
+                <arg name="yaw" value="0.0" />
+                <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/pinger/model.sdf" />
+            </include>
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="buckets" />
