@@ -1,5 +1,10 @@
 import random
 
+bucket_pose_x = random.uniform(24.0,43.15)
+bucket_pose_y = random.uniform(15.0,24.05)
+marker_pose_x = bucket_pose_x + 1.5 + random.randint(0, 3)*1.9
+marker_pose_y = bucket_pose_y
+
 my_file = open("bottom_objects.launch", "w")
 my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
               "<launch>\n\n"
@@ -61,12 +66,23 @@ my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
               
               "    <include file=\"$(find spawn_sdf)/launch/spawn_sdf.launch\">\n"
               "        <arg name=\"robot_name\" value=\"buckets\" />\n"
-             f"        <arg name=\"x\" value=\"{random.uniform(24.0,43.15)}\" />\n"
-             f"        <arg name=\"y\" value=\"{random.uniform(15.0,24.05)}\" />\n"
+             f"        <arg name=\"x\" value=\"{bucket_pose_x}\" />\n"
+             f"        <arg name=\"y\" value=\"{bucket_pose_y}\" />\n"
               "        <arg name=\"z\" value=\"1.21\" />\n"
               "        <arg name=\"roll\" value=\"0\"/>\n"
               "        <arg name=\"pitch\" value=\"0\"/>\n"
               "        <arg name=\"sdf_robot_file\" value=\"$(find spawn_sdf)/models/buckets/model.sdf\" />\n"
+              "    </include>\n\n"
+              
+              "    <include file=\"$(find spawn_sdf)/launch/spawn_sdf.launch\">\n"
+              "        <arg name=\"robot_name\" value=\"white_marker\" />\n"
+             f"        <arg name=\"x\" value=\"{marker_pose_x}\" />\n"
+             f"        <arg name=\"y\" value=\"{marker_pose_y}\" />\n"
+              "        <arg name=\"z\" value=\"1.21\" />\n"
+              "        <arg name=\"roll\" value=\"0\"/>\n"
+              "        <arg name=\"pitch\" value=\"0\"/>\n"
+              "        <arg name=\"yaw\" value=\"0.0\" />\n"
+              "        <arg name=\"sdf_robot_file\" value=\"$(find spawn_sdf)/models/white_marker/model.sdf\" />\n"
               "    </include>\n\n"
               
               "    <include file=\"$(find spawn_sdf)/launch/spawn_sdf.launch\">\n"

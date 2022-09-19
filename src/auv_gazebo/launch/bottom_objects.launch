@@ -3,7 +3,7 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="main_gate" />
-        <arg name="x" value="25.0" />
+        <arg name="x" value="41.10935921621888" />
         <arg name="y" value="12.0" />
         <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
@@ -14,8 +14,8 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="qualification_gate" />
-        <arg name="x" value="10.0" />
-        <arg name="y" value="4.0" />
+        <arg name="x" value="10.575690739577032" />
+        <arg name="y" value="4.847439745683394" />
         <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
@@ -36,9 +36,9 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="yellow_flare_1" />
-        <arg name="x" value="42.0" />
-        <arg name="y" value="15.0" />
-        <arg name="z" value="3.3" />
+        <arg name="x" value="39.27955508371282" />
+        <arg name="y" value="18.570819184394963" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -47,9 +47,9 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="yellow_flare_2" />
-        <arg name="x" value="40.0" />
-        <arg name="y" value="12.0" />
-        <arg name="z" value="3.3" />
+        <arg name="x" value="39.336961889056056" />
+        <arg name="y" value="21.459272921186287" />
+        <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
         <arg name="yaw" value="0.0" />
@@ -58,19 +58,29 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="buckets" />
-        <arg name="x" value="31.0" />
-        <arg name="y" value="23.0" />
+        <arg name="x" value="29.664865102155595" />
+        <arg name="y" value="23.748208224015762" />
         <arg name="z" value="1.21" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>
-        <arg name="yaw" value="0.0" />
         <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/buckets/model.sdf" />
     </include>
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="white_marker" />
+        <arg name="x" value="33.06486510215559" />
+        <arg name="y" value="23.748208224015762" />
+        <arg name="z" value="1.21" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/white_marker/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="red_flare" />
-        <arg name="x" value="20.0" />
-        <arg name="y" value="6.0" />
+        <arg name="x" value="28.459526282233895" />
+        <arg name="y" value="5.409057575807117" />
         <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
         <arg name="pitch" value="0"/>

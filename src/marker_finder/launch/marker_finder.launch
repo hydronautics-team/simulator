@@ -1,0 +1,12 @@
+<launch>
+        <node pkg="marker_finder" type="marker_detector.py" name="control_fsm" output="screen" respawn="true">
+                <param name="image_topic_name"  value="/rov_model_urdf/camera_bottom/image_raw" />
+                <param name="box_topic_name"    value="marker_box" />
+                <param name="debug"             value="True" />
+                <param name="debug_image_name"  value="marker_debug_image" />
+                <param name="kernel"            value="5" />
+                <param name="sigma"             value="3" />
+                <param name="closure"           value="10" />
+                <param name="light"             value="0.6" />
+        </node>
+</launch>

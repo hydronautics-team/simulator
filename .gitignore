@@ -85,6 +85,8 @@ qtcreator-*
 
 # Catkin custom files
 CATKIN_IGNORE
+.catkin_tools
+install
 
 
 # JetBrains
@@ -115,3 +117,4 @@ CATKIN_IGNORE
 # Visual Studio Code
 /.vscode
 
+src/marker_finder/scripts/marker_detector.py

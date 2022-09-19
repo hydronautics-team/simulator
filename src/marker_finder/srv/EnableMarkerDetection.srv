@@ -1,0 +1,5 @@
+string camera_topic
+bool enabled
+---
+bool success
+string message
