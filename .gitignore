@@ -116,5 +116,3 @@ install
 
 # Visual Studio Code
 /.vscode
-
-src/marker_finder/scripts/marker_detector.py
