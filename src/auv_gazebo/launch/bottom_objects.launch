@@ -91,7 +91,7 @@
 
     <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
         <arg name="robot_name" value="red_flare" />
-        <arg name="x" value="20.0" />
+        <arg name="x" value="24.0" />
         <arg name="y" value="6.0" />
         <arg name="z" value="3.2" />
         <arg name="roll" value="0"/>
