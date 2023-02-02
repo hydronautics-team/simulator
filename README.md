@@ -1,28 +1,28 @@
 # Hydronautics simulator
 Hydronautics Gazebo simulation for [SAUVC](https://github.com/hidronautics/sauvc) and `TEKNOFEST` based on [Field-Robotics-Lab/uuv_simulator](https://github.com/Field-Robotics-Lab/uuv_simulator) for testing control algorithms
 
-# Run
+## Run
 
-## SAUVC
+### SAUVC
 ```bash
 sudo ./run_sauvc.sh
 ```
 
-## TEKNOFEST
+### TEKNOFEST
 
-### Build docker image:
+Build docker image:
 ```bash
 sudo docker build -t hydronautics/simulator:teknofest -f Dockerfile.teknofest .
 ```
 
-### Run docker container:
+Run docker container:
 ```bash
 sudo ./run_teknofest.sh
 ```
 
-# Develop
+## Development
 
-## Build
+### Build
 1. 	
     ```sh
     git submodule update --init --recursive
@@ -33,14 +33,14 @@ sudo ./run_teknofest.sh
     catkin_make
     ```
 
-## Running
+### Running
 
 To run the simulator, use launch file:
 ```sh
 source devel/setup.bash
 roslaunch Simulation.launch
 ```
-## Run rtabmap mapping
+### Run rtabmap mapping
 
 ```bash
 roslaunch rtabmap_ros rtabmap.launch \
@@ -71,16 +71,16 @@ To run depth camera visualization write in terminal:
 rosrun rviz rviz
 ```
 
-## Sensors
+### Sensors
 UV has IMU sensor 
 
-## Custom Gazebo plugins
+### Custom Gazebo plugins
 `model_move_plugin` was written to move UV. Through publishing twist messages you can control robots's planar movements and its hight. Odom message can inform you about robot's position, orientation and twist parameters.
 
-## Will be added
+### Will be added
 - Depth sensor
 
-## Will be fixed
+### Will be fixed
 Bad physics. Buoyancy and hydrodynamic plugins will be fixed.
 
 
