@@ -1,5 +1,5 @@
 # Hydronautics simulator
-Hydronautics Gazebo simulation for [SAUVC](https://github.com/hidronautics/sauvc) and `TEKNOFEST` based on [Field-Robotics-Lab/uuv_simulator](https://github.com/Field-Robotics-Lab/uuv_simulator) for testing control algorithms
+Hydronautics Gazebo simulation for [SAUVC](https://github.com/hidronautics/sauvc) and `TEKNOFEST` based on [uuv_simulator](https://github.com/hydronautics-team/uuv_simulator) for testing control algorithms
 
 ## Run
 
