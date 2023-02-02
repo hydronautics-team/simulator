@@ -7,7 +7,7 @@ pf = random.sample([fl_1, fl_2], 1)[0]
 bc = [random.uniform(24.0,43.15), random.uniform(15.0,24.05)]
 pb = [[(bc[0] + 1.5), (bc[0] + 3.4), (bc[0] + 5.75)], bc[1]]
 
-my_file = open("bottom_objects.launch", "w")
+my_file = open("src/auv_gazebo/launch/teknofest_objects.launch", "w")
 my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
               "<launch>\n\n"
               
@@ -48,7 +48,7 @@ my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
               "        <arg name=\"robot_name\" value=\"yellow_flare_1\" />\n"
              f"        <arg name=\"x\" value=\"{fl_1[0]}\" />\n"
              f"        <arg name=\"y\" value=\"{fl_1[1]}\" />\n"
-              "        <arg name=\"z\" value=\"13.2\" />\n"
+              "        <arg name=\"z\" value=\"3.2\" />\n"
               "        <arg name=\"roll\" value=\"0\"/>\n"
               "        <arg name=\"pitch\" value=\"0\"/>\n"
               "        <arg name=\"yaw\" value=\"0.0\" />\n"
@@ -59,7 +59,7 @@ my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
               "        <arg name=\"robot_name\" value=\"yellow_flare_2\" />\n"
              f"        <arg name=\"x\" value=\"{fl_2[0]}\" />\n"
              f"        <arg name=\"y\" value=\"{fl_2[1]}\" />\n"
-              "        <arg name=\"z\" value=\"13.2\" />\n"
+              "        <arg name=\"z\" value=\"3.2\" />\n"
               "        <arg name=\"roll\" value=\"0\"/>\n"
               "        <arg name=\"pitch\" value=\"0\"/>\n"
               "        <arg name=\"yaw\" value=\"0.0\" />\n"
@@ -79,8 +79,8 @@ my_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 
               "    <include file=\"$(find spawn_sdf)/launch/spawn_sdf.launch\">\n"
               "        <arg name=\"robot_name\" value=\"pinger_flare\" />\n"
-             f"        <arg name=\"x\" value=\"{pf[0]}\" />\n"
-             f"        <arg name=\"y\" value=\"{pf[1]}\" />\n"
+             f"        <arg name=\"x\" value=\"{pf[0] + 0.1}\" />\n"
+             f"        <arg name=\"y\" value=\"{pf[1] + 0.1}\" />\n"
               "        <arg name=\"z\" value=\"1.3\" />\n"
               "        <arg name=\"roll\" value=\"0\"/>\n"
               "        <arg name=\"pitch\" value=\"0\"/>\n"
