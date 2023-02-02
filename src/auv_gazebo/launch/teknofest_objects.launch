@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="main_gate" />
+        <arg name="x" value="25.0" />
+        <arg name="y" value="12.0" />
+        <arg name="z" value="3.2" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/main_gate/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="qualification_gate" />
+        <arg name="x" value="10.0" />
+        <arg name="y" value="4.0" />
+        <arg name="z" value="3.2" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="1.57079" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/qualification_gate/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="starting_gates" />
+        <arg name="x" value="35.0" />
+        <arg name="y" value="0.8" />
+        <arg name="z" value="3.2" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/starting_gates/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="yellow_flare_1" />
+        <arg name="x" value="42.0" />
+        <arg name="y" value="15.0" />
+        <arg name="z" value="13.3" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/yellow_flare/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="yellow_flare_2" />
+        <arg name="x" value="40.0" />
+        <arg name="y" value="12.0" />
+        <arg name="z" value="13.3" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/yellow_flare/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="pinger_buckets" />
+        <arg name="x" value="34.4" />
+        <arg name="y" value="23.0" />
+        <arg name="z" value="1.3" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/pinger/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="pinger_flare" />
+        <arg name="x" value="40.0" />
+        <arg name="y" value="13.0" />
+        <arg name="z" value="1.3" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/pinger/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="buckets" />
+        <arg name="x" value="31.0" />
+        <arg name="y" value="23.0" />
+        <arg name="z" value="1.21" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/buckets/model.sdf" />
+    </include>
+
+    <include file="$(find spawn_sdf)/launch/spawn_sdf.launch">
+        <arg name="robot_name" value="red_flare" />
+        <arg name="x" value="24.0" />
+        <arg name="y" value="6.0" />
+        <arg name="z" value="3.2" />
+        <arg name="roll" value="0"/>
+        <arg name="pitch" value="0"/>
+        <arg name="yaw" value="0.0" />
+        <arg name="sdf_robot_file" value="$(find spawn_sdf)/models/red_flare/model.sdf" />
+    </include>
+
+</launch>
