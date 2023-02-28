@@ -33,6 +33,7 @@
 
 # ROS
 devel/
+log/
 logs/
 build/
 bin/
