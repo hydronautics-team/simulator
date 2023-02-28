@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+    simulation:
+        image: hydronautics/simulator:teknofest
+        runtime: nvidia
+        environment:
+            - "DISPLAY=$DISPLAY"
+            - "QT_X11_NO_MITSHM=1"
+            - "XAUTHORITY=/tmp/.docker.xauth"
+            - "NVIDIA_VISIBLE_DEVICES=all"
+        volumes:
+            - "/tmp/.X11-unix:/tmp/.X11-unix:rw"
+            - "/tmp/.docker.xauth:/tmp/.docker.xauth"
+        command: bash
+    bridge:
+        image: ghcr.io/contradict/ros-humble-ros1-bridge:main
+        environment:
+            - "ROS_HOSTNAME=bridge"
+            - "ROS_MASTER_URI=http://simulation:11311"
+        command: ros2 run ros1_bridge dynamic_bridge
+        depends_on:
+            - simulation
