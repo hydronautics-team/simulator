@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+
+    <model name ='diff_drive'>
+        <pose>1 2 0 0 0 0</pose>
+
+ 
+
+        <!-- <link name ='link2'>
+            <pose>0 3 0.5 0 0 0</pose>
+            <collision name ='collision2'>
+                <geometry>
+                <cylinder><radius>0.4</radius><length>3</length></cylinder>
+                </geometry>
+            </collision>
+            <visual name='visual2'>
+                <geometry>
+                <cylinder><radius>0.4</radius><length>3</length></cylinder>
+                </geometry>
+                <material>
+                        <ambient>0.0 1 0.0 1</ambient>
+                        <diffuse>0.0 1 0.0 1</diffuse>
+                        <specular>0.0 1 0.0 1</specular>
+                    </material>
+            </visual>
+        </link> -->
+
+
+
+        <!-- <plugin name="my_model_plugin" filename="libmy_model_plugin.so">
+                <model_vel>0.4</model_vel>
+        </plugin> -->
+
+  </model>
+</sdf>

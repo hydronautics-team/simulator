@@ -1,0 +1,27 @@
+gate:
+  real_size: 2.0
+  reference_dim: height
+qualification_gate:
+  real_size: 1.0
+  reference_dim: height
+yellow_flare:
+  real_size: 1.5
+  reference_dim: height
+red_flare:
+  real_size: 1.5
+  reference_dim: height
+blue_bowl:
+  real_size: 0.7
+  reference_dim: width
+red_bowl:
+  real_size: 0.7
+  reference_dim: width
+mat:
+  real_size: 8.0
+  reference_dim: width
+small_red_flare:
+  real_size: 0.8
+  reference_dim: height
+blue_flare:
+  real_size: 1.5
+  reference_dim: height
