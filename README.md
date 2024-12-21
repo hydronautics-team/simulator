@@ -31,19 +31,19 @@ Ignition Fortress
 - `topic:` /imu
 - `type:` sensor_msgs/msg/Imu
 - `description:` данные с IMU, реальная позиция, акселлерометр и гироскоп
-
+- 
 - `topic:` /depth
 - `type:` Float64
 - `description:` расстояние до дна
-
+- 
 - `topic:` /For_Danil
 - `type:` stingray_interfaces/msg/Bbox
 - `description:` отправка информации о детектировании обьектов данных в формате Данила
-
+- 
 - `topic:` /cameraaa_image
 - `type:` sensor/msg/Image
 - `description:` видеопоток с камеры
-
+- 
 - `topic:` /X3/gazebo/command/twist
 - `type:` geometry_msgs/msg/Twist
 - `description:` управление роботом
