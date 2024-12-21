@@ -31,7 +31,8 @@ Ignition Fortress
 - `topic:` /imu
 - `type:` sensor_msgs/msg/Imu
 - `description:` данные с IMU, реальная позиция, акселлерометр и гироскоп
-- 
+
+
 - `topic:` /depth
 - `type:` Float64
 - `description:` расстояние до дна
