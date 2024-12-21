@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<!--
+  Try sending commands:
+    gz topic -t "/model/diff_drive/cmd_vel" -m gz.msgs.Twist -p "linear: {x: 1.0}, angular: {z: -0.1}"
+    ros2 topic pub /diff_drive/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.1}}"
+  Listen to odometry:
+    gz topic -e -t /model/diff_drive/odometry
+    ros2 topic echo /model/diff_drive/odometry
+-->
+<sdf version="1.8">
+  <world name="demo">
+  <atmosphere type='adiabatic'/>
+    <plugin
+      filename="ignition-gazebo-physics-system"
+      name="ignition::gazebo::systems::Physics">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-sensors-system"
+      name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-scene-broadcaster-system"
+      name="ignition::gazebo::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-user-commands-system"
+      name="ignition::gazebo::systems::UserCommands">
+    </plugin>
+    <plugin filename="libignition-gazebo-imu-system.so"
+        name="ignition::gazebo::systems::Imu">
+  </plugin>
+
+    <!-- <gui fullscreen="0">
+    <plugin name="keyboard_teleop" filename="Teleop">
+      <topic>/X3/gazebo/command/twist</topic>
+      <ignition-gui>
+          <title>Full 2D</title>
+        </ignition-gui>
+    </plugin>
+    </gui> -->
+
+    
+    <scene>
+      <ambient>0.0 1.0 1.0</ambient>
+      <background>0.0 0.7 0.8</background>
+      <fog>
+        <type>linear</type>
+        <density>0.9</density>
+        <color>1 0.5 0.5 1</color>
+      </fog>
+    </scene>
+
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+
+    <model name="main_gate">
+      <self_collide>true</self_collide>
+      <static>true</static>
+      <pose>5.58 0 3.1 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>3</label>
+      </plugin>
+      <include merge="true">
+        <uri>main_gate/model.sdf</uri>
+      </include>
+    </model>
+
+    <model name="pool">
+      <static>true</static>
+      <self_collide>true</self_collide>
+      <pose>0 0 0 0 0 0</pose>
+      <include merge="true">
+        <uri>pool/model.sdf</uri>
+      </include>
+    </model>
+
+    <model name="red_flare">
+      <self_collide>true</self_collide>
+      <pose>12.29 4.6 3 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>1</label>
+      </plugin>
+      <include merge="true">
+        <uri>red_flare/model.sdf</uri>
+      </include>
+    </model>
+
+    <model name="yellow_flare">
+      <self_collide>true</self_collide>
+      <pose>5.55 1.9 1.42 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>2</label>
+      </plugin>
+      <include merge="true">
+        <uri>yellow_flare/model.sdf</uri>
+      </include>
+    </model>
+
+    <!-- <model name="pillow">
+      <self_collide>true</self_collide>
+      <pose>0 0 0.35 0 0 0</pose>
+      <include merge="true">
+        <uri>pillow/model.sdf</uri>
+      </include>
+    </model> -->
+
+    <model name="buckets">
+      <self_collide>true</self_collide>
+      <pose>0 10.94 1.2 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>4</label>
+      </plugin>
+      <include merge="true">
+        <uri>buckets/model.sdf</uri>
+      </include>
+    </model>
+
+    <model name="pinger">
+      <self_collide>true</self_collide>
+      <pose>1.71 10.92 1.20 0 0 0</pose>
+      <include merge="true">
+        <uri>pinger/model.sdf</uri>
+      </include>
+    </model>
+
+    <model name="qualification_gate">
+      <self_collide>true</self_collide>
+      <pose>-5.6 0 2.1 0 0 1.59</pose>
+      <static>true</static>
+      <include merge="true">
+        <uri>qualification_gate/model.sdf</uri>
+      </include>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>5</label>
+      </plugin>
+    </model>
+
+    <model name="starting_gates">
+      <self_collide>true</self_collide>
+      <static>true</static>
+      <pose>3 -11.78 3.1 0 0 0</pose>
+      <include merge="true">
+        <uri>starting_gates/model.sdf</uri>
+      </include>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>6</label>
+      </plugin>
+    </model>
+
+    <model name="copter">
+      <self_collide>true</self_collide>
+      <pose>3.66 -11.78 2.50 0 0 1.6</pose>
+      <include merge="true">
+        <uri>copter/model.sdf</uri>
+      </include>
+      <!-- <sensor name="imu_sensor" type="imu">
+          <always_on>1</always_on>
+          <update_rate>1</update_rate>
+          <visualize>true</visualize>
+          <topic>imu</topic>
+      </sensor> -->
+    </model>
+
+
+    <!-- <model name="frog">
+      <self_collide>false</self_collide>
+      <static>true</static>
+      <pose>0.13 -4.44 2.1 0 0 -3.13</pose>
+      <include merge="true">
+        <uri>frog/model.sdf</uri>
+      </include>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>7</label>
+      </plugin>
+    </model> -->
+
+    <!-- <model name="spitfire">
+      <self_collide>false</self_collide>
+      <static>true</static>
+      <pose>13.54 -7.73 1.9 0 0 0.69</pose>
+      <include merge="true">
+        <uri>spitfire/model.sdf</uri>
+      </include>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>216</label>
+      </plugin>
+    </model>  -->
+    
+
+    
+
+  </world>
+</sdf>
