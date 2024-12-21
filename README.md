@@ -13,6 +13,9 @@ ros2 launch ros_gz_example_bringup NeedToBelieve.launch.py
 Ignition Fortress
 [Link](https://gazebosim.org/docs/fortress/install/)
 
+
+ROS2 Iron
+
 ## Development
 
 ### Build
@@ -31,8 +34,7 @@ Ignition Fortress
 - `topic:` /imu
 - `type:` sensor_msgs/msg/Imu
 - `description:` данные с IMU, реальная позиция, акселлерометр и гироскоп
-
-
+- 
 - `topic:` /depth
 - `type:` Float64
 - `description:` расстояние до дна
