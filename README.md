@@ -31,24 +31,51 @@ ROS2 Iron
 
 ### Topics description
 
-- `topic:` /imu
-- `type:` sensor_msgs/msg/Imu
-- `description:` данные с IMU, реальная позиция, акселлерометр и гироскоп
-- 
-- `topic:` /depth
-- `type:` Float64
-- `description:` расстояние до дна
-- 
-- `topic:` /For_Danil
-- `type:` stingray_interfaces/msg/Bbox
-- `description:` отправка информации о детектировании обьектов данных в формате Данила
-- 
-- `topic:` /cameraaa_image
-- `type:` sensor/msg/Image
-- `description:` видеопоток с камеры
-- 
-- `topic:` /X3/gazebo/command/twist
-- `type:` geometry_msgs/msg/Twist
-- `description:` управление роботом
-
-
+ - `topic:` /cameraaa_image
+ - `type:` sensor/msg/Image
+ - `description:` видеопоток с камеры
+ - 
+ - `topic:` /depth_camera
+ - `type:` sensor/msg/Image
+ - `description:` видеопоток с камеры глубины
+ - 
+ - `topic:` /depth_camera/points
+ - `type:` sensor_msgs/msg/PointCloud2
+ - `description:` облако точек к камеры глубины
+ - 
+ - `topic:` /X3/gazebo/command/twist
+ - `type:` geometry_msgs/msg/Twist
+ - `description:` управление роботом согласно формату
+ - 
+ - `topic:` /distance_to_start_zone
+ - `type:` Float64
+ - `description:` расстояние от стартовой зоны
+ - 
+ - `topic:` /distance_to_pinger
+ - `type:` Float64
+ - `description:` расстояние от пингера
+ - 
+ - `topic:` /angle_to_pinger
+ - `type:` Float64
+ - `description:` угол 360 градусов относительно носа аппарата по часовой стрелке
+ - 
+ - `topic:` /depth
+ - `type:` Float64
+ - `description:` глубина в метрах
+ - 
+ - `topic:` /distance_to_bottom
+ - `type:` Float64
+ - `description:` расстояние до дна в метрах
+ - 
+ - `topic:` /Bbox_array
+ - `type:` stingray_interfaces/msg/Bbox
+ - `description:` отправка информации о детектировании обьектов данных в формате Данила. отсчёт ведётся с левого верхнего угла картинки
+ - 
+ - `topic:` /imu
+ - `type:` sensor_msgs/msg/Imu
+ - `description:` данные с IMU, акселлерометр, гироскоп и реальная ориентация
+ - 
+ - `topic:` /model/copter/odometry
+ - `type:` nav_msgs/msg/odometry
+ - `description:` ориентация и реальное положение робота относительно левого нижнего угла бассейна (см. схему бассейна в правилах SAUVC)
+ - 
