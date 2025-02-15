@@ -84,11 +84,20 @@ class DistanceCalculator:
         return 1.0, 1.0, 1.0, 1.0, 1.0
 
 def id_2_name(id) :
-    if id == 1 : return 'red_flare'
-    if id == 2 : return 'yellow_flare'
-    if id == 3 : return 'gate'
-    if id == 4 : return 'mat'
-    if id == 5 : return 'qualification_gate'
+    if id == 1 : return 'starting_zone'
+    if id == 2 : return 'gate'
+    if id == 3 : return 'red_flare'
+    if id == 4 : return 'yellow_flare'
+    if id == 5 : return 'blue_flare'
+    if id == 6 : return 'orange_flare'
+    if id == 7 : return 'qualification_gate'
+    if id == 8 : return 'qualification_gate'
+    if id == 9 : return 'qualification_gate'
+    if id == 10 : return 'mat'
+    if id == 11 : return 'blue_bowl'
+    if id == 12 : return 'red_bowl'
+    if id == 13 : return 'red_bowl'
+    if id == 14 : return 'red_bowl'
     return str(id)
 
 class MinimalPublisher(Node):
@@ -104,31 +113,20 @@ class MinimalPublisher(Node):
             10)                # очередь сообщений
         self.subscription  # предотвращаем удаление подписчика
 
-        self.subscription = self.create_subscription(
-            Odometry,
-            '/model/copter/odometry',     # тема, на которую подписываемся
-            self.odometry_callback,
-            10)                # очередь сообщений
+        self.subscription = self.create_subscription(Odometry, '/model/copter/odometry', self.odometry_callback, 10)
         self.subscription  # предотвращаем удаление подписчика
 
         self.publisher = self.create_publisher(Bbox, 'Bbox_array', 10)
-
         self.publisherDepth = self.create_publisher(Float64, '/depth', 10)
-        #timer_period = 1.5  # seconds
-        #self.timer = self.create_timer(timer_period, self.timer_callback)
-        #self.i = 0.0
+        self.publisherDis2Bottom = self.create_publisher(Float64, '/distance_to_bottom', 10)
+        self.publisherDis2Start = self.create_publisher(Float64, '/distance_to_start_zone', 10)
+        self.publisherDis2Pinger = self.create_publisher(Float64, '/distance_to_pinger', 10)
+        self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
 
     def detect_callback(self, msg):
         # Обработчик для сообщений, приходящих с 'input_topic'
         self.get_logger().info('Получено сообщение: Bbox')
-        self.get_logger().info(sys.argv[0])
-        self.get_logger().info(str(os.listdir()))
-        self.get_logger().info(str(os.listdir('../')))
-        #self.get_logger().info(str(os.listdir('../../')))
-        #self.get_logger().info(str(os.listdir('../../resource/')))
         
-        # Пример публикации полученного сообщения с изменениями
-
         bbox_attrs_config_path = 'install/py_pub/resource/bbox_attrs.yaml'
         with open(bbox_attrs_config_path, 'r') as f:
         #with pkg_resources.open_text('py_pub', bbox_attrs_config_path) as f:
@@ -175,17 +173,56 @@ class MinimalPublisher(Node):
             self.get_logger().info('ID: ' + str(id) + ', POSE: ' + str(x1) + ' ' + str(y1) + ' ' + str(x2) + ' ' + str(y2))
 
             self.publisher.publish(bbox)
-    
 
-        #self.get_logger().info(f'Отправлено сообщение: "{new_msg.data}"')
+
+    def calc_distance(self, x1, y1, z1, x2, y2, z2) :
+        x = x2 - x1
+        y = y2 - y1
+        z = z2 - z1
+
+        return (x**2 + y**2 + z**2)**0.5
 
     def odometry_callback(self, msg):
         self.get_logger().info('Получено сообщение: Odometry')
 
-        flt = Float64()
-        flt.data = msg.pose.pose.position.z
+        h = 2.0
+        p_x = 24.0
+        p_y = 23.0
+        p_z = 0.1
+        s_x = 36.0
+        s_y = 0.0
+        s_z = 2.0
 
-        self.publisherDepth.publish(flt)
+        fx = Float64()
+        fy = Float64()
+        fz = Float64()
+        x = fx.data = msg.pose.pose.position.x
+        y = fy.data = msg.pose.pose.position.y
+        z = fz.data = msg.pose.pose.position.z
+
+        self.publisherDepth = self.create_publisher(Float64, '/depth', 10)
+        self.publisherDis2Bottom = self.create_publisher(Float64, '/distance_to_bottom', 10)
+        self.publisherDis2Start = self.create_publisher(Float64, '/distance_to_start_zone', 10)
+        self.publisherDis2Pinger = self.create_publisher(Float64, '/distance_to_pinger', 10)
+        self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
+
+        flt_depth = Float64()
+        flt_dis2Bottom = Float64()
+        flt_dis2Start = Float64()
+        flt_dis2Pinger = Float64()
+        flt_angle2Pinger = Float64()
+        
+        flt_depth.data = h - z
+        flt_dis2Bottom.data = z
+        flt_dis2Start.data = self.calc_distance(x, y, z, s_x, s_y, s_z)
+        flt_dis2Pinger.data = self.calc_distance(x, y, z, p_x, p_y, p_z)
+        flt_angle2Pinger.data = 0.0
+
+        self.publisherDepth.publish(flt_depth)
+        self.publisherDis2Bottom.publish(flt_dis2Bottom)
+        self.publisherDis2Start.publish(flt_dis2Start)
+        self.publisherDis2Pinger.publish(flt_dis2Pinger)
+        self.publisherAngle2Pinger.publish(flt_angle2Pinger)
 
     def timer_callback(self):
         msg = Float64()

@@ -1,10 +1,10 @@
 <?xml version='1.0'?>
 <sdf version='1.7'>
-  <model name='buckets'>
-    <link name='base_green'>
+  <model name='bowl_red'>
+    <link name='bowl'>
       <inertial>
-        <pose>2.71459 -0.001357 0.222916 0 -0 0</pose>
-        <mass>1959.16</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>500</mass>
         <inertia>
           <ixx>350.977</ixx>
           <ixy>0.710796</ixy>
@@ -17,35 +17,30 @@
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose>0 0 0 0 -0 0</pose>
-      <visual name='base_green_visual'>
-        <pose>0 0 0 0 -0 0</pose>
+      <pose>0 0 0 1.59 0 0</pose>
+      <visual name='bowl_red'>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>meshes/base_green.STL</uri>
+            <uri>meshes/Bucket_1_Link.STL</uri>
           </mesh>
         </geometry>
         <material>
-          <script>
-            <name>Gazebo/Green</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
-          <shader type='pixel'/>
-          <ambient>0.0 0.0 1.0 1</ambient>
-            <diffuse>0.0 0.0 1.0 1</diffuse>
-            <specular>0.0 0.0 1.0 1</specular>
+          <ambient>1.0 0.0 0.0 1</ambient>
+            <diffuse>1.0 0.0 0.0 1</diffuse>
+            <specular>1.0 0.0 0.0 1</specular>
         </material>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
-      <collision name='base_green_collision'>
+      <collision name='base_green_fixed_joint_lump__Bucket_1_Link_collision_1'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://buckets/meshes/base_green.STL</uri>
+            <uri>meshes/Bucket_1_Link.STL</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>

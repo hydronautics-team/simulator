@@ -43,13 +43,26 @@
           </clip>
         </camera>
         <always_on>1</always_on>
-        <update_rate>5</update_rate>
+        <update_rate>30</update_rate>
         <visualize>true</visualize> <!-- Отображение камеры в Gazebo -->
         <topic>/came</topic>
         <save enabled="true">
           <path>path</path>
         </save>
       </sensor>
+
+      <sensor name="depth_camera" type="depth">
+          <pose>0 0 0 0 0 0</pose> <!-- Позиция относительно модели -->
+          <depth_camera>
+            <horizontal_fov>1.5707</horizontal_fov> <!-- Поле зрения по горизонтали -->
+            <image_width>640</image_width>           <!-- Ширина изображения -->
+            <image_height>480</image_height>         <!-- Высота изображения -->
+            <near_clip>0.1</near_clip>               <!-- Минимальное расстояние до камеры -->
+            <far_clip>50.0</far_clip>                <!-- Максимальное расстояние -->
+            <update_rate>30</update_rate>            <!-- Частота обновлений -->
+          </depth_camera>
+          <topic>depth_camera</topic>
+        </sensor>
 
       <sensor name="imu_sensor" type="imu">
           <always_on>1</always_on>

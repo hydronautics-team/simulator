@@ -17,33 +17,33 @@
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose>0 0 0 0 -0 0</pose>
+      <pose>0 0 0.4 0 -0 0</pose>
       <gravity>1</gravity>
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>0.075</radius>
-            <length>1.5</length>
+            <radius>0.03</radius>
+            <length>0.8</length>
           </cylinder>
         </geometry>
         <material>
-          <ambient>0.01 0.71 0.01 1</ambient>
-          <diffuse>0.01 0.71 0.01 1</diffuse>
-          <specular>0.01 0.71 0.01 1</specular>
+          <ambient>0.01 0.01 0.71 1</ambient>
+          <diffuse>0.01 0.01 0.71 1</diffuse>
+          <specular>0.01 0.01 0.71 1</specular>
           <!-- emissive>0 0 0 1</emissive> -->
         </material>
-        <pose>0 0 -1.25 0 -0 0</pose>
+        <pose>0 0 0 0 -0 0</pose>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
       <collision name='collision'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose>0 0 -1.25 0 -0 0</pose>
+        <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <radius>0.075</radius>
-            <length>1.5</length>
+            <radius>0.03</radius>
+            <length>0.8</length>
           </cylinder>
         </geometry>
         <surface>

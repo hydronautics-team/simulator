@@ -17,12 +17,12 @@
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose>0 0 0.0 0 0 0</pose>
+      <pose>0 0 0.4 0 0 0</pose>
       <gravity>1</gravity>
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>0.05</radius>
+            <radius>0.03</radius>
             <length>0.8</length>
           </cylinder>
         </geometry>
@@ -42,7 +42,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <cylinder>
-            <radius>0.04</radius>
+            <radius>0.03</radius>
             <length>0.8</length>
           </cylinder>
         </geometry>
