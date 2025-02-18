@@ -99,9 +99,10 @@ def generate_launch_description():
         '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
         '/X3/gazebo/command/twist@geometry_msgs/msg/Twist]gz.msgs.Twist',
         '/model/copter/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+        '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
 
-        '/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
-        '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+        #'/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+        #'/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
     ],
     output='screen'
     )

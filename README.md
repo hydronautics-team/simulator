@@ -79,3 +79,15 @@ ROS2 Iron
  - `type:` nav_msgs/msg/odometry
  - `description:` ориентация и реальное положение робота относительно левого нижнего угла бассейна (см. схему бассейна в правилах SAUVC)
  - 
+ - `topic:` /camera_info
+ - `type:` sensor_msgs/msg/CameraInfo
+ - `description:` данные о камерах. Нужно проверять разрешение, иначе какая именно это камера не узнать.
+ - 
+ - `topic:` /copter/depth
+ - `type:` Float64
+ - `description:` высота относительно дна, на которой должен оказаться аппарат в метрах
+ - 
+ - `topic:` /copter/course
+ - `type:` Float64
+ - `description:` требуемый курс от аппарата, относительно старта по часовой стрелки. Все 360 градусов
+ - 

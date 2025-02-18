@@ -18,6 +18,9 @@ from rclpy.node import Node
 from std_msgs.msg import Float64
 from vision_msgs.msg import Detection2DArray
 from nav_msgs.msg import Odometry
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import CameraInfo
+
 from stingray_interfaces.msg import Bbox
 import importlib.resources as pkg_resources
 
@@ -32,6 +35,17 @@ try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+
+import math
+
+def quaternion_to_polar_angle(x, y, z, w): 
+    # Вычисляем полярный угол на плоскости XY или попросту крен
+    angle = math.atan2(2*(w*z + x*y), 1-2*(y**2 + z**2))
+    angle = angle / 2 / math.pi * 360
+    if angle < 0 : angle += 360
+    
+    return angle
+
 
 
 class DistanceCalculator:
@@ -48,14 +62,14 @@ class DistanceCalculator:
         if (2 * self._tg(angleSize / 2)) == 0 : return 0
         return realSize / (2 * self._tg(angleSize / 2))
 
-    def calcDistanceAndAngle(self, xyxy, label_name: str, ppx, ppy, fx, fy):
+    def calcDistanceAndAngle(self, xyxy, label_name: str, camera_info):
 
         if label_name in self.object_attrs:
             # camera intrinsics
-            # ppx = camera_info.k[2]
-            # ppy = camera_info.k[5]
-            # fx = camera_info.k[0]
-            # fy = camera_info.k[4]
+            ppx = camera_info.k[2]
+            ppy = camera_info.k[5]
+            fx = camera_info.k[0]
+            fy = camera_info.k[4]
 
             # distance
             obj_width = xyxy[2] - xyxy[0]
@@ -105,16 +119,28 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('minimal_publisher')
 
-        # Создаём подписчика
-        self.subscription = self.create_subscription(
-            Detection2DArray,
-            '/cameraaa',     # тема, на которую подписываемся
-            self.detect_callback,
-            10)                # очередь сообщений
-        self.subscription  # предотвращаем удаление подписчика
+        self.targetDepth = -999
+        self.targetCourse = -999
+        self.lastVector = Twist()
+        self.camera_info = CameraInfo()
+
+        self.subscription_detect = self.create_subscription(Detection2DArray, '/cameraaa', self.detect_callback, 10)
+        self.subscription_detect  # предотвращаем удаление подписчика
 
         self.subscription = self.create_subscription(Odometry, '/model/copter/odometry', self.odometry_callback, 10)
         self.subscription  # предотвращаем удаление подписчика
+
+        self.subscription_targetDepth = self.create_subscription(Float64, '/copter/depth', self.targetDepth_callback, 10)
+        self.subscription_targetDepth  # предотвращаем удаление подписчика
+
+        self.subscription_targetCourse = self.create_subscription(Float64, '/copter/course', self.targetCourse_callback, 10)
+        self.subscription_targetCourse  # предотвращаем удаление подписчика
+
+        self.subscription_vector = self.create_subscription(Twist, '/X3/gazebo/command/twist', self.vector_callback, 10)
+        self.subscription_vector  # предотвращаем удаление подписчика
+
+        self.subscription_camera_info = self.create_subscription(CameraInfo, 'camera_info', self.vector_camera_callback, 10)
+        self.subscription_camera_info  # предотвращаем удаление подписчика
 
         self.publisher = self.create_publisher(Bbox, 'Bbox_array', 10)
         self.publisherDepth = self.create_publisher(Float64, '/depth', 10)
@@ -122,6 +148,8 @@ class MinimalPublisher(Node):
         self.publisherDis2Start = self.create_publisher(Float64, '/distance_to_start_zone', 10)
         self.publisherDis2Pinger = self.create_publisher(Float64, '/distance_to_pinger', 10)
         self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
+
+        self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 10)
 
     def detect_callback(self, msg):
         # Обработчик для сообщений, приходящих с 'input_topic'
@@ -150,11 +178,7 @@ class MinimalPublisher(Node):
 
             #dc = DistanceCalculator([])
             xyxy = [x1, y1, x2, y2]
-            ppx = 800
-            ppy = 600
-            fx = 1.047
-            fy = 1.047
-            pos_x, pos_y, pos_z, horizontal_angle, vertical_angle = dc.calcDistanceAndAngle(xyxy, id_2_name(id), ppx, ppy, fx, fy)
+            pos_x, pos_y, pos_z, horizontal_angle, vertical_angle = dc.calcDistanceAndAngle(xyxy, id_2_name(id), self.camera_info)
 
             bbox = Bbox()
             bbox.name = id_2_name(id)
@@ -174,6 +198,27 @@ class MinimalPublisher(Node):
 
             self.publisher.publish(bbox)
 
+    def targetDepth_callback(self, msg):
+        # Обработчик для сообщений
+        self.get_logger().info('Получено сообщение: Depth')
+        self.targetDepth = msg.data
+        if self.targetDepth > 2.2 or self.targetDepth < -0.2 : self.targetDepth = -999
+
+    def vector_callback(self, msg):
+        # Обработчик для сообщений
+        self.get_logger().info('Получено сообщение: Vector')
+        self.lastVector = msg
+
+    def vector_camera_callback(self, msg):
+        # Обработчик для сообщений
+        if msg.height == 600 :
+            self.get_logger().info('Получено сообщение: Camera_info ' + str(msg.width))
+            self.camera_info = msg
+
+    def targetCourse_callback(self, msg):
+        # Обработчик для сообщений
+        self.get_logger().info('Получено сообщение: Cource')
+        self.targetCourse = msg.data % 360
 
     def calc_distance(self, x1, y1, z1, x2, y2, z2) :
         x = x2 - x1
@@ -223,6 +268,62 @@ class MinimalPublisher(Node):
         self.publisherDis2Start.publish(flt_dis2Start)
         self.publisherDis2Pinger.publish(flt_dis2Pinger)
         self.publisherAngle2Pinger.publish(flt_angle2Pinger)
+
+        qx = msg.pose.pose.orientation.x
+        qy = msg.pose.pose.orientation.y
+        qz = msg.pose.pose.orientation.z
+        qw = msg.pose.pose.orientation.w
+        polarAngle = quaternion_to_polar_angle(qx, qy, qz, qw)
+        self.get_logger().info('Полярный угол: ' + str(polarAngle))
+
+        isNeedToPublish = False
+
+        if self.targetCourse != -999 :
+            targetPolarAngle = (self.targetCourse + 90) % 360
+            isNeedToPublish = True
+
+            deltaAngle = (targetPolarAngle - polarAngle + 180) % 360 - 180
+            deltaAngle = -deltaAngle
+            # теперь, если deltaAngle положительно, движемся по часовой стрелке
+            # отрицательно - против
+            self.get_logger().info('deltaAngle: ' + str(deltaAngle))
+
+            if abs(deltaAngle) > 2 :
+                self.rotate(deltaAngle)
+                #if deltaAngle > 0 : self.rotateRight(deltaAngle)
+                #else : self.rotateLeft(deltaAngle)
+            else :
+                self.get_logger().info('Stop')
+                self.lastVector.angular.z = 0.0
+                #self.publisherVector.publish(self.lastVector)
+
+        if self.targetDepth != -999 :
+            isNeedToPublish = True
+
+            if abs(z - self.targetDepth) > 0.1 :
+                self.lastVector.linear.z = self.depth(self.targetDepth - z)
+            else :
+                self.lastVector.linear.z = 0.0
+
+        if isNeedToPublish :
+            self.publisherVector.publish(self.lastVector)
+
+    def depth(self, deltaDepth) :
+        speed = min(abs(deltaDepth)**2 / 4 + 0.2, 0.5)
+
+        return speed * deltaDepth / abs(deltaDepth)
+
+    def rotate(self, angle) :
+        #self.get_logger().info('Rotate')
+
+        x = abs(angle)
+        speed = min(math.e**x/math.e**40 + x / 200 + 0.02, 1.0)
+
+        #if deltaAngle > 0 : self.get_logger().info('ToRight')
+        #else : self.get_logger().info('ToLeft')
+
+        self.lastVector.angular.z = -speed * angle / abs(angle)
+        #self.publisherVector.publish(self.lastVector)
 
     def timer_callback(self):
         msg = Float64()
