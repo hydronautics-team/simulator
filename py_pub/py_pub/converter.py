@@ -22,6 +22,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import CameraInfo
 
 from stingray_interfaces.msg import Bbox
+from stingray_interfaces.srv import SetTwist
 import importlib.resources as pkg_resources
 
 import time
@@ -150,6 +151,34 @@ class MinimalPublisher(Node):
         self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
 
         self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 10)
+
+        self.srv_setTwist = self.create_service(SetTwist, '/SetTwist', self.setTwist_callback)
+
+    def setTwist_callback(self, request, response):
+        response.success = True
+        response.message = ""
+
+        surge = request.surge
+        sway = request.sway
+        depth = request.depth
+        roll = request.roll
+        pitch = request.pitch
+        yaw = request.yaw
+
+        self.targetDepth = depth
+        if self.targetDepth > 2.2 or self.targetDepth < -0.2 : self.targetDepth = -999
+
+        self.targetCourse = yaw % 360
+
+        vector = Twist()
+        vector.linear.x = surge
+        vector.linear.y = sway
+
+        self.publisherVector.publish(vector)
+
+        #self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
+
+        return response
 
     def detect_callback(self, msg):
         # Обработчик для сообщений, приходящих с 'input_topic'
