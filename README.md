@@ -91,3 +91,7 @@ ROS2 Iron
  - `type:` Float64
  - `description:` требуемый курс от аппарата, относительно старта по часовой стрелки. Все 360 градусов
  - 
+ - `topic:` /SetTwist
+ - `type:` stingray_interfaces/srv/SetTwist
+ - `description:` pitch и roll игнорируются. 
+ - 
