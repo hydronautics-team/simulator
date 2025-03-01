@@ -94,8 +94,8 @@ def generate_launch_description():
     package='ros_gz_bridge',
     executable='parameter_bridge',
     arguments=[
-        '/cameraaa@vision_msgs/msg/Detection2DArray[gz.msgs.AnnotatedAxisAligned2DBox_V',  # Works fine
-        '/cameraaa_image@sensor_msgs/msg/Image[gz.msgs.Image',
+        #'/cameraaa@vision_msgs/msg/Detection2DArray[gz.msgs.AnnotatedAxisAligned2DBox_V',  # Works fine
+        #'/cameraaa_image@sensor_msgs/msg/Image[gz.msgs.Image',
         '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
         '/X3/gazebo/command/twist@geometry_msgs/msg/Twist]gz.msgs.Twist',
         '/model/copter/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
@@ -103,6 +103,9 @@ def generate_launch_description():
 
         #'/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
         #'/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+        '/stingray/topics/front_camera@vision_msgs/msg/Detection2DArray[gz.msgs.AnnotatedAxisAligned2DBox_V',  # Works fine
+        '/stingray/topics/front_camera_image@sensor_msgs/msg/Image[gz.msgs.Image',
+        
     ],
     output='screen'
     )

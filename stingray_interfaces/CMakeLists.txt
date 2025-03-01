@@ -12,7 +12,6 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/SetTransition.srv"
-  "srv/SetTwist.srv"
   "action/TwistAction.action"
   "action/BboxCenteringTwistAction.action"
   "action/BboxSearchTwistAction.action"

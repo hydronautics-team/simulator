@@ -125,34 +125,57 @@ class MinimalPublisher(Node):
         self.lastVector = Twist()
         self.camera_info = CameraInfo()
 
-        self.subscription_detect = self.create_subscription(Detection2DArray, '/cameraaa', self.detect_callback, 10)
-        self.subscription_detect  # предотвращаем удаление подписчика
+        # self.subscription_detect = self.create_subscription(Detection2DArray, '/cameraaa', self.detect_callback, 10)
+        # self.subscription = self.create_subscription(Odometry, '/model/copter/odometry', self.odometry_callback, 10)
+        # self.subscription_targetDepth = self.create_subscription(Float64, '/copter/depth', self.targetDepth_callback, 10)
+        # self.subscription_targetCourse = self.create_subscription(Float64, '/copter/course', self.targetCourse_callback, 10)
+        # self.subscription_vector = self.create_subscription(Twist, '/X3/gazebo/command/twist', self.vector_callback, 10)
+        # self.subscription_camera_info = self.create_subscription(CameraInfo, 'camera_info', self.vector_camera_callback, 10)
+        
 
         self.subscription = self.create_subscription(Odometry, '/model/copter/odometry', self.odometry_callback, 10)
-        self.subscription  # предотвращаем удаление подписчика
+        
 
+        # изменено
+        self.subscription_detect = self.create_subscription(Detection2DArray, '/stingray/topics/front_camera', self.detect_callback, 10)
+        self.srv_setTwist = self.create_service(SetTwist, '/stingray/services/set_twist', self.setTwist_callback)
+        self.publisher = self.create_publisher(Bbox, '/stingray/topics/front_camera/bbox_array', 10)
+        self.publisher_camera_info = self.create_publisher(Float64, '/stingray/topics/front_camera/camera_info', 10)
+        self.publisherDepth = self.create_publisher(Float64, '/stingray/topics/zbar', 10)
+        self.publisherAngle2Pinger = self.create_publisher(Float64, '/stingray/topics/angle_hydroacoustic_topic', 10)
+
+        # не нужно изменять
         self.subscription_targetDepth = self.create_subscription(Float64, '/copter/depth', self.targetDepth_callback, 10)
-        self.subscription_targetDepth  # предотвращаем удаление подписчика
-
         self.subscription_targetCourse = self.create_subscription(Float64, '/copter/course', self.targetCourse_callback, 10)
-        self.subscription_targetCourse  # предотвращаем удаление подписчика
-
         self.subscription_vector = self.create_subscription(Twist, '/X3/gazebo/command/twist', self.vector_callback, 10)
-        self.subscription_vector  # предотвращаем удаление подписчика
-
+        self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 10)
         self.subscription_camera_info = self.create_subscription(CameraInfo, 'camera_info', self.vector_camera_callback, 10)
-        self.subscription_camera_info  # предотвращаем удаление подписчика
+        
 
-        self.publisher = self.create_publisher(Bbox, 'Bbox_array', 10)
-        self.publisherDepth = self.create_publisher(Float64, '/depth', 10)
+        # self.publisher = self.create_publisher(Bbox, 'Bbox_array', 10)
+        # self.publisherDepth = self.create_publisher(Float64, '/depth', 10)
+        # self.publisherDis2Bottom = self.create_publisher(Float64, '/distance_to_bottom', 10)
+        # self.publisherDis2Start = self.create_publisher(Float64, '/distance_to_start_zone', 10)
+        # self.publisherDis2Pinger = self.create_publisher(Float64, '/distance_to_pinger', 10)
+        # self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
+        
+        
         self.publisherDis2Bottom = self.create_publisher(Float64, '/distance_to_bottom', 10)
         self.publisherDis2Start = self.create_publisher(Float64, '/distance_to_start_zone', 10)
         self.publisherDis2Pinger = self.create_publisher(Float64, '/distance_to_pinger', 10)
-        self.publisherAngle2Pinger = self.create_publisher(Float64, '/angle_to_pinger', 10)
+        
 
-        self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 10)
+        
 
-        self.srv_setTwist = self.create_service(SetTwist, '/SetTwist', self.setTwist_callback)
+        
+
+        # предотвращаем удаление подписчиков
+        self.subscription_detect 
+        self.subscription 
+        self.subscription_targetDepth 
+        self.subscription_targetCourse 
+        self.subscription_vector 
+        self.subscription_camera_info  
 
     def setTwist_callback(self, request, response):
         response.success = True
@@ -240,9 +263,10 @@ class MinimalPublisher(Node):
 
     def vector_camera_callback(self, msg):
         # Обработчик для сообщений
-        if msg.height == 600 :
+        if msg.height == 480 :
             self.get_logger().info('Получено сообщение: Camera_info ' + str(msg.width))
             self.camera_info = msg
+            self.publisher_camera_info.publish(msg)
 
     def targetCourse_callback(self, msg):
         # Обработчик для сообщений
