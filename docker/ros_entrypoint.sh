@@ -1,8 +1,26 @@
 #!/bin/bash
 set -e
 
-# Источник настроек ROS2
-source /simulator/install/setup.bash
+# Проверяем, существует ли файл setup.bash
+if [ -f /simulator/install/setup.bash ]; then
+  echo "[INFO] Код уже сбилжен"
+  source /simulator/install/setup.bash
+else
+  echo "[INFO] Файл install/setup.bash не найден. Запускаем сборку..."
+  # Выполняем сборку, при ошибке удаляем build, install, log и выходим
 
-# Запускаем команду, переданную контейнеру
+  source "/opt/ros/humble/setup.bash"
+  source "/additional_packages/install/setup.bash"
+  source /stingray_core/install/setup.bash
+  source /stingray/install/setup.bash
+
+  if ! colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub; then
+    echo "[ERROR] Сборка завершилась с ошибкой. Удаляем build, install, log..."
+    rm -rf build install log
+    exit 1
+  fi
+  echo "[INFO] Сборка завершена успешно. Выполняем source install/setup.bash..."
+  source /simulator/install/setup.bash
+fi
+
 exec "$@"

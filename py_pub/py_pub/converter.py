@@ -22,7 +22,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import CameraInfo
 
 from stingray_interfaces.msg import Bbox
-from stingray_interfaces.srv import SetTwist
+from stingray_core_interfaces.srv import SetTwist
 import importlib.resources as pkg_resources
 
 import time
