@@ -33,8 +33,8 @@
         <camera>
           <horizontal_fov>1.047</horizontal_fov> <!-- Угол обзора -->
           <image>
-            <width>640</width>
-            <height>480</height>
+            <width>400</width>
+            <height>300</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -52,8 +52,8 @@
           <pose>0 0 0 0 0 0</pose> <!-- Позиция относительно модели -->
           <depth_camera>
             <horizontal_fov>1.5707</horizontal_fov> <!-- Поле зрения по горизонтали -->
-            <image_width>640</image_width>           <!-- Ширина изображения -->
-            <image_height>480</image_height>         <!-- Высота изображения -->
+            <image_width>400</image_width>           <!-- Ширина изображения -->
+            <image_height>300</image_height>         <!-- Высота изображения -->
             <near_clip>0.1</near_clip>               <!-- Минимальное расстояние до камеры -->
             <far_clip>50.0</far_clip>                <!-- Максимальное расстояние -->
             <update_rate>30</update_rate>            <!-- Частота обновлений -->
@@ -74,8 +74,8 @@
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
-            <width>800</width>
-            <height>600</height>
+            <width>640</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.01</near>
@@ -85,7 +85,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>true</visualize>
-        <topic>cameraaa</topic>
+        <topic>/stingray/topics/front_camera</topic>
       </sensor>
 
       </link>
