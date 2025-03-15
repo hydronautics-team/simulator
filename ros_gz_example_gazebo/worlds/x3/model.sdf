@@ -41,7 +41,7 @@
 
       <sensor name="boundingbox_camera_bottom" type="boundingbox_camera">
         <box_type>visible_box</box_type>
-        <pose>0 0 0.1 0 1.5708 0</pose>
+        <pose>0 0 -0.05 0 1.5708 0</pose>
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
