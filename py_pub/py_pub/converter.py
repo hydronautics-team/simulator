@@ -167,7 +167,7 @@ class MinimalPublisher(Node):
         self.srv_setTwist = self.create_service(SetTwist, '/stingray/services/set_twist', self.setTwist_callback)
         #self.publisher = self.create_publisher(Bbox, '/stingray/topics/front_camera/bbox_array', 10)
         self.publisher2 = self.create_publisher(BboxArray, '/stingray/topics/camera/front/bbox_array', 1)
-        self.publisher3 = self.create_publisher(BboxArray, '/stingray/topics/bottom_camera/bbox_array', 1)
+        self.publisher3 = self.create_publisher(BboxArray, '/stingray/topics/camera/bottom/bbox_array', 1)
         self.publisher_camera_info = self.create_publisher(CameraInfo, '/stingray/topics/front_camera/camera_info', 1)
         #self.publisherDepth = self.create_publisher(Float64, '/stingray/topics/zbar', 10)
         self.publisherAngle2Pinger = self.create_publisher(Float32, '/stingray/topics/angle_hydroacoustic', 1)
@@ -179,7 +179,7 @@ class MinimalPublisher(Node):
         #self.subscription_vector = self.create_subscription(Twist, '/X3/gazebo/command/twist', self.vector_callback, 10)
         self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 1)
         self.subscription_camera_info = self.create_subscription(CameraInfo, '/stingray/topics/camera_info', self.vector_camera_callback, 1)
-        self.subscription_camera_info = self.create_subscription(CameraInfo, '/stingray/topics/camera_info/bottom_camera', self.bottom_camera_callback, 1)
+        self.subscription_camera_info2 = self.create_subscription(CameraInfo, '/stingray/topics/bottom_camera/camera_info', self.bottom_camera_callback, 1)
         self.subscription_imu = self.create_subscription(Imu, '/imu', self.imu_callback, 1)
 
         # сервисы
@@ -211,6 +211,7 @@ class MinimalPublisher(Node):
         self.subscription_targetCourse 
         #self.subscription_vector 
         self.subscription_camera_info  
+        self.subscription_camera_info2
 
         self.bbox_attrs = None
         bbox_attrs_config_path = 'install/py_pub/resource/bbox_attrs.yaml'
@@ -290,11 +291,11 @@ class MinimalPublisher(Node):
 
     def bottom_detect_callback(self, msg):
         # Обработчик для сообщений, приходящих с 'input_topic'
-        #self.get_logger().info('Получено сообщение: Bbox')
+        self.get_logger().info('Получено сообщение: Bbox')
         
         
 
-        #self.get_logger().info('AAA: ' + str(bbox_attrs))
+        # self.get_logger().info('AAA: ' + str(bbox_attrs))
 
         dc = DistanceCalculator(object_attrs=self.bbox_attrs)
         
@@ -336,8 +337,8 @@ class MinimalPublisher(Node):
             bbox.horizontal_angle = horizontal_angle
             bbox.vertical_angle = vertical_angle
 
-            # self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
-            # self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
+            self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
+            self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
 
             bboxes.bboxes.append(bbox)
 
@@ -406,8 +407,8 @@ class MinimalPublisher(Node):
             bbox2.horizontal_angle = horizontal_angle/2
             bbox2.vertical_angle = vertical_angle/2
 
-            #self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
-            #self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
+            # self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
+            # self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
 
             bboxes.bboxes.append(bbox)
             #bboxes.bboxes.append(bbox2)
@@ -423,7 +424,7 @@ class MinimalPublisher(Node):
         if self.bbox_buff[0][1] <= time.time() :
             m = self.bbox_buff.pop(0)
             self.publisher2.publish(m[0])
-            self.get_logger().info('bbox (buff_len): ' + str(len(self.bbox_buff)) + ", (delayed time)" + str(m[1]-m[2]))
+            # self.get_logger().info('bbox (buff_len): ' + str(len(self.bbox_buff)) + ", (delayed time)" + str(m[1]-m[2]))
         #time.sleep(self.delay_bbox)
         # q = 0
         # for i in range(10000000) :
@@ -463,7 +464,7 @@ class MinimalPublisher(Node):
         # Обработчик для сообщений
         # self.get_logger().info('Получено сообщение: Camera_info ' + str(msg.height))
         if msg.height == 480 :
-            #self.get_logger().info('+Получено сообщение: Camera_info ' + str(msg.width))
+            # self.get_logger().info('+Получено сообщение: Camera_info ' + str(msg.width))
             self.bottom_camera_info = msg
             #self.publisher_camera_info.publish(msg)
 
@@ -634,7 +635,7 @@ class MinimalPublisher(Node):
         if self.uvstate_buff[0][1] <= time.time() :
             m = self.uvstate_buff.pop(0)
             self.publisher_uv_state.publish(m[0])
-            self.get_logger().info('UVState (buff_len): ' + str(len(self.uvstate_buff)) + ", (delayed time): " + str(m[1]-m[2]))
+            # self.get_logger().info('UVState (buff_len): ' + str(len(self.uvstate_buff)) + ", (delayed time): " + str(m[1]-m[2]))
             #self.get_logger().info('UVState (time): ' + str(self.uvstate_buff))
         #self.publisher_uv_state.publish(m)
 
@@ -649,8 +650,8 @@ class MinimalPublisher(Node):
         #self.get_logger().info('Rotate')
 
         x = abs(angle)
-        speed = min(math.e**x/math.e**40 + x / 200 + 0.02, 1.0)
-        #speed = min(math.e**x/math.e**40 + x / 150 + 0.04, 1.0)
+        #speed = min(math.e**x/math.e**40 + x / 200 + 0.02, 1.0)
+        speed = min(math.e**x/math.e**40 + x / 100 + 0.08, 1.0)
 
         #if deltaAngle > 0 : self.get_logger().info('ToRight')
         #else : self.get_logger().info('ToLeft')

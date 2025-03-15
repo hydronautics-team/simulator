@@ -106,6 +106,7 @@ def generate_launch_description():
         '/stingray/topics/bottom_camera/bottom_camera@vision_msgs/msg/Detection2DArray[gz.msgs.AnnotatedAxisAligned2DBox_V',  # Works fine
         '/stingray/topics/bottom_camera/bottom_camera_image@sensor_msgs/msg/Image[gz.msgs.Image',
         '/stingray/topics/bottom_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+        
 
         '/stingray/topics/front_camera@vision_msgs/msg/Detection2DArray[gz.msgs.AnnotatedAxisAligned2DBox_V',  # Works fine
         '/stingray/topics/front_camera_image@sensor_msgs/msg/Image[gz.msgs.Image',
