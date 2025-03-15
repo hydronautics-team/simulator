@@ -27,6 +27,7 @@ fi
 echo "Контейнер ${CONTAINER_NAME} не найден. Создаём и запускаем новый..."
 
 # Запускаем новый контейнер в интерактивном режиме
+# colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub
 docker run -it --rm \
     --name "${CONTAINER_NAME}" \
     --mount type=bind,source="$(pwd)",target=/simulator \
@@ -36,4 +37,4 @@ docker run -it --rm \
     --net=host \
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    hydronautics/simulator:sauvc-ros-humble ros2 launch ros_gz_example_bringup NeedToBelieve.launch.py
+    hydronautics/simulator:sauvc-ros-humble bash -c "colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub && ros2 launch ros_gz_example_bringup NeedToBelieve.launch.py"
