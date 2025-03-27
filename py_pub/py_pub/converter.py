@@ -133,11 +133,14 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('minimal_publisher')
 
-        self.delay_bbox = 3
-        self.delay_odometry = 1.5
+        self.max_speed_surge = 1.7
+        self.max_speed_lag = 0.7
+
+        self.delay_bbox = 0
+        self.delay_odometry = 0
 
         self.targetDepth = 1.6
-        self.targetCourse = -20
+        self.targetCourse = 0
         self.lastVector = Twist()
         self.lastImu = Imu()
         self.camera_info = CameraInfo()
@@ -270,8 +273,8 @@ class MinimalPublisher(Node):
         self.targetCourse = 360 - ((yaw + 0) % 360)
 
         vector = Twist()
-        vector.linear.x = min(surge / 100 * 1.5, 1.5)
-        vector.linear.y = -min(sway / 100 * 0.7, 0.7)
+        vector.linear.x = min(surge / 100 * self.max_speed_surge, self.max_speed_surge)
+        vector.linear.y = -min(sway / 100 * self.max_speed_lag, self.max_speed_lag)
 
         self.lastVector.linear.x = vector.linear.x
         self.lastVector.linear.y = vector.linear.y
@@ -413,24 +416,18 @@ class MinimalPublisher(Node):
             bboxes.bboxes.append(bbox)
             #bboxes.bboxes.append(bbox2)
 
-            #self.publisher2.publish(bbox)
-        #self.get_logger().info('Time 1: ' + str(time.time()))
-        #self.get_logger().info('Time 2: ' + str(time.time()))
-        if len(self.bbox_buff) > 0 :
-            if self.bbox_buff[-1][1] - self.delay_bbox + 0.5 < time.time() :
-                self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
-        else : self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
+        # заддержка отправки сообщений
+        # if len(self.bbox_buff) > 0 :
+        #     if self.bbox_buff[-1][1] - self.delay_bbox + 0.5 < time.time() :
+        #         self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
+        # else : self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
 
-        if self.bbox_buff[0][1] <= time.time() :
-            m = self.bbox_buff.pop(0)
-            self.publisher2.publish(m[0])
+        # if self.bbox_buff[0][1] <= time.time() :
+        #     m = self.bbox_buff.pop(0)
+        #     self.publisher2.publish(m[0])
             # self.get_logger().info('bbox (buff_len): ' + str(len(self.bbox_buff)) + ", (delayed time)" + str(m[1]-m[2]))
-        #time.sleep(self.delay_bbox)
-        # q = 0
-        # for i in range(10000000) :
-        #     q += i
-        # print(q)
-        #self.publisher2.publish(bboxes)
+
+        self.publisher2.publish(bboxes)
 
     def targetDepth_callback(self, msg):
         # Обработчик для сообщений
@@ -627,17 +624,19 @@ class MinimalPublisher(Node):
         #await asyncio.sleep(self.delay_odometry)
         #time.sleep(self.delay_odometry)
         
-        if len(self.uvstate_buff) > 0 :
-            if self.uvstate_buff[-1][1] - self.delay_odometry + 0.10 < time.time() :
-                self.uvstate_buff.append([m, time.time() + self.delay_odometry, time.time()])
-        else : self.uvstate_buff.append([m, time.time() + self.delay_odometry, time.time()])
+        # заддержка отправки сообщений
+        # if len(self.uvstate_buff) > 0 :
+        #     if self.uvstate_buff[-1][1] - self.delay_odometry + 0.10 < time.time() :
+        #         self.uvstate_buff.append([m, time.time() + self.delay_odometry, time.time()])
+        # else : self.uvstate_buff.append([m, time.time() + self.delay_odometry, time.time()])
 
-        if self.uvstate_buff[0][1] <= time.time() :
-            m = self.uvstate_buff.pop(0)
-            self.publisher_uv_state.publish(m[0])
+        # if self.uvstate_buff[0][1] <= time.time() :
+        #     m = self.uvstate_buff.pop(0)
+        #     self.publisher_uv_state.publish(m[0])
             # self.get_logger().info('UVState (buff_len): ' + str(len(self.uvstate_buff)) + ", (delayed time): " + str(m[1]-m[2]))
             #self.get_logger().info('UVState (time): ' + str(self.uvstate_buff))
-        #self.publisher_uv_state.publish(m)
+        
+        self.publisher_uv_state.publish(m)
 
         self.lastUVState_yaw = yaw
 
