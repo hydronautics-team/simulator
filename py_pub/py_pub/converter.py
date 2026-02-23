@@ -614,8 +614,15 @@ class MinimalPublisher(Node):
         m.surge_accel = flt32_surge_accel.data
         m.sway_accel = flt32_sway_accel.data
         m.depth = flt32_depth.data
-        m.distance_from_bottom = flt32_dis2Bottom.data
-        m.distance_from_start = flt32_dis2Start.data
+        # NOTE:
+        # UVState message definition can differ between stacks/versions.
+        # Some versions include distance_from_bottom / distance_from_start fields,
+        # others don't. To keep the simulator converter compatible, set these
+        # fields only if they exist.
+        if hasattr(m, 'distance_from_bottom'):
+            m.distance_from_bottom = flt32_dis2Bottom.data
+        if hasattr(m, 'distance_from_start'):
+            m.distance_from_start = flt32_dis2Start.data
         #m.flare_seq
         m.depth_stabilization = True
         m.roll_stabilization = True
