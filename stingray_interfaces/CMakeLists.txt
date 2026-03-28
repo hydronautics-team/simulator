@@ -12,6 +12,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/SetTransition.srv"
+  "srv/SetTwist.srv"
+  "srv/SetStabilization.srv"
   "action/TwistAction.action"
   "action/BboxCenteringTwistAction.action"
   "action/BboxSearchTwistAction.action"
@@ -19,6 +21,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "action/HydroacousticCenteringTwistAction.action"
   "msg/Bbox.msg"
   "msg/BboxArray.msg"
+  "msg/EnableTopic.msg"
+  "msg/UVState.msg"
   "msg/EnableObjectDetection.msg"
   DEPENDENCIES std_msgs
 )
