@@ -27,9 +27,9 @@ from sensor_msgs.msg import Imu
 
 from stingray_interfaces.msg import Bbox
 from stingray_interfaces.msg import BboxArray
-from stingray_core_interfaces.srv import SetTwist
-from stingray_core_interfaces.srv import SetStabilization
-from stingray_core_interfaces.msg import UVState
+from stingray_interfaces.srv import SetTwist
+from stingray_interfaces.srv import SetStabilization
+from stingray_interfaces.msg import UVState
 from std_srvs.srv import Trigger
 import importlib.resources as pkg_resources
 
