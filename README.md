@@ -1,97 +1,69 @@
-# Hydronautics simulator
-Hydronautics Gazebo simulation for SAUVC 2025
+# simulator
 
-## Run
+ROS2 + Gazebo (Fortress) симулятор для задач SAUVC.
 
-### SAUVC
+## 1) Актуальная структура проекта
+
+В рабочем состоянии используются пакеты:
+
+- `simulator_launch` — launch-оркестрация запуска
+- `simulator_description` — модели и ресурсы робота
+- `simulator_simulation` — миры и ресурсы окружения
+- `simulator_gazebo_plugins` — C++ плагины Gazebo
+- `stingray_interfaces` — контракты `msg/srv/action`
+- `simulator_perception` — Python-ноды (включая `converter`)
+
+Пакеты-обертки `simulator_bridge` и `simulator_control` удалены как неиспользуемые.
+
+## 2) Запуск
+
+### Зависимости
+
+- ROS2 Iron
+- Gazebo Fortress
+- `ros-<distro>-ros-gz`
+
+### Сборка
+
 ```bash
-ros2 launch ros_gz_example_bringup NeedToBelieve.launch.py
+colcon build
+source install/setup.bash
 ```
 
-## Dependencies
+### Основной запуск
 
-Ignition Fortress
-[Link](https://gazebosim.org/docs/fortress/install/)
+```bash
+ros2 launch simulator_launch sim.launch.py
+```
 
+### Прямой запуск миссии SAUVC
 
-ROS2 Iron
+```bash
+ros2 launch simulator_launch mission_sauvc.launch.py
+```
 
-## Development
+### Дополнительные launch-файлы
 
-### Build
-1. 	
-	Установка моста между ROS2 и Gazebo
-   ```sh
-    sudo apt install ros-<distro>-ros-gz
-    ```
-3.
-    ```sh
-    colcon build
-    ```
+- `simulator_launch/launch/mission_sauvc.launch.py` — основной сценарий SAUVC
+- `simulator_launch/launch/world_man.launch.py` — сценарий с world `man`
+- `simulator_launch/launch/diff_drive.launch.py` — сценарий diff_drive
+- `simulator_launch/launch/rrbot_setup.launch.py` — сценарий rrbot
 
-### Topics description
+## 3) Конфигурация
 
- - `topic:` /cameraaa_image
- - `type:` sensor/msg/Image
- - `description:` видеопоток с камеры
- - 
- - `topic:` /depth_camera
- - `type:` sensor/msg/Image
- - `description:` видеопоток с камеры глубины
- - 
- - `topic:` /depth_camera/points
- - `type:` sensor_msgs/msg/PointCloud2
- - `description:` облако точек к камеры глубины
- - 
- - `topic:` /X3/gazebo/command/twist
- - `type:` geometry_msgs/msg/Twist
- - `description:` управление роботом согласно формату
- - 
- - `topic:` /distance_to_start_zone
- - `type:` Float64
- - `description:` расстояние от стартовой зоны
- - 
- - `topic:` /distance_to_pinger
- - `type:` Float64
- - `description:` расстояние от пингера
- - 
- - `topic:` /angle_to_pinger
- - `type:` Float64
- - `description:` угол 360 градусов относительно носа аппарата по часовой стрелке
- - 
- - `topic:` /depth
- - `type:` Float64
- - `description:` глубина в метрах
- - 
- - `topic:` /distance_to_bottom
- - `type:` Float64
- - `description:` расстояние до дна в метрах
- - 
- - `topic:` /Bbox_array
- - `type:` stingray_interfaces/msg/Bbox
- - `description:` отправка информации о детектировании обьектов данных в формате Данила. отсчёт ведётся с левого верхнего угла картинки
- - 
- - `topic:` /imu
- - `type:` sensor_msgs/msg/Imu
- - `description:` данные с IMU, акселлерометр, гироскоп и реальная ориентация
- - 
- - `topic:` /model/copter/odometry
- - `type:` nav_msgs/msg/odometry
- - `description:` ориентация и реальное положение робота относительно левого нижнего угла бассейна (см. схему бассейна в правилах SAUVC)
- - 
- - `topic:` /camera_info
- - `type:` sensor_msgs/msg/CameraInfo
- - `description:` данные о камерах. Нужно проверять разрешение, иначе какая именно это камера не узнать.
- - 
- - `topic:` /copter/depth
- - `type:` Float64
- - `description:` высота относительно дна, на которой должен оказаться аппарат в метрах
- - 
- - `topic:` /copter/course
- - `type:` Float64
- - `description:` требуемый курс от аппарата, относительно старта по часовой стрелки. Все 360 градусов
- - 
- - `topic:` /SetTwist
- - `type:` stingray_interfaces/srv/SetTwist
- - `description:` pitch и roll игнорируются. 
- - 
+- Bridge-конфиг: `simulator_launch/config/simulator_bridge.yaml`
+- RViz-конфиги:
+  - `simulator_launch/config/diff_drive.rviz`
+  - `simulator_launch/config/rrbot.rviz`
+
+## 4) Контракты взаимодействия (namespace)
+
+- Topics: `/simulator/sensors/*`, `/simulator/perception/*`, `/simulator/control/*`, `/simulator/state/*`
+- Services: `/simulator/control/*`, `/simulator/system/*`
+- Actions: `/simulator/mission/*`
+
+## 5) Правила изменений
+
+- Все межмодульные контракты оформляются через `stingray_interfaces`.
+- Новые runtime-настройки выносятся в YAML.
+- Избегать legacy-имен и неинформативных названий файлов.

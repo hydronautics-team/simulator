@@ -14,7 +14,7 @@ else
   source /stingray_core/install/setup.bash
   source /stingray/install/setup.bash
 
-  if ! colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub; then
+  if ! colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_perception; then
     echo "[ERROR] Сборка завершилась с ошибкой. Удаляем build, install, log..."
     rm -rf build install log
     exit 1

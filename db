@@ -1,13 +1,27 @@
 #!/bin/bash
+set -euo pipefail
 
 CONTAINER_NAME="simulator-sauvc"
+HOST_WS="$(pwd -P)"
 
 xhost +local:docker
 
-# Проверяем, запущен ли контейнер с данным именем
-RUNNING_CONTAINER=$(docker ps -q -f name="${CONTAINER_NAME}")
+echo "Host workspace: ${HOST_WS}"
 
-if [ -n "$RUNNING_CONTAINER" ]; then
+EXISTING_CONTAINER=$(docker ps -aq -f name="^/${CONTAINER_NAME}$")
+if [ -n "${EXISTING_CONTAINER}" ]; then
+    MOUNT_SOURCE=$(docker inspect -f '{{range .Mounts}}{{if eq .Destination "/simulator"}}{{.Source}}{{end}}{{end}}' "${CONTAINER_NAME}" 2>/dev/null || true)
+    if [ "${MOUNT_SOURCE}" != "${HOST_WS}" ]; then
+        echo "Контейнер ${CONTAINER_NAME} смонтирован на другой workspace: ${MOUNT_SOURCE}"
+        echo "Удаляем контейнер и создаём новый с текущим workspace..."
+        docker rm -f "${CONTAINER_NAME}" >/dev/null 2>&1 || true
+    fi
+fi
+
+# Проверяем, запущен ли контейнер с данным именем
+RUNNING_CONTAINER=$(docker ps -q -f name="^/${CONTAINER_NAME}$")
+
+if [ -n "${RUNNING_CONTAINER}" ]; then
     echo "Контейнер ${CONTAINER_NAME} уже запущен. Подключаемся к нему..."
     docker exec -it "${CONTAINER_NAME}" bash
     exit 0
@@ -15,26 +29,25 @@ fi
 
 # Если контейнер с таким именем не запущен, то проверяем,
 # возможно он есть, но остановлен:
-STOPPED_CONTAINER=$(docker ps -aq -f name="${CONTAINER_NAME}")
-if [ -n "$STOPPED_CONTAINER" ]; then
+STOPPED_CONTAINER=$(docker ps -aq -f name="^/${CONTAINER_NAME}$")
+if [ -n "${STOPPED_CONTAINER}" ]; then
     echo "Контейнер ${CONTAINER_NAME} найден, но не запущен. Запускаем..."
-    docker start "${CONTAINER_NAME}"
-    # Далее заходим в bash контейнера:
+    docker start "${CONTAINER_NAME}" >/dev/null
     docker exec -it "${CONTAINER_NAME}" bash
     exit 0
 fi
 
 echo "Контейнер ${CONTAINER_NAME} не найден. Создаём и запускаем новый..."
 
-# Запускаем новый контейнер в интерактивном режиме
-# colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub
 docker run -it --rm \
     --name "${CONTAINER_NAME}" \
-    --mount type=bind,source="$(pwd)",target=/simulator \
+    --workdir /simulator \
+    --mount type=bind,source="${HOST_WS}",target=/simulator \
     --mount type=bind,source="/etc/timezone",target="/etc/timezone" \
     --mount type=bind,source="/etc/localtime",target="/etc/localtime" \
     --ipc=host \
     --net=host \
-    -e DISPLAY=$DISPLAY \
+    -e DISPLAY="${DISPLAY:-}" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    hydronautics/simulator:sauvc-ros-humble bash -c "colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub stingray_interfaces && ros2 launch ros_gz_example_bringup NeedToBelieve.launch.py"
+    hydronautics/simulator:sauvc-ros-humble \
+    bash -lc "cd /simulator && rm -rf build install log && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_gazebo_plugins stingray_interfaces simulator_perception && source /simulator/install/setup.bash && ros2 launch simulator_launch sim.launch.py"
