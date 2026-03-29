@@ -78,7 +78,7 @@ def generate_launch_description():
 
     converter = Node(
         package='simulator_perception',
-        executable='converter',
+        executable='simulator_perception_node',
         parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
         output='screen',
     )

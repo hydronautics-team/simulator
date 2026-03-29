@@ -19,8 +19,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'talker = simulator_perception.publisher_member_function:main',
-            'converter = simulator_perception.converter:main',
+            'manual_thruster_bridge_node = simulator_perception.manual_thruster_bridge_node:main',
+            'simulator_perception_node = simulator_perception.simulator_perception_node:main',
         ],
     },
 )
