@@ -2,7 +2,32 @@
 
 ROS2 + Gazebo (Fortress) симулятор для задач SAUVC.
 
-## 1) Актуальная структура проекта
+## 1) Быстрый запуск через Docker (`./db`)
+
+Рекомендуемый способ запуска симулятора — через автоматизированный скрипт `./db`, который сам создаёт и запускает Docker-контейнер с нужным окружением, собирает и стартует симулятор.
+
+### Требования
+- Установленный Docker
+- Доступ к X11 (для отображения GUI)
+- Права на запуск скрипта: `chmod +x ./db`
+
+### Запуск
+```bash
+./db
+```
+
+Скрипт автоматически:
+- Проверяет наличие и актуальность контейнера (mount текущего workspace)
+- Пересоздаёт контейнер при необходимости
+- Собирает только нужные ROS2-пакеты
+- Запускает симулятор с основным сценарием
+
+> **Примечание:**
+> При первом запуске потребуется загрузка Docker-образа и установка зависимостей (может занять несколько минут).
+
+---
+
+## 2) Актуальная структура проекта
 
 В рабочем состоянии используются пакеты:
 
@@ -15,7 +40,9 @@ ROS2 + Gazebo (Fortress) симулятор для задач SAUVC.
 
 Пакеты-обертки `simulator_bridge` и `simulator_control` удалены как неиспользуемые.
 
-## 2) Запуск
+## 3) Запуск (альтернативный, вручную)
+
+Если требуется ручная сборка и запуск вне Docker:
 
 ### Зависимости
 
@@ -49,20 +76,20 @@ ros2 launch simulator_launch mission_sauvc.launch.py
 - `simulator_launch/launch/diff_drive.launch.py` — сценарий diff_drive
 - `simulator_launch/launch/rrbot_setup.launch.py` — сценарий rrbot
 
-## 3) Конфигурация
+## 4) Конфигурация
 
 - Bridge-конфиг: `simulator_launch/config/simulator_bridge.yaml`
 - RViz-конфиги:
   - `simulator_launch/config/diff_drive.rviz`
   - `simulator_launch/config/rrbot.rviz`
 
-## 4) Контракты взаимодействия (namespace)
+## 5) Контракты взаимодействия (namespace)
 
 - Topics: `/simulator/sensors/*`, `/simulator/perception/*`, `/simulator/control/*`, `/simulator/state/*`
 - Services: `/simulator/control/*`, `/simulator/system/*`
 - Actions: `/simulator/mission/*`
 
-## 5) Правила изменений
+## 6) Правила изменений
 
 - Все межмодульные контракты оформляются через `stingray_interfaces`.
 - Новые runtime-настройки выносятся в YAML.
