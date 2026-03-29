@@ -42,6 +42,8 @@ try:
 except ImportError:
     from yaml import Loader
 
+from .utils.DistanceCalculator import DistanceCalculator
+
 
 def quaternion_to_polar_angle(x, y, z, w): 
     # Вычисляем полярный угол на плоскости XY или попросту крен
@@ -53,80 +55,39 @@ def quaternion_to_polar_angle(x, y, z, w):
 
 
 
-class DistanceCalculator:
-    # Y, X
-    def __init__(self,
-                 object_attrs: dict,
-                 ):
-        self.object_attrs = object_attrs
+ID_TO_NAME = {
+    1: 'starting_zone',
+    2: 'gate',
+    3: 'red_flare',
+    4: 'yellow_flare',
+    5: 'blue_flare',
+    6: 'orange_flare',
+    7: 'qualification_gate',
+    8: 'qualification_gate',
+    9: 'qualification_gate',
+    10: 'mat',
+    11: 'blue_bowl',
+    12: 'red_bowl',
+    13: 'red_bowl',
+    14: 'red_bowl',
+}
 
-    def _tg(self, x):
-        return math.tan(x/360*2*math.pi)
 
-    def _calcDistance(self, angleSize, realSize):
-        if (2 * self._tg(angleSize / 2)) == 0 : return 0
-        return realSize / (2 * self._tg(angleSize / 2))
+def id_2_name(id_value):
+    return ID_TO_NAME.get(id_value, str(id_value))
 
-    def calcDistanceAndAngle(self, xyxy, label_name: str, camera_info):
+class SimulatorPerceptionNode(Node):
+    """Основной узел адаптации данных симуляции в интерфейсы Stingray.
 
-        # self.get_logger().info('AAA1: ' + str(label_name))
-        # self.get_logger().info('AAA2: ' + str(self.object_attrs))
-        # self.get_logger().info('AAA3: ' + str(label_name in self.object_attrs))
-
-        if label_name in self.object_attrs:
-            # camera intrinsics
-            ppx = camera_info.k[2]*2
-            ppy = camera_info.k[5]*2
-            fx = camera_info.k[0]
-            fy = camera_info.k[4]
-
-            # distance
-            obj_width = xyxy[2] - xyxy[0]
-            obj_height = xyxy[3] - xyxy[1]
-            obj_center_x = (xyxy[2] + xyxy[0]) / 2
-            obj_center_y = (xyxy[3] + xyxy[1]) / 2
-
-            if (obj_width == 0) : obj_width = 1
-            if (obj_height == 0) : obj_height = 1
-
-            if self.object_attrs[label_name]["reference_dim"] == "width":
-                pos_z = self.object_attrs[label_name]["real_size"] * fx / obj_width
-            elif self.object_attrs[label_name]["reference_dim"] == "height":
-                pos_z = self.object_attrs[label_name]["real_size"] * fy / obj_height
-            else:
-                raise ValueError("reference_dim must be width or height")
-            
-            pos_x = (obj_center_x - ppx) * pos_z / fx
-            pos_y = (obj_center_y - ppy) * pos_z / fy
-
-            horizontal_angle = math.atan2(pos_x, pos_z) * 57.3
-            vertical_angle = math.atan2(pos_y, pos_z) * 57.3
-
-            return pos_x, pos_y, pos_z, horizontal_angle, vertical_angle
-        
-        return 1.0, 1.0, 1.0, 1.0, 1.0
-
-def id_2_name(id) :
-    if id == 1 : return 'starting_zone'
-    if id == 2 : return 'gate'
-    if id == 3 : return 'red_flare'
-    if id == 4 : return 'yellow_flare'
-    if id == 5 : return 'blue_flare'
-    if id == 6 : return 'orange_flare'
-    if id == 7 : return 'qualification_gate'
-    if id == 8 : return 'qualification_gate'
-    if id == 9 : return 'qualification_gate'
-    if id == 10 : return 'mat'
-    if id == 11 : return 'blue_bowl'
-    if id == 12 : return 'red_bowl'
-    if id == 13 : return 'red_bowl'
-    if id == 14 : return 'red_bowl'
-    return str(id)
-
-class MinimalPublisher(Node):
+    Задачи узла:
+    - принимать детекции/камеры/одометрию/IMU из симуляции;
+    - преобразовывать данные в сообщения пакета `stingray_interfaces`;
+    - обслуживать сервисы управления и стабилизации;
+    - публиковать команды/состояние для остального стека.
+    """
 
     def __init__(self):
-        super().__init__('minimal_publisher')
+        super().__init__('simulator_perception_converter')
 
         self.max_speed_surge = 1.7
         self.max_speed_lag = 0.7
@@ -212,14 +173,8 @@ class MinimalPublisher(Node):
         self.subscription_camera_info  
         self.subscription_camera_info2
 
-        self.bbox_attrs = None
-        try:
-            with pkg_resources.open_text('simulator_perception', 'bbox_attrs.yaml') as f:
-                self.bbox_attrs = yaml.load(f, Loader=Loader)
-        except FileNotFoundError:
-            share_file = get_package_share_directory('simulator_perception') + '/bbox_attrs.yaml'
-            with open(share_file, 'r', encoding='utf-8') as f:
-                self.bbox_attrs = yaml.load(f, Loader=Loader)
+        self.bbox_attrs = self._load_bbox_attrs()
+        self.distance_calculator = DistanceCalculator(object_attrs=self.bbox_attrs)
 
         #self.timer = self.create_timer(2, self.timer_callback)
 
@@ -291,141 +246,71 @@ class MinimalPublisher(Node):
 
         return response
 
-    def bottom_detect_callback(self, msg):
-        # Обработчик для сообщений, приходящих с 'input_topic'
-        self.get_logger().info('Получено сообщение: Bbox')
-        
-        
+    def _load_bbox_attrs(self):
+        """Загружает bbox_attrs.yaml из package resources или из share-пути."""
+        try:
+            with pkg_resources.open_text('simulator_perception', 'bbox_attrs.yaml') as f:
+                return yaml.load(f, Loader=Loader)
+        except FileNotFoundError:
+            share_file = get_package_share_directory('simulator_perception') + '/bbox_attrs.yaml'
+            with open(share_file, 'r', encoding='utf-8') as f:
+                return yaml.load(f, Loader=Loader)
 
-        # self.get_logger().info('AAA: ' + str(bbox_attrs))
+    def _extract_xyxy(self, detection):
+        """Преобразует Detection2D в формат [x1, y1, x2, y2]."""
+        size_x = detection.bbox.size_x
+        size_y = detection.bbox.size_y
+        x = detection.bbox.center.position.x
+        y = detection.bbox.center.position.y
+        return [x - size_x / 2, y - size_y / 2, x + size_x / 2, y + size_y / 2]
 
-        dc = DistanceCalculator(object_attrs=self.bbox_attrs)
-        
+    def _make_bbox(self, object_id, xyxy, camera_info):
+        """Строит сообщение Bbox с оценкой позиции и углов объекта."""
+        label_name = id_2_name(object_id)
+        pos_x, pos_y, pos_z, horizontal_angle, vertical_angle = self.distance_calculator.calcDistanceAndAngle(
+            xyxy, label_name, camera_info)
+
+        bbox = Bbox()
+        bbox.name = label_name
+        bbox.id = object_id
+        bbox.confidence = 1.0
+        bbox.top_left_x = int(xyxy[0])
+        bbox.top_left_y = int(xyxy[1])
+        bbox.bottom_right_x = int(xyxy[2])
+        bbox.bottom_right_y = int(xyxy[3])
+        bbox.pos_x = pos_x
+        bbox.pos_y = pos_y
+        bbox.pos_z = pos_z
+        bbox.horizontal_angle = horizontal_angle
+        bbox.vertical_angle = vertical_angle
+        return bbox
+
+    def _process_detections(self, detections, camera_info, debug_log=False):
+        """Обрабатывает массив детекций и возвращает BboxArray."""
         bboxes = BboxArray()
-        detections = msg.detections
-        for i in detections :
-            id = int(i.results[0].hypothesis.class_id)
 
-            # self.get_logger().info('AAA1: ' + id_2_name(id))
-            # self.get_logger().info('AAA2: ' + str(self.bbox_attrs))
-            # self.get_logger().info('AAA3: ' + str(id_2_name(id) in self.bbox_attrs))
+        for detection in detections:
+            object_id = int(detection.results[0].hypothesis.class_id)
+            xyxy = self._extract_xyxy(detection)
+            bbox = self._make_bbox(object_id, xyxy, camera_info)
 
-            size_x = i.bbox.size_x
-            size_y = i.bbox.size_y
-            x = i.bbox.center.position.x
-            y = i.bbox.center.position.y
-
-            x1 = x - size_x/2
-            y1 = y - size_y/2
-            x2 = x + size_x/2
-            y2 = y + size_y/2
-            
-
-            #dc = DistanceCalculator([])
-            xyxy = [x1, y1, x2, y2]
-            pos_x, pos_y, pos_z, horizontal_angle, vertical_angle = dc.calcDistanceAndAngle(xyxy, id_2_name(id), self.bottom_camera_info)
-
-            bbox = Bbox()
-            bbox.name = id_2_name(id)
-            bbox.id = id
-            bbox.confidence = 1.0
-            bbox.top_left_x = int(x1)
-            bbox.top_left_y = int(y1)
-            bbox.bottom_right_x = int(x2)
-            bbox.bottom_right_y = int(y2)
-            bbox.pos_x = pos_x
-            bbox.pos_y = pos_y 
-            bbox.pos_z = pos_z
-            bbox.horizontal_angle = horizontal_angle
-            bbox.vertical_angle = vertical_angle
-
-            self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
-            self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
+            if debug_log:
+                self.get_logger().info(
+                    'ID: ' + bbox.name + ', POSE: ' + str(bbox.pos_x) + ' ' + str(bbox.pos_y) + ' ' + str(bbox.pos_z))
+                self.get_logger().info(
+                    'ID: ' + bbox.name + ', ANGLE: ' + str(bbox.vertical_angle) + ' ' + str(bbox.horizontal_angle))
 
             bboxes.bboxes.append(bbox)
 
-            #self.publisher2.publish(bbox)
+        return bboxes
+
+    def bottom_detect_callback(self, msg):
+        self.get_logger().info('Получено сообщение: Bbox')
+        bboxes = self._process_detections(msg.detections, self.bottom_camera_info, debug_log=True)
         self.publisher3.publish(bboxes)
 
     def detect_callback(self, msg):
-        # Обработчик для сообщений, приходящих с 'input_topic'
-        #self.get_logger().info('Получено сообщение: Bbox')
-        
-        
-
-        #self.get_logger().info('AAA: ' + str(bbox_attrs))
-
-        dc = DistanceCalculator(object_attrs=self.bbox_attrs)
-        
-        bboxes = BboxArray()
-        detections = msg.detections
-        for i in detections :
-            id = int(i.results[0].hypothesis.class_id)
-
-            # self.get_logger().info('AAA1: ' + id_2_name(id))
-            # self.get_logger().info('AAA2: ' + str(self.bbox_attrs))
-            # self.get_logger().info('AAA3: ' + str(id_2_name(id) in self.bbox_attrs))
-
-            size_x = i.bbox.size_x
-            size_y = i.bbox.size_y
-            x = i.bbox.center.position.x
-            y = i.bbox.center.position.y
-
-            x1 = x - size_x/2
-            y1 = y - size_y/2
-            x2 = x + size_x/2
-            y2 = y + size_y/2
-            
-
-            #dc = DistanceCalculator([])
-            xyxy = [x1, y1, x2, y2]
-            pos_x, pos_y, pos_z, horizontal_angle, vertical_angle = dc.calcDistanceAndAngle(xyxy, id_2_name(id), self.camera_info)
-
-            bbox = Bbox()
-            bbox.name = id_2_name(id)
-            bbox.id = id
-            bbox.confidence = 1.0
-            bbox.top_left_x = int(x1)
-            bbox.top_left_y = int(y1)
-            bbox.bottom_right_x = int(x2)
-            bbox.bottom_right_y = int(y2)
-            bbox.pos_x = pos_x
-            bbox.pos_y = pos_y 
-            bbox.pos_z = pos_z
-            bbox.horizontal_angle = horizontal_angle
-            bbox.vertical_angle = vertical_angle
-
-            bbox2 = Bbox()
-            bbox2.name = id_2_name(id)
-            bbox2.id = id
-            bbox2.confidence = 0.5
-            bbox2.top_left_x = int(x1)
-            bbox2.top_left_y = int(y1)
-            bbox2.bottom_right_x = int(x2)
-            bbox2.bottom_right_y = int(y2)
-            bbox2.pos_x = -0.21
-            bbox2.pos_y = pos_y/2
-            bbox2.pos_z = pos_z/2
-            bbox2.horizontal_angle = horizontal_angle/2
-            bbox2.vertical_angle = vertical_angle/2
-
-            # self.get_logger().info('ID: ' + id_2_name(id) + ', POSE: ' + str(pos_x) + ' ' + str(pos_y) + ' ' + str(pos_z))
-            # self.get_logger().info('ID: ' + id_2_name(id) + ', ANGLE: ' + str(vertical_angle) + ' ' + str(horizontal_angle))
-
-            bboxes.bboxes.append(bbox)
-            #bboxes.bboxes.append(bbox2)
-
-        # заддержка отправки сообщений
-        # if len(self.bbox_buff) > 0 :
-        #     if self.bbox_buff[-1][1] - self.delay_bbox + 0.5 < time.time() :
-        #         self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
-        # else : self.bbox_buff.append([bboxes, time.time() + self.delay_bbox, time.time()])
-
-        # if self.bbox_buff[0][1] <= time.time() :
-        #     m = self.bbox_buff.pop(0)
-        #     self.publisher2.publish(m[0])
-            # self.get_logger().info('bbox (buff_len): ' + str(len(self.bbox_buff)) + ", (delayed time)" + str(m[1]-m[2]))
-
+        bboxes = self._process_detections(msg.detections, self.camera_info)
         self.publisher2.publish(bboxes)
 
     def targetDepth_callback(self, msg):
@@ -681,17 +566,17 @@ class MinimalPublisher(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_publisher = MinimalPublisher()
+    perception_node = SimulatorPerceptionNode()
 
     executor = MultiThreadedExecutor()
-    executor.add_node(minimal_publisher)
+    executor.add_node(perception_node)
 
     executor.spin()
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    minimal_publisher.destroy_node()
+    perception_node.destroy_node()
     rclpy.shutdown()
 
 
