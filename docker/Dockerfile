@@ -17,7 +17,7 @@ ENV QT_X11_NO_MITSHM=1
 
 COPY simulator /simulator
 WORKDIR /simulator
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && source /additional_packages/install/setup.bash && source /stingray_core/install/setup.bash && source /stingray/install/setup.bash && colcon build --packages-select ros_gz_example_bringup ros_gz_example_description ros_gz_example_gazebo py_pub"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && source /additional_packages/install/setup.bash && source /stingray_core/install/setup.bash && source /stingray/install/setup.bash && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_perception"
 
 # Копируем стандартный ROS2 entrypoint (он уже есть в базовом образе, но можно определить свой)
 COPY simulator/docker/ros_entrypoint.sh /ros_entrypoint.sh
