@@ -1,86 +1,69 @@
-# Hydronautics simulator
-Hydronautics Gazebo simulation for [SAUVC](https://github.com/hidronautics/sauvc) and `TEKNOFEST` based on [uuv_simulator](https://github.com/hydronautics-team/uuv_simulator) for testing control algorithms
+# simulator
 
-## Run
+ROS2 + Gazebo (Fortress) симулятор для задач SAUVC.
 
-### SAUVC
-```bash
-sudo ./run_sauvc.sh
-```
+## 1) Актуальная структура проекта
 
-### TEKNOFEST
+В рабочем состоянии используются пакеты:
 
-Build docker image:
-```bash
-sudo docker build -t hydronautics/simulator:teknofest -f Dockerfile.teknofest .
-```
+- `simulator_launch` — launch-оркестрация запуска
+- `simulator_description` — модели и ресурсы робота
+- `simulator_simulation` — миры и ресурсы окружения
+- `simulator_gazebo_plugins` — C++ плагины Gazebo
+- `stingray_interfaces` — контракты `msg/srv/action`
+- `simulator_perception` — Python-ноды (включая `converter`)
 
-Run docker container:
-```bash
-sudo ./run_teknofest.sh
-```
+Пакеты-обертки `simulator_bridge` и `simulator_control` удалены как неиспользуемые.
 
-## Development
+## 2) Запуск
 
-### Build
-1. 	
-    ```sh
-    git submodule update --init --recursive
-    ```
-2.
-    ```sh
-    source /opt/ros/noetic/setup.bash
-    catkin_make
-    ```
+### Зависимости
 
-### Running
+- ROS2 Iron
+- Gazebo Fortress
+- `ros-<distro>-ros-gz`
 
-To run the simulator, use launch file:
-```sh
-source devel/setup.bash
-roslaunch Simulation.launch
-```
-### Run rtabmap mapping
+### Сборка
 
 ```bash
-roslaunch rtabmap_ros rtabmap.launch \
-rtabmap_args:="--delete_db_on_start" \
-rgb_topic:=/rov_model_urdf/camera_depth/color/image_raw \
-depth_topic:=/rov_model_urdf/camera_depth/depth/image_raw \
-camera_info_topic:=/rov_model_urdf/camera_depth/color/ \
-camera_info frame_id:=camera_depth approx_sync:=false \
-rgbd_sync:=true
+colcon build
+source install/setup.bash
 ```
 
-### Cameras
-UV has 5 cameras:
+### Основной запуск
 
-- 1 front camera 
-- 1 front depth camera 
-- 1 bottom camera
-
-Cameras' topics:
-	/rov_model_urdf/camera_bottom/image_raw
-	/rov_model_urdf/camera_front/image_raw
-	/rov_model_urdf/camera_depth/color/image_raw
-	/rov_model_urdf/camera_depth/depth/image_raw
-
-To run depth camera visualization write in terminal:
-
-```sh
-rosrun rviz rviz
+```bash
+ros2 launch simulator_launch sim.launch.py
 ```
 
-### Sensors
-UV has IMU sensor 
+### Прямой запуск миссии SAUVC
 
-### Custom Gazebo plugins
-`model_move_plugin` was written to move UV. Through publishing twist messages you can control robots's planar movements and its hight. Odom message can inform you about robot's position, orientation and twist parameters.
+```bash
+ros2 launch simulator_launch mission_sauvc.launch.py
+```
 
-### Will be added
-- Depth sensor
+### Дополнительные launch-файлы
 
-### Will be fixed
-Bad physics. Buoyancy and hydrodynamic plugins will be fixed.
+- `simulator_launch/launch/mission_sauvc.launch.py` — основной сценарий SAUVC
+- `simulator_launch/launch/world_man.launch.py` — сценарий с world `man`
+- `simulator_launch/launch/diff_drive.launch.py` — сценарий diff_drive
+- `simulator_launch/launch/rrbot_setup.launch.py` — сценарий rrbot
 
+## 3) Конфигурация
 
+- Bridge-конфиг: `simulator_launch/config/simulator_bridge.yaml`
+- RViz-конфиги:
+  - `simulator_launch/config/diff_drive.rviz`
+  - `simulator_launch/config/rrbot.rviz`
+
+## 4) Контракты взаимодействия (namespace)
+
+- Topics: `/simulator/sensors/*`, `/simulator/perception/*`, `/simulator/control/*`, `/simulator/state/*`
+- Services: `/simulator/control/*`, `/simulator/system/*`
+- Actions: `/simulator/mission/*`
+
+## 5) Правила изменений
+
+- Все межмодульные контракты оформляются через `stingray_interfaces`.
+- Новые runtime-настройки выносятся в YAML.
+- Избегать legacy-имен и неинформативных названий файлов.
