@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<robot name="Nulina">
+
+  <!-- КОРПУС -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.16834 -1.2748E-05 -0.0015977" rpy="0 0 0"/>
+      <mass value="16.017"/>
+      <inertia ixx="0.036011" ixy="0" ixz="0" iyy="0.13679" iyz="0" izz="0.15367"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/base_link.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/base_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- VMA1 -->
+  <link name="VMA1">
+    <inertial>
+      <mass value="0.0065"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="meshes/VMA1.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/VMA1.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V1" type="revolute">
+    <origin xyz="0.394 -0.010657 0.11254" rpy="0.57206 -0.45025 -2.2456"/>
+    <parent>base_link</parent>
+    <child>VMA1</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- VMA2 -->
+  <link name="VMA2">
+    <inertial><mass value="0.0065"/><inertia ixx="1e-6" iyy="1e-6" izz="1e-6"/></inertial>
+    <visual><geometry><mesh filename="meshes/VMA2.STL"/></geometry></visual>
+    <collision><geometry><mesh filename="meshes/VMA2.STL"/></geometry></collision>
+  </link>
+  <joint name="V2" type="revolute">
+    <origin xyz="0.394 -0.049023 -0.085674" rpy="2.4918 0.38742 -2.3437"/>
+    <parent>base_link</parent><child>VMA2</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- VMA3 -->
+  <link name="VMA3">
+    <inertial><mass value="0.0065"/><inertia ixx="1e-6" iyy="1e-6" izz="1e-6"/></inertial>
+    <visual><geometry><mesh filename="meshes/VMA3.STL"/></geometry></visual>
+    <collision><geometry><mesh filename="meshes/VMA3.STL"/></geometry></collision>
+  </link>
+  <joint name="V3" type="revolute">
+    <origin xyz="-0.047 0.03818 0.093266" rpy="3.0222 0.62088 -1.7086"/>
+    <parent>base_link</parent><child>VMA3</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- VMA4 -->
+  <link name="VMA4">
+    <inertial><mass value="0.0065"/><inertia ixx="1e-6" iyy="1e-6" izz="1e-6"/></inertial>
+    <visual><geometry><mesh filename="meshes/VMA4.STL"/></geometry></visual>
+    <collision><geometry><mesh filename="meshes/VMA4.STL"/></geometry></collision>
+  </link>
+  <joint name="V4" type="revolute">
+    <origin xyz="-0.047 0.00044439 -0.11969" rpy="0.66553 1.1999 2.3639"/>
+    <parent>base_link</parent><child>VMA4</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- VMA5 -->
+  <link name="VMA5">
+    <inertial><mass value="0.00774"/><inertia ixx="2e-6" iyy="2e-6" izz="3e-6"/></inertial>
+    <visual><geometry><mesh filename="meshes/VMA5.STL"/></geometry></visual>
+    <collision><geometry><mesh filename="meshes/VMA5.STL"/></geometry></collision>
+  </link>
+  <joint name="V5" type="revolute">
+    <origin xyz="0.17524 -0.00085 0.18999" rpy="1.5708 -1.4896 1.5708"/>
+    <parent>base_link</parent><child>VMA5</child>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- VMA6 -->
+  <link name="VMA6">
+    <inertial><mass value="0.00774"/><inertia ixx="2e-6" iyy="2e-6" izz="3e-6"/></inertial>
+    <visual><geometry><mesh filename="meshes/VMA6.STL"/></geometry></visual>
+    <collision><geometry><mesh filename="meshes/VMA6.STL"/></geometry></collision>
+  </link>
+  <joint name="V6" type="revolute">
+    <origin xyz="0.17524 -0.00085 -0.18999" rpy="1.5708 0.8797 1.5708"/>
+    <parent>base_link</parent><child>VMA6</child>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+</robot>

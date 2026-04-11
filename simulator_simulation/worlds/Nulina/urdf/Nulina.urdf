@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<robot name="Nulina">
+
+  <!-- ==================== ОСНОВНОЙ КОРПУС ==================== -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0021431 -1.2748E-05 0.00090226" rpy="0 0 0"/>
+      <mass value="16.017"/>
+      <inertia ixx="0.036011" ixy="-1.0287E-07" ixz="-3.3251E-06" iyy="0.13679" iyz="1.8461E-07" izz="0.15367"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/base_link.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/base_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ==================== МОТОР VMA1 (наклонный) ==================== -->
+  <link name="VMA1">
+    <inertial>
+      <origin xyz="-0.0046001 -1.6795E-06 0.013337" rpy="0 0 0"/>
+      <mass value="0.0065048"/>
+      <inertia ixx="1.286E-06" ixy="-7.1416E-11" ixz="-5.7759E-08" iyy="1.2688E-06" iyz="-5.7783E-11" izz="1.4336E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA1.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA1.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V1" type="revolute">
+    <origin xyz="0.2278 -0.013157 0.11254" rpy="0.57206 -0.45025 -2.2456"/>
+    <parent>base_link</parent>
+    <child>VMA1</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== МОТОР VMA2 (наклонный) ==================== -->
+  <link name="VMA2">
+    <inertial>
+      <origin xyz="-0.019885 -2.5266E-06 0.05761" rpy="0 0 0"/>
+      <mass value="0.0065055"/>
+      <inertia ixx="1.2862E-06" ixy="-5.5244E-11" ixz="-5.7836E-08" iyy="1.2689E-06" iyz="-6.6579E-12" izz="1.4337E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA2.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA2.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V2" type="revolute">
+    <origin xyz="0.2278 -0.051523 -0.085674" rpy="2.4918 0.38742 -2.3437"/>
+    <parent>base_link</parent>
+    <child>VMA2</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== МОТОР VMA3 (наклонный) ==================== -->
+  <link name="VMA3">
+    <inertial>
+      <origin xyz="0.01484825 -3.5948E-06 -0.04302015" rpy="0 0 0"/>
+      <mass value="0.006504"/>
+      <inertia ixx="1.2859E-06" ixy="1.9215E-10" ixz="-5.7903E-08" iyy="1.2689E-06" iyz="-4.1459E-11" izz="1.4334E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA3.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA3.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V3" type="revolute">
+    <origin xyz="-0.2132 0.03568 0.093266" rpy="3.0222 0.62088 -1.7086"/>
+    <parent>base_link</parent>
+    <child>VMA3</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== МОТОР VMA4 (наклонный) ==================== -->
+  <link name="VMA4">
+    <inertial>
+      <origin xyz="-0.00018085 2.2982E-08 0.00052658" rpy="0 0 0"/>
+      <mass value="0.0065042"/>
+      <inertia ixx="1.2858E-06" ixy="-1.9268E-11" ixz="-5.7906E-08" iyy="1.269E-06" iyz="-5.9824E-12" izz="1.4334E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA4.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA4.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V4" type="revolute">
+    <origin xyz="-0.2132 -0.0020556 -0.11969" rpy="0.66553 1.1999 2.3639"/>
+    <parent>base_link</parent>
+    <child>VMA4</child>
+    <axis xyz="0.32628 0 -0.94527"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== МОТОР VMA5 (вертикальный) ==================== -->
+  <link name="VMA5">
+    <inertial>
+      <origin xyz="1.4388E-06 -5.3688E-07 0.012702" rpy="0 0 0"/>
+      <mass value="0.0077401"/>
+      <inertia ixx="2.2065E-06" ixy="8.4966E-11" ixz="-1.4646E-11" iyy="2.2079E-06" iyz="-9.6038E-12" izz="3.2149E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA5.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA5.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V5" type="revolute">
+    <origin xyz="0.0090358 -0.00335 0.18999" rpy="1.5708 -1.4896 1.5708"/>
+    <parent>base_link</parent>
+    <child>VMA5</child>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== МОТОР VMA6 (вертикальный) ==================== -->
+  <link name="VMA6">
+    <inertial>
+      <origin xyz="1.8113E-06 -1.3867E-06 0.012701" rpy="0 0 0"/>
+      <mass value="0.0077405"/>
+      <inertia ixx="2.2064E-06" ixy="-2.1165E-10" ixz="-1.9083E-11" iyy="2.208E-06" iyz="-1.0478E-11" izz="3.2149E-06"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA6.STL"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/VMA6.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="V6" type="revolute">
+    <origin xyz="0.0090358 -0.00335 -0.18999" rpy="1.5708 0.8797 1.5708"/>
+    <parent>base_link</parent>
+    <child>VMA6</child>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="10" velocity="10"/>
+  </joint>
+
+  <!-- ==================== ГИДРОДИНАМИКА (сопротивление воды) ==================== -->
+  <gazebo>
+    <plugin filename="gz-sim-hydrodynamics-system" name="gz::sim::systems::Hydrodynamics">
+      <link_name>base_link</link_name>
+      <fluid_density>900</fluid_density>
+    </plugin>
+  </gazebo>
+
+  <!-- ==================== ПЛАГИНЫ МОТОРОВ (Thrusters) ==================== -->
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V1</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V1</command_topic>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V2</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V2</command_topic>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V3</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V3</command_topic>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V4</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V4</command_topic>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V5</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V5</command_topic>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+      <joint_name>V6</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.1</propeller_diameter>
+      <command_topic>thrust/V6</command_topic>
+    </plugin>
+  </gazebo>
+
+  <!-- ==================== ВКЛЮЧЕНИЕ ФИЗИКИ ==================== -->
+  <gazebo>
+    <static>false</static>
+  </gazebo>
+
+</robot>
+EOF
