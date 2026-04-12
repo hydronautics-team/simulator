@@ -240,10 +240,10 @@
 
     <model name="copter">
       <self_collide>false</self_collide>
-      <pose>36 0.7 2 -1.57 0 1.57</pose>
+      <pose>36 0.7 2 -1.5708 0 1.5708</pose>
       <!-- <pose>0.2 12.5 2 0 0 0</pose> -->
       <include merge="true">
-        <uri>Nulina/model.sdf</uri>
+        <uri>copter/model.sdf</uri>
       </include>
     </model>    
 

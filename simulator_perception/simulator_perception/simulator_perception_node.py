@@ -23,6 +23,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import CameraInfo
 from sensor_msgs.msg import Imu
+from actuator_msgs.msg import Actuators
 
 from stingray_interfaces.msg import Bbox
 from stingray_interfaces.msg import BboxArray
@@ -136,7 +137,10 @@ class SimulatorPerceptionNode(Node):
         self.subscription_targetDepth = self.create_subscription(Float64, '/copter/depth', self.targetDepth_callback, 1)
         self.subscription_targetCourse = self.create_subscription(Float64, '/copter/course', self.targetCourse_callback, 1)
         #self.subscription_vector = self.create_subscription(Twist, '/X3/gazebo/command/twist', self.vector_callback, 10)
-        self.publisherVector = self.create_publisher(Twist, '/X3/gazebo/command/twist', 1)
+        self.publisherVector = self.create_publisher(Twist, '/NULINA/gazebo/command/twist0', 1)
+
+        self.publisherNulina = self.create_publisher(Actuators, '/NULINA/gazebo/command/motor_speed', 1)
+
         self.subscription_camera_info = self.create_subscription(CameraInfo, '/stingray/topics/camera_info', self.vector_camera_callback, 1)
         self.subscription_camera_info2 = self.create_subscription(CameraInfo, '/stingray/topics/bottom_camera/camera_info', self.bottom_camera_callback, 1)
         self.subscription_imu = self.create_subscription(Imu, '/imu', self.imu_callback, 1)
@@ -178,6 +182,12 @@ class SimulatorPerceptionNode(Node):
 
         #self.timer = self.create_timer(2, self.timer_callback)
 
+    def publish_msg(self):
+        msg = Actuators()
+        msg.velocity = [100.0, 100.0, 100.0, 100.0, 0.0, 700.0]
+        #self.get_logger().info('Опубликованно новое сообщение')
+        #self.publisherNulina.publish(msg)
+
     def resetIMU_callback(self, request, response):
         response.success = True
         response.message = "It's just a simulation bro..."
@@ -194,6 +204,7 @@ class SimulatorPerceptionNode(Node):
     
     def imu_callback(self, msg):
         self.lastImu = msg
+        self.publish_msg()
 
     def setTwist_callback(self, request, response):
         response.success = True
@@ -234,7 +245,7 @@ class SimulatorPerceptionNode(Node):
         self.lastVector.linear.y = vector.linear.y
         self.publisherVector.publish(self.lastVector)
 
-        self.get_logger().info('Incoming request!')
+        #self.get_logger().info('Incoming request!')
 
         # self.get_logger().info('Last Twist Vector: setTwist')
         # self.get_logger().info('x: ' + str(self.lastVector.linear.x))
@@ -305,8 +316,8 @@ class SimulatorPerceptionNode(Node):
         return bboxes
 
     def bottom_detect_callback(self, msg):
-        self.get_logger().info('Получено сообщение: Bbox')
-        bboxes = self._process_detections(msg.detections, self.bottom_camera_info, debug_log=True)
+        #self.get_logger().info('Получено сообщение: Bbox')
+        bboxes = self._process_detections(msg.detections, self.bottom_camera_info, debug_log=False)
         self.publisher3.publish(bboxes)
 
     def detect_callback(self, msg):
@@ -325,13 +336,13 @@ class SimulatorPerceptionNode(Node):
         #msg.linear.y = 0.0
         self.lastVector = msg
 
-        self.get_logger().info('Last Twist Vector: setTwist')
-        self.get_logger().info('x: ' + str(self.lastVector.linear.x))
-        self.get_logger().info('y: ' + str(self.lastVector.linear.y))
-        self.get_logger().info('z: ' + str(self.lastVector.linear.z))
-        self.get_logger().info('ax: ' + str(self.lastVector.angular.x))
-        self.get_logger().info('ay: ' + str(self.lastVector.angular.y))
-        self.get_logger().info('az: ' + str(self.lastVector.angular.z))
+        # self.get_logger().info('Last Twist Vector: setTwist')
+        # self.get_logger().info('x: ' + str(self.lastVector.linear.x))
+        # self.get_logger().info('y: ' + str(self.lastVector.linear.y))
+        # self.get_logger().info('z: ' + str(self.lastVector.linear.z))
+        # self.get_logger().info('ax: ' + str(self.lastVector.angular.x))
+        # self.get_logger().info('ay: ' + str(self.lastVector.angular.y))
+        # self.get_logger().info('az: ' + str(self.lastVector.angular.z))
 
     def vector_camera_callback(self, msg):
         # Обработчик для сообщений
@@ -553,6 +564,8 @@ class SimulatorPerceptionNode(Node):
 
         self.lastVector.linear.x = 1
         self.publisherVector.publish(self.lastVector)
+
+        self.publish_msg()
 
         self.get_logger().info('Last Twist Vector: setTwist')
         self.get_logger().info('x: ' + str(self.lastVector.linear.x))

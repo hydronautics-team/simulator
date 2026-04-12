@@ -9,6 +9,8 @@ You can use the velocity controller and command linear velocity and yaw angular 
 
     ign topic -t "/X3/gazebo/command/twist" -m ignition.msgs.Twist -p "linear: {x:0 y: 0 z: 0.1} angular {z: 0}"
 
+    ign topic -t /X3/gazebo/command/motor_speed -m ignition.msgs.Actuators -p 'velocity:[700, 700, 700, 700]'
+
   To hover
 
     ign topic -t "/X3/gazebo/command/twist" -m ignition.msgs.Twist -p " "
@@ -23,7 +25,8 @@ You can use the velocity controller and command linear velocity and yaw angular 
 
 -->
 <include>
-      <uri>x3/model.sdf</uri>
+      <uri>Nulina/model.sdf</uri>
+      <!-- <uri>x3/model.sdf</uri> -->
       <!-- <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/X3 UAV/4</uri> -->
       
       <!-- <sensor name="imu_sensor" type="imu">
@@ -35,9 +38,9 @@ You can use the velocity controller and command linear velocity and yaw angular 
       <plugin
         filename="ignition-gazebo-multicopter-motor-model-system"
         name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>X3</robotNamespace>
-        <jointName>X3/rotor_0_joint</jointName>
-        <linkName>X3/rotor_0</linkName>
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V0</jointName>
+        <linkName>NULINA/VMA0</linkName>
         <turningDirection>ccw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -55,9 +58,9 @@ You can use the velocity controller and command linear velocity and yaw angular 
       <plugin
         filename="ignition-gazebo-multicopter-motor-model-system"
         name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>X3</robotNamespace>
-        <jointName>X3/rotor_1_joint</jointName>
-        <linkName>X3/rotor_1</linkName>
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V1</jointName>
+        <linkName>NULINA/VMA1</linkName>
         <turningDirection>ccw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -66,6 +69,7 @@ You can use the velocity controller and command linear velocity and yaw angular 
         <momentConstant>0.016</momentConstant>
         <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
         <motorNumber>1</motorNumber>
+        <actuator_number>1</actuator_number>
         <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
         <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
         <motorSpeedPubTopic>motor_speed/1</motorSpeedPubTopic>
@@ -75,9 +79,9 @@ You can use the velocity controller and command linear velocity and yaw angular 
       <plugin
         filename="ignition-gazebo-multicopter-motor-model-system"
         name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>X3</robotNamespace>
-        <jointName>X3/rotor_2_joint</jointName>
-        <linkName>X3/rotor_2</linkName>
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V2</jointName>
+        <linkName>NULINA/VMA2</linkName>
         <turningDirection>cw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -95,9 +99,9 @@ You can use the velocity controller and command linear velocity and yaw angular 
       <plugin
         filename="ignition-gazebo-multicopter-motor-model-system"
         name="gz::sim::systems::MulticopterMotorModel">
-        <robotNamespace>X3</robotNamespace>
-        <jointName>X3/rotor_3_joint</jointName>
-        <linkName>X3/rotor_3</linkName>
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V3</jointName>
+        <linkName>NULINA/VMA3</linkName>
         <turningDirection>cw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
@@ -113,44 +117,46 @@ You can use the velocity controller and command linear velocity and yaw angular 
         <motorType>velocity</motorType>
       </plugin>
       <plugin
-        filename="ignition-gazebo-multicopter-control-system"
-        name="gz::sim::systems::MulticopterVelocityControl">
-        <robotNamespace>X3</robotNamespace>
-        <commandSubTopic>gazebo/command/twist</commandSubTopic>
-        <enableSubTopic>enable</enableSubTopic>
-        <comLinkName>X3/base_link</comLinkName>
-        <velocityGain>2.7 2.7 2.7</velocityGain>
-        <attitudeGain>2 3 0.15</attitudeGain>
-        <angularRateGain>0.4 0.52 0.18</angularRateGain>
-        <maximumLinearAcceleration>2 2 2</maximumLinearAcceleration>
-
-        <rotorConfiguration>
-          <rotor>
-            <jointName>X3/rotor_0_joint</jointName>
-            <forceConstant>8.54858e-06</forceConstant>
-            <momentConstant>0.016</momentConstant>
-            <direction>1</direction>
-          </rotor>
-          <rotor>
-            <jointName>X3/rotor_1_joint</jointName>
-            <forceConstant>8.54858e-06</forceConstant>
-            <momentConstant>0.016</momentConstant>
-            <direction>1</direction>
-          </rotor>
-          <rotor>
-            <jointName>X3/rotor_2_joint</jointName>
-            <forceConstant>8.54858e-06</forceConstant>
-            <momentConstant>0.016</momentConstant>
-            <direction>-1</direction>
-          </rotor>
-          <rotor>
-            <jointName>X3/rotor_3_joint</jointName>
-            <forceConstant>8.54858e-06</forceConstant>
-            <momentConstant>0.016</momentConstant>
-            <direction>-1</direction>
-          </rotor>
-        </rotorConfiguration>
+        filename="ignition-gazebo-multicopter-motor-model-system"
+        name="gz::sim::systems::MulticopterMotorModel">
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V4</jointName>
+        <linkName>NULINA/VMA4</linkName>
+        <turningDirection>cw</turningDirection>
+        <timeConstantUp>0.0125</timeConstantUp>
+        <timeConstantDown>0.025</timeConstantDown>
+        <maxRotVelocity>1500.0</maxRotVelocity>
+        <motorConstant>8.54858e-06</motorConstant>
+        <momentConstant>0.016</momentConstant>
+        <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+        <motorNumber>4</motorNumber>
+        <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+        <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+        <motorSpeedPubTopic>motor_speed/4</motorSpeedPubTopic>
+        <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+        <motorType>velocity</motorType>
       </plugin>
+      <plugin
+        filename="ignition-gazebo-multicopter-motor-model-system"
+        name="gz::sim::systems::MulticopterMotorModel">
+        <robotNamespace>NULINA</robotNamespace>
+        <jointName>NULINA/V5</jointName>
+        <linkName>NULINA/VMA5</linkName>
+        <turningDirection>ccw</turningDirection>
+        <timeConstantUp>0.0125</timeConstantUp>
+        <timeConstantDown>0.025</timeConstantDown>
+        <maxRotVelocity>1500.0</maxRotVelocity>
+        <motorConstant>8.54858e-06</motorConstant>
+        <momentConstant>0.016</momentConstant>
+        <commandSubTopic>gazebo/command/motor_speed</commandSubTopic>
+        <motorNumber>5</motorNumber>
+        <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+        <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+        <motorSpeedPubTopic>motor_speed/5</motorSpeedPubTopic>
+        <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+        <motorType>velocity</motorType>
+      </plugin>
+
       <plugin
         filename="ignition-gazebo-odometry-publisher-system"
         name="ignition::gazebo::systems::OdometryPublisher">

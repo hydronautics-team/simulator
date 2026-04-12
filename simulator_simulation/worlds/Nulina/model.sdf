@@ -4,8 +4,91 @@
     <static>false</static>
     <pose>0 0 0 0 0 0</pose>
 
+    <link name="lidar_link">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.000166667</ixx>
+            <iyy>0.000166667</iyy>
+            <izz>0.000166667</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.05</size>
+            </box>
+          </geometry>
+        </visual>
+
+        
+      
+
+      <sensor name="imu_sensor" type="imu">
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>imu</topic>
+      </sensor>
+
+      <sensor name="boundingbox_camera_bottom" type="boundingbox_camera">
+        <box_type>visible_box</box_type>
+        <pose>0.2 0.08 0.0 1.5708 0 1.5708</pose>
+        <camera>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>true</visualize>
+        <topic>/stingray/topics/bottom_camera/bottom_camera</topic>
+      </sensor>
+
+      <sensor name="boundingbox_camera" type="boundingbox_camera">
+        <box_type>visible_box</box_type>
+        <pose>0 0 0.1 0 0 0</pose>
+        <camera>
+          <!-- <horizontal_fov>1.047</horizontal_fov> -->
+          <horizontal_fov>1.78024</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>360</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>true</visualize>
+        <topic>/stingray/topics/front_camera</topic>
+      </sensor>
+
+      </link>
+      <joint name='lidar_joint' type='fixed'>
+        <parent>NULINA/base_link</parent>
+        <child>lidar_link</child>
+      </joint>
+
+
     <!-- ==================== КОРПУС ==================== -->
-    <link name="base_link">
+    <link name="NULINA/base_link">
       <pose>0 0 0 0 0 0</pose>
       <inertial>
         <pose>0.16834 -1.2748E-05 -0.0015977 0 0 0</pose>
@@ -37,81 +120,81 @@
     </link>
 
     <!-- ==================== МОТОР VMA1 ==================== -->
-    <link name="VMA1">
+    <link name="NULINA/VMA1">
       <pose>0.394 -0.010657 0.11254 0.57206 -0.45025 -2.2456</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
       <visual name="visual_vma1"><geometry><mesh><uri>model://Nulina/meshes/VMA1.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma1"><geometry><mesh><uri>model://Nulina/meshes/VMA1.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V1" type="revolute">
-      <parent>base_link</parent><child>VMA1</child>
+    <joint name="NULINA/V1" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA1</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
     <!-- ==================== МОТОР VMA2 ==================== -->
-    <link name="VMA2">
+    <link name="NULINA/VMA2">
       <pose>0.394 -0.049023 -0.085674 2.4918 0.38742 -2.3437</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
       <visual name="visual_vma2"><geometry><mesh><uri>model://Nulina/meshes/VMA2.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma2"><geometry><mesh><uri>model://Nulina/meshes/VMA2.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V2" type="revolute">
-      <parent>base_link</parent><child>VMA2</child>
+    <joint name="NULINA/V2" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA2</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
     <!-- ==================== МОТОР VMA3 ==================== -->
-    <link name="VMA3">
+    <link name="NULINA/VMA3">
       <pose>-0.047 0.03818 0.093266 3.0222 0.62088 -1.7086</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
       <visual name="visual_vma3"><geometry><mesh><uri>model://Nulina/meshes/VMA3.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma3"><geometry><mesh><uri>model://Nulina/meshes/VMA3.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V3" type="revolute">
-      <parent>base_link</parent><child>VMA3</child>
+    <joint name="NULINA/V3" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA3</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
     <!-- ==================== МОТОР VMA4 ==================== -->
-    <link name="VMA4">
+    <link name="NULINA/VMA4">
       <pose>-0.047 0.00044439 -0.11969 0.66553 1.1999 2.3639</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
       <visual name="visual_vma4"><geometry><mesh><uri>model://Nulina/meshes/VMA4.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma4"><geometry><mesh><uri>model://Nulina/meshes/VMA4.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V4" type="revolute">
-      <parent>base_link</parent><child>VMA4</child>
+    <joint name="NULINA/V4" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA4</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0.32628 0 -0.94527</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
     <!-- ==================== МОТОР VMA5 ==================== -->
-    <link name="VMA5">
+    <link name="NULINA/VMA5">
       <pose>0.17524 -0.00085 0.18999 1.5708 -1.4896 1.5708</pose>
       <inertial><mass>0.001</mass><inertia><ixx>2e-6</ixx><iyy>2e-6</iyy><izz>3e-6</izz></inertia></inertial>
       <visual name="visual_vma5"><geometry><mesh><uri>model://Nulina/meshes/VMA5.STL</uri></mesh></geometry><material><ambient>0.79216 0.81961 0.93333 1</ambient></material></visual>
       <collision name="collision_vma5"><geometry><mesh><uri>model://Nulina/meshes/VMA5.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V5" type="revolute">
-      <parent>base_link</parent><child>VMA5</child>
+    <joint name="NULINA/V5" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA5</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0 0 1</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0 0 1</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
     <!-- ==================== МОТОР VMA6 ==================== -->
-    <link name="VMA6">
+    <link name="NULINA/VMA0">
       <pose>0.17524 -0.00085 -0.18999 1.5708 0.8797 1.5708</pose>
       <inertial><mass>0.001</mass><inertia><ixx>2e-6</ixx><iyy>2e-6</iyy><izz>3e-6</izz></inertia></inertial>
       <visual name="visual_vma6"><geometry><mesh><uri>model://Nulina/meshes/VMA6.STL</uri></mesh></geometry><material><ambient>1 1 1 1</ambient></material></visual>
       <collision name="collision_vma6"><geometry><mesh><uri>model://Nulina/meshes/VMA6.STL</uri></mesh></geometry></collision>
     </link>
-    <joint name="V6" type="revolute">
-      <parent>base_link</parent><child>VMA6</child>
+    <joint name="NULINA/V0" type="revolute">
+      <parent>NULINA/base_link</parent><child>NULINA/VMA0</child>
       <pose>0 0 0 0 0 0</pose>
-      <axis><xyz>0 0 1</xyz><limit><lower>-3.14159</lower><upper>3.14159</upper></limit></axis>
+      <axis><xyz>0 0 1</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
   </model>

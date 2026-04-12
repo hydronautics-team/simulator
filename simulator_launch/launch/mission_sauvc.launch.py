@@ -50,7 +50,9 @@ def generate_launch_description():
 
     bridge_arguments = [
         '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
-        '/X3/gazebo/command/twist@geometry_msgs/msg/Twist]gz.msgs.Twist',
+
+        '/NULINA/gazebo/command/motor_speed@actuator_msgs/msg/Actuators]gz.msgs.Actuators',
+
         '/model/copter/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
         '/camera/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
         '/camera/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
