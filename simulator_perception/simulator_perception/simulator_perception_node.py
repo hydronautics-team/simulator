@@ -30,6 +30,10 @@ from stingray_interfaces.msg import BboxArray
 from stingray_interfaces.srv import SetTwist
 from stingray_interfaces.srv import SetStabilization
 from stingray_interfaces.msg import UVState
+
+from sensor_msgs.msg import Image
+
+
 from std_srvs.srv import Trigger
 from ament_index_python.packages import get_package_share_directory
 import importlib.resources as pkg_resources
@@ -124,6 +128,9 @@ class SimulatorPerceptionNode(Node):
         # изменено
         self.subscription_detect_front = self.create_subscription(Detection2DArray, '/stingray/topics/front_camera', self.detect_callback, 1)
         self.subscription_detect_bottom = self.create_subscription(Detection2DArray, '/stingray/topics/bottom_camera/bottom_camera', self.bottom_detect_callback, 1)
+
+        self.subscription_detect_bottom_image = self.create_subscription(Image, '/stingray/topics/bottom_camera/bottom_camera_image', self.bottom_detect_image_callback, 1)
+
         self.srv_setTwist = self.create_service(SetTwist, '/stingray/services/set_twist', self.setTwist_callback)
         #self.publisher = self.create_publisher(Bbox, '/stingray/topics/front_camera/bbox_array', 10)
         self.publisher2 = self.create_publisher(BboxArray, '/stingray/topics/camera/front/bbox_array', 1)
@@ -182,11 +189,11 @@ class SimulatorPerceptionNode(Node):
 
         #self.timer = self.create_timer(2, self.timer_callback)
 
-    def publish_msg(self):
+    def publish_msg(self, vma0_speed):
         msg = Actuators()
-        msg.velocity = [100.0, 100.0, 100.0, 100.0, 0.0, 700.0]
-        #self.get_logger().info('Опубликованно новое сообщение')
-        #self.publisherNulina.publish(msg)
+        msg.velocity = [vma0_speed, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.get_logger().info('Опубликованно новое сообщение для моторов')
+        self.publisherNulina.publish(msg)
 
     def resetIMU_callback(self, request, response):
         response.success = True
@@ -204,7 +211,7 @@ class SimulatorPerceptionNode(Node):
     
     def imu_callback(self, msg):
         self.lastImu = msg
-        self.publish_msg()
+        #self.publish_msg()
 
     def setTwist_callback(self, request, response):
         response.success = True
@@ -319,6 +326,12 @@ class SimulatorPerceptionNode(Node):
         #self.get_logger().info('Получено сообщение: Bbox')
         bboxes = self._process_detections(msg.detections, self.bottom_camera_info, debug_log=False)
         self.publisher3.publish(bboxes)
+
+    def bottom_detect_image_callback(self, msg):
+        self.get_logger().info('Получено сообщение: Image')
+        # openCV + САУ
+        vma0_speed = 100.0
+        self.publish_msg(vma0_speed)
 
     def detect_callback(self, msg):
         bboxes = self._process_detections(msg.detections, self.camera_info)
@@ -565,7 +578,7 @@ class SimulatorPerceptionNode(Node):
         self.lastVector.linear.x = 1
         self.publisherVector.publish(self.lastVector)
 
-        self.publish_msg()
+        #self.publish_msg()
 
         self.get_logger().info('Last Twist Vector: setTwist')
         self.get_logger().info('x: ' + str(self.lastVector.linear.x))
