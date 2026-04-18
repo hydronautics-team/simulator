@@ -5,13 +5,13 @@
     <pose>0 0 0 0 0 0</pose>
 
     <link name="lidar_link">
-        <pose>0 0 0 0 0 0</pose>
+        <pose>0.3 0 0 0 0 0</pose>
         <inertial>
-          <mass>0.1</mass>
+          <mass>0.0</mass>
           <inertia>
-            <ixx>0.000166667</ixx>
-            <iyy>0.000166667</iyy>
-            <izz>0.000166667</izz>
+            <ixx>0.0</ixx>
+            <iyy>0.0</iyy>
+            <izz>0.0</izz>
           </inertia>
         </inertial>
         <collision name="collision">
@@ -41,7 +41,7 @@
 
       <sensor name="boundingbox_camera_bottom" type="boundingbox_camera">
         <box_type>visible_box</box_type>
-        <pose>0.2 0.08 0.0 1.5708 0 1.5708</pose>
+        <pose>-0.10 0.08 0.0 1.5708 0 1.5708</pose>
         <camera>
           <horizontal_fov>1.047</horizontal_fov>
           <image>
@@ -63,11 +63,10 @@
         <box_type>visible_box</box_type>
         <pose>0 0 0.1 0 0 0</pose>
         <camera>
-          <!-- <horizontal_fov>1.047</horizontal_fov> -->
-          <horizontal_fov>1.78024</horizontal_fov>
+          <horizontal_fov>1.047</horizontal_fov>
           <image>
             <width>640</width>
-            <height>360</height>
+            <height>480</height>
           </image>
           <clip>
             <near>0.01</near>
@@ -91,14 +90,14 @@
     <link name="NULINA/base_link">
       <pose>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.16834 -1.2748E-05 -0.0015977 0 0 0</pose>
-        <mass>0.5</mass>
+        <pose>0.16834 0.0 0.0 0 0 0</pose>
+        <mass>12</mass>
         <inertia>
           <ixx>0.036011</ixx>
-          <ixy>-1.0288E-07</ixy>
-          <ixz>-3.3251E-06</ixz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
           <iyy>0.13679</iyy>
-          <iyz>1.8461E-07</iyz>
+          <iyz>0</iyz>
           <izz>0.15367</izz>
         </inertia>
       </inertial>
@@ -184,7 +183,7 @@
       <axis><xyz>0 0 1</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
 
-    <!-- ==================== МОТОР VMA6 ==================== -->
+    <!-- ==================== МОТОР VMA0 ==================== -->
     <link name="NULINA/VMA0">
       <pose>0.17524 -0.00085 -0.18999 1.5708 0.8797 1.5708</pose>
       <inertial><mass>0.001</mass><inertia><ixx>2e-6</ixx><iyy>2e-6</iyy><izz>3e-6</izz></inertia></inertial>

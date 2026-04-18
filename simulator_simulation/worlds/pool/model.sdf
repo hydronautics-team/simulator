@@ -27,16 +27,16 @@
             <uri>meshes/pool_final.DAE</uri>
           </mesh>
         </geometry>
-        <material>
+        <!-- <material>
           <shader type='pixel'/>
           <diffuse>1.0 1.0 1.0</diffuse>
           <pbr>
             <metal>
-              <albedo_map>materials/textures/Entire.png</albedo_map>
+              <albedo_map>model://pool/materials/textures/Entire.png</albedo_map>
             </metal>
           </pbr>
-          <uri>materials/texturess/Entire.png</uri>
-        </material>
+          <uri>model://pool/materials/textures/Entire.png</uri>
+        </material> -->
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>

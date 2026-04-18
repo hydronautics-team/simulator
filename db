@@ -50,4 +50,4 @@ docker run -it --rm \
     -e DISPLAY="${DISPLAY:-}" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     hydronautics/simulator:sauvc-ros-humble \
-    bash -lc "cd /simulator && rm -rf build install log && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_gazebo_plugins stingray_interfaces simulator_perception && source /simulator/install/setup.bash && ros2 launch simulator_launch sim.launch.py"
+    bash -c "source /opt/ros/humble/setup.bash && cd /simulator && rm -rf build install log && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_gazebo_plugins stingray_interfaces simulator_perception && source /simulator/install/setup.bash && ros2 launch simulator_launch sim.launch.py"

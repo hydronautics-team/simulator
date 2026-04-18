@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="aruco_marker">
+    <static>true</static>
+    
+    <!-- ЕДИНЫЙ ЛИНК СО ВСЕМИ ВИЗУАЛАМИ И КОЛЛИЗИЯМИ -->
+    <link name="marker_body">
+      <pose>0 0 0 0 0 0</pose>
+      
+      <!-- БЕЛАЯ ОСНОВА -->
+      <visual name="base_visual">
+        <geometry><box><size>0.15 0.15 0.01</size></box></geometry>
+        <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+      </visual>
+      <collision name="base_collision">
+        <geometry><box><size>0.15 0.15 0.01</size></box></geometry>
+      </collision>
+
+      <!-- ============================================ -->
+      <!-- СТРОКА 0: Ч Ч Ч Ч Ч Ч                       -->
+      <!-- ============================================ -->
+      <visual name="v00"><pose>-0.04167 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c00"><pose>-0.04167 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v01"><pose>-0.02500 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c01"><pose>-0.02500 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v02"><pose>-0.00833 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c02"><pose>-0.00833 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v03"><pose>0.00833 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c03"><pose>0.00833 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v04"><pose>0.02500 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c04"><pose>0.02500 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v05"><pose>0.04167 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c05"><pose>0.04167 0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+
+      <!-- СТРОКА 1: Ч Б Ч Б Б Ч -->
+      <visual name="v10"><pose>-0.04167 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c10"><pose>-0.04167 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v11"><pose>-0.02500 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c11"><pose>-0.02500 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v12"><pose>-0.00833 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c12"><pose>-0.00833 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v13"><pose>0.00833 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c13"><pose>0.00833 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v14"><pose>0.02500 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c14"><pose>0.02500 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v15"><pose>0.04167 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c15"><pose>0.04167 0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+
+      <!-- СТРОКА 2: Ч Ч Б Ч Б Ч -->
+      <visual name="v20"><pose>-0.04167 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c20"><pose>-0.04167 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v21"><pose>-0.02500 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c21"><pose>-0.02500 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v22"><pose>-0.00833 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c22"><pose>-0.00833 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v23"><pose>0.00833 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c23"><pose>0.00833 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v24"><pose>0.02500 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c24"><pose>0.02500 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v25"><pose>0.04167 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c25"><pose>0.04167 0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+
+      <!-- СТРОКА 3: Ч Ч Ч Б Б Ч -->
+      <visual name="v30"><pose>-0.04167 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c30"><pose>-0.04167 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v31"><pose>-0.02500 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c31"><pose>-0.02500 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v32"><pose>-0.00833 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c32"><pose>-0.00833 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v33"><pose>0.00833 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c33"><pose>0.00833 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v34"><pose>0.02500 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c34"><pose>0.02500 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v35"><pose>0.04167 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c35"><pose>0.04167 -0.00833 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+
+      <!-- СТРОКА 4: Ч Ч Ч Б Ч Ч -->
+      <visual name="v40"><pose>-0.04167 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c40"><pose>-0.04167 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v41"><pose>-0.02500 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c41"><pose>-0.02500 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v42"><pose>-0.00833 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c42"><pose>-0.00833 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v43"><pose>0.00833 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material></visual>
+      <collision name="c43"><pose>0.00833 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v44"><pose>0.02500 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c44"><pose>0.02500 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v45"><pose>0.04167 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c45"><pose>0.04167 -0.02500 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+
+      <!-- СТРОКА 5: Ч Ч Ч Ч Ч Ч -->
+      <visual name="v50"><pose>-0.04167 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c50"><pose>-0.04167 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v51"><pose>-0.02500 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c51"><pose>-0.02500 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v52"><pose>-0.00833 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c52"><pose>-0.00833 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v53"><pose>0.00833 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c53"><pose>0.00833 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v54"><pose>0.02500 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c54"><pose>0.02500 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+      <visual name="v55"><pose>0.04167 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse></material></visual>
+      <collision name="c55"><pose>0.04167 -0.04167 0.0051 0 0 0</pose><geometry><box><size>0.01667 0.01667 0.0002</size></box></geometry></collision>
+      
+    </link>
+  </model>
+</sdf>
