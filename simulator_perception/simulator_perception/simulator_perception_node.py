@@ -385,6 +385,30 @@ class SimulatorPerceptionNode(Node):
         V5 = (1.0 * Ux - 0.19 * Upsi)
 
         return [max(-300.0, min(300.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
+    
+    def send_udp_data(self, x, y, z, roll, pitch, yaw, type, mid):
+        """Отправка данных в Qt виджет на хосте"""
+        import socket
+        import json
+        import time
+        
+        UDP_IP = "172.17.0.1"  # IP ноутбука
+        UDP_PORT = 8888
+        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        
+        data = {
+            'x': round(float(x), 2),
+            'y': round(float(y), 2),
+            'z': round(float(z), 2),
+            'roll': round(float(roll), 1),
+            'pitch': round(float(pitch), 1),
+            'yaw': round(float(yaw), 1),
+            'type': type,
+            'Id': int(mid)
+        }
+
+        message = json.dumps(data)
+        udp_sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
 
     def bottom_detect_image_callback(self, msg):
         import time
@@ -392,7 +416,9 @@ class SimulatorPerceptionNode(Node):
         import cv2.aruco as aruco
         import numpy as np
         import math
-            
+
+        type = "MARKER NOT DETECTED"
+        
         # Конвертация изображения
         if msg.encoding == 'rgb8':
             cv_image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, 3)
@@ -406,7 +432,7 @@ class SimulatorPerceptionNode(Node):
         parameters = cv2.aruco.DetectorParameters_create()
         corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
         if ids is not None and len(ids) > 0:
-            self.get_logger().info(f"🎯 DETECTED {len(ids)} marker(s)!")
+            self.get_logger().info(f"DETECTED {len(ids)} marker(s)!")
             camera_matrix = np.array([[554, 0, 320], [0, 554, 240], [0, 0, 1]], dtype=np.float32)
             dist_coeffs = np.zeros((5, 1))
             marker_length = 0.1  # 10 см
@@ -414,6 +440,7 @@ class SimulatorPerceptionNode(Node):
                 corners, marker_length, camera_matrix, dist_coeffs
             )
             for i, marker_id in enumerate(ids):
+                type = "ArUco"
                 mid = marker_id[0] if isinstance(marker_id, np.ndarray) else marker_id
                 corner = corners[i][0]
                 center_x = np.mean(corner[:, 0])
@@ -449,19 +476,20 @@ class SimulatorPerceptionNode(Node):
             Ux = self.control_marsh(0.2, x, current_time)
             # Отправка на моторы
             speeds = self.BFS_DRK(Ux, 0.0, 0, 0, 0, 0)
-            self.get_logger().info(f"🔧 Motors: V0={speeds[0]:.1f}, V1={speeds[1]:.1f}, V2={speeds[2]:.1f}, V3={speeds[3]:.1f}, V4={speeds[4]:.1f}, V5={speeds[5]:.1f}")
+            self.get_logger().info(f"Motors: V0={speeds[0]:.1f}, V1={speeds[1]:.1f}, V2={speeds[2]:.1f}, V3={speeds[3]:.1f}, V4={speeds[4]:.1f}, V5={speeds[5]:.1f}")
             msg_motors = Actuators()
             msg_motors.velocity = [float(s) for s in speeds]
             self.publisherNulina.publish(msg_motors)
-            
+            self.send_udp_data(x, y, z, roll_deg, pitch_deg, yaw_deg, type, mid)
+
         else:
-            self.get_logger().info("❌ No ArUco markers detected")
+            self.get_logger().info("No ArUco markers detected")
             # Остановка моторов
             msg_motors = Actuators()
             msg_motors.velocity = [0.0] * 6
             self.publisherNulina.publish(msg_motors)
 
-
+        
         self.get_logger().info("=== ArUco Detection Finished ===")
         
     def detect_callback(self, msg):
