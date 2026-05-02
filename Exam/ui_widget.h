@@ -10,7 +10,6 @@
 #define UI_WIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtMultimediaWidgets/QVideoWidget>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
@@ -29,7 +28,6 @@ class Ui_Widget
 {
 public:
     QGridLayout *gridLayout;
-    QVideoWidget *Video;
     QGraphicsView *rollView;
     QGraphicsView *pos3D;
     QSlider *horizontalSlider;
@@ -40,6 +38,7 @@ public:
     QSpacerItem *verticalSpacer;
     QVBoxLayout *verticalLayout_2;
     QLabel *label;
+    QLabel *Video;
 
     void setupUi(QWidget *Widget)
     {
@@ -50,46 +49,33 @@ public:
         Widget->setStyleSheet(QString::fromUtf8(""));
         gridLayout = new QGridLayout(Widget);
         gridLayout->setObjectName("gridLayout");
-        Video = new QVideoWidget(Widget);
-        Video->setObjectName("Video");
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(Video->sizePolicy().hasHeightForWidth());
-        Video->setSizePolicy(sizePolicy);
-        Video->setMinimumSize(QSize(0, 0));
-        Video->setMaximumSize(QSize(16777215, 800));
-        Video->setStyleSheet(QString::fromUtf8(""));
-
-        gridLayout->addWidget(Video, 0, 0, 1, 1);
-
         rollView = new QGraphicsView(Widget);
         rollView->setObjectName("rollView");
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(rollView->sizePolicy().hasHeightForWidth());
-        rollView->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(rollView->sizePolicy().hasHeightForWidth());
+        rollView->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(rollView, 0, 2, 1, 1);
 
         pos3D = new QGraphicsView(Widget);
         pos3D->setObjectName("pos3D");
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(pos3D->sizePolicy().hasHeightForWidth());
-        pos3D->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(pos3D->sizePolicy().hasHeightForWidth());
+        pos3D->setSizePolicy(sizePolicy1);
 
         gridLayout->addWidget(pos3D, 1, 1, 4, 2);
 
         horizontalSlider = new QSlider(Widget);
         horizontalSlider->setObjectName("horizontalSlider");
-        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(horizontalSlider->sizePolicy().hasHeightForWidth());
-        horizontalSlider->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(horizontalSlider->sizePolicy().hasHeightForWidth());
+        horizontalSlider->setSizePolicy(sizePolicy2);
         horizontalSlider->setMaximum(100);
         horizontalSlider->setPageStep(1);
         horizontalSlider->setOrientation(Qt::Horizontal);
@@ -99,8 +85,8 @@ public:
 
         pitchView = new QGraphicsView(Widget);
         pitchView->setObjectName("pitchView");
-        sizePolicy1.setHeightForWidth(pitchView->sizePolicy().hasHeightForWidth());
-        pitchView->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(pitchView->sizePolicy().hasHeightForWidth());
+        pitchView->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(pitchView, 0, 1, 1, 1);
 
@@ -156,8 +142,11 @@ public:
         __qtablewidgetitem8->setBackground(brush2);
         tableWidget->setItem(0, 3, __qtablewidgetitem8);
         tableWidget->setObjectName("tableWidget");
-        sizePolicy.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
-        tableWidget->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
+        tableWidget->setSizePolicy(sizePolicy3);
 
         verticalLayout->addWidget(tableWidget);
 
@@ -192,6 +181,11 @@ public:
 
         gridLayout->addWidget(label, 2, 0, 1, 1);
 
+        Video = new QLabel(Widget);
+        Video->setObjectName("Video");
+
+        gridLayout->addWidget(Video, 0, 0, 1, 1);
+
 
         retranslateUi(Widget);
 
@@ -217,6 +211,7 @@ public:
         tableWidget->setSortingEnabled(__sortingEnabled);
 
         label->setText(QCoreApplication::translate("Widget", "\320\236\320\266\320\270\320\264\320\260\320\275\320\270\320\265 \320\277\321\200\320\270\320\265\320\274\320\260...", nullptr));
+        Video->setText(QString());
     } // retranslateUi
 
 };

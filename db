@@ -39,7 +39,7 @@ fi
 
 echo "Контейнер ${CONTAINER_NAME} не найден. Создаём и запускаем новый..."
 
-docker run -d --rm \
+docker run -it --rm \
     --name "${CONTAINER_NAME}" \
     --workdir /simulator \
     --mount type=bind,source="${HOST_WS}",target=/simulator \
@@ -50,22 +50,12 @@ docker run -d --rm \
     -e DISPLAY="${DISPLAY:-}" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     hydronautics/simulator:sauvc-ros-humble \
-    bash -c "source /opt/ros/humble/setup.bash && cd /simulator && rm -rf build install log && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_gazebo_plugins stingray_interfaces simulator_perception && source /simulator/install/setup.bash && ros2 launch simulator_launch sim.launch.py"
-
-sleep 3
-
-# Запускаем виджет
-echo "Запуск виджета..."
-cd /home/niksen/simulator/Exam
-
-make clean
-qmake6
-make
-
-if [ $? -ne 0 ]; then
-    echo "Ошибка сборки виджета"
-    exit 1
-fi
-
-echo "Виджет собран и запущен"
-./untitled2 &
+    bash -c "source /opt/ros/humble/setup.bash && \
+        source /stingray/install/setup.bash && \
+        source /additional_packages/install/setup.bash && \
+        cd /simulator && \
+        rm -rf build install log && \
+        colcon build && \
+        source /simulator/install/setup.bash && \
+        ros2 launch simulator_launch sim.launch.py
+    "

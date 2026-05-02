@@ -8,14 +8,8 @@
 
 #include <memory>
 #include "widget3d.h"
-#include <QtGui/qtextcursor.h>
-#include <QScreen>
-#include <QtNetwork/QSslPreSharedKeyAuthenticator>
-#include <QtNetwork/QSslError>
 #include <QtDataVisualization/q3dscene.h>
-#include <QtDataVisualization/qbar3dseries.h>
 #include <QtDataVisualization/qscatter3dseries.h>
-#include <QtDataVisualization/qsurface3dseries.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'widget3d.h' doesn't include <QObject>."

@@ -122,7 +122,7 @@ You can use the velocity controller and command linear velocity and yaw angular 
         <robotNamespace>NULINA</robotNamespace>
         <jointName>NULINA/V4</jointName>
         <linkName>NULINA/VMA4</linkName>
-        <turningDirection>cсw</turningDirection>
+        <turningDirection>ccw</turningDirection>
         <timeConstantUp>0.0125</timeConstantUp>
         <timeConstantDown>0.025</timeConstantDown>
         <maxRotVelocity>1500.0</maxRotVelocity>

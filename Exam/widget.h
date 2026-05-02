@@ -6,16 +6,23 @@
 
 #include <QWidget>
 #include <QImageReader>
-#include <QMediaPlayer>
-#include <QVideoWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
-#include <QtDataVisualization>
-#include <QUdpSocket>
+#include <QScatter3DSeries>
+#include <QScatterDataArray>
+#include <QMediaPlayer>
+#include <QPushButton>
+#include <QSlider>
+#include <QLabel>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTimer>
 
 class Widget : public QWidget, private Ui::Widget
 {
@@ -34,12 +41,9 @@ public:
     int videoSize = 0;
     int videoTime = 0;
     int markerPressCount = 0;
-
     double timeCounter = 0;
     double a = 0;
-
     bool calibDone = false;
-
 
 private:
     QMediaPlayer *player;
@@ -54,10 +58,10 @@ private:
     int n = 1;
     QScatter3DSeries *rovSeries = nullptr;
     QScatter3DSeries *dsSeries = nullptr;
-    QUdpSocket *udpSocket = nullptr;
-    void initUDP();
-    void processUDPData();
-
-    Widget3D *threeDWidget = nullptr;
+    QNetworkAccessManager *httpManager = nullptr;
+    QTimer *httpTimer = nullptr;
+    QLabel *streamLabel = nullptr;
+    QPixmap streamFrame;
 };
+
 #endif // WIDGET_H

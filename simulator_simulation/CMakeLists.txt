@@ -14,7 +14,3 @@ ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/simulator_simulation.
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/simulator_simulation.sh.in")
 
 ament_package()
-
-install(DIRECTORY models DESTINATION share/${PROJECT_NAME})
-install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME})
-

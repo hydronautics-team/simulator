@@ -14,7 +14,7 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, String
 from std_msgs.msg import Float32
 from vision_msgs.msg import Detection2DArray
 from nav_msgs.msg import Odometry
@@ -29,6 +29,7 @@ from stingray_interfaces.srv import SetStabilization
 from stingray_interfaces.msg import UVState
 
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 
 from std_srvs.srv import Trigger
 from ament_index_python.packages import get_package_share_directory
@@ -134,8 +135,8 @@ class SimulatorPerceptionNode(Node):
         self.depth_controller = PDController(Kp=170, Kd=120, max_out=800, min_out=-800)
         self.marsh_controller = PDController(Kp=180, Kd=150, max_out=500, min_out=-50)
 
-        self.control_state = 'STABILIZE'    
-        self.stable_count = 0
+        self.publisher_marker = self.create_publisher(String, '/stingray/topics/marker_debug', 1)
+        self.publisher_processed_image = self.create_publisher(Image, '/stingray/topics/processed_image', 1)
 
         #self.srv_circle = self.create_service(Trigger, '/stingray/services/start_circle', self.start_circle_callback)
         #self.srv_stop_circle = self.create_service(Trigger, '/stingray/services/stop_circle', self.stop_circle_callback)
@@ -386,39 +387,16 @@ class SimulatorPerceptionNode(Node):
 
         return [max(-300.0, min(300.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
     
-    def send_udp_data(self, x, y, z, roll, pitch, yaw, type, mid):
-        """Отправка данных в Qt виджет на хосте"""
-        import socket
-        import json
-        import time
-        
-        UDP_IP = "172.17.0.1"  # IP ноутбука
-        UDP_PORT = 8888
-        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        
-        data = {
-            'x': round(float(x), 2),
-            'y': round(float(y), 2),
-            'z': round(float(z), 2),
-            'roll': round(float(roll), 1),
-            'pitch': round(float(pitch), 1),
-            'yaw': round(float(yaw), 1),
-            'type': type,
-            'Id': int(mid)
-        }
-
-        message = json.dumps(data)
-        udp_sock.sendto(message.encode(), (UDP_IP, UDP_PORT))
-
     def bottom_detect_image_callback(self, msg):
         import time
+        import json
         import cv2
         import cv2.aruco as aruco
         import numpy as np
         import math
 
         type = "MARKER NOT DETECTED"
-        
+
         # Конвертация изображения
         if msg.encoding == 'rgb8':
             cv_image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, 3)
@@ -431,6 +409,7 @@ class SimulatorPerceptionNode(Node):
         aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
         parameters = cv2.aruco.DetectorParameters_create()
         corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+
         if ids is not None and len(ids) > 0:
             self.get_logger().info(f"DETECTED {len(ids)} marker(s)!")
             camera_matrix = np.array([[554, 0, 320], [0, 554, 240], [0, 0, 1]], dtype=np.float32)
@@ -465,8 +444,22 @@ class SimulatorPerceptionNode(Node):
                 pitch_deg = - math.degrees(pitch)
                 yaw_deg = math.degrees(yaw)
                 self.get_logger().info(f"    Rotation (deg): Roll={pitch_deg:.1f}, Pitch={roll_deg:.1f}, Yaw={yaw_deg:.1f}")
-            cv2.aruco.drawDetectedMarkers(cv_image, corners, ids)
+            
+                marker_data = json.dumps({
+                    "id": int(mid),
+                    "x": round(float(x), 3),
+                    "y": round(float(y), 3),
+                    "z": round(float(z), 3),
+                    "roll": round(float(roll_deg), 1),
+                    "pitch": round(float(pitch_deg), 1),
+                    "yaw": round(float(yaw_deg), 1),
+                })  
+                msg_marker = String()
+                msg_marker.data = marker_data
+                self.publisher_marker.publish(msg_marker)
 
+            cv2.aruco.drawDetectedMarkers(cv_image, corners, ids)
+            self.publisher_processed_image = self.create_publisher(Image, '/stingray/topics/processed_image', 1)
             # ---------- УПРАВЛЕНИЕ (выполняется только при обнаружении маркера) ----------
             current_time = time.time()
             Utetta = self.control_pitch(0.0, pitch_deg, current_time)
@@ -480,7 +473,7 @@ class SimulatorPerceptionNode(Node):
             msg_motors = Actuators()
             msg_motors.velocity = [float(s) for s in speeds]
             self.publisherNulina.publish(msg_motors)
-            self.send_udp_data(x, y, z, roll_deg, pitch_deg, yaw_deg, type, mid)
+            
 
         else:
             self.get_logger().info("No ArUco markers detected")
@@ -489,7 +482,11 @@ class SimulatorPerceptionNode(Node):
             msg_motors.velocity = [0.0] * 6
             self.publisherNulina.publish(msg_motors)
 
-        
+        from cv_bridge import CvBridge
+        bridge = CvBridge()
+        processed_msg = bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
+        self.publisher_processed_image.publish(processed_msg)
+            
         self.get_logger().info("=== ArUco Detection Finished ===")
         
     def detect_callback(self, msg):
