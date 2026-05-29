@@ -129,11 +129,11 @@ class SimulatorPerceptionNode(Node):
         self.uvstate_buff = []
         self.bbox_buff = []
 
-        self.yaw_controller = PDController(Kp=25, Kd=100, max_out=2000, min_out=-2000)
+        self.yaw_controller = PDController(Kp=25, Kd=100, max_out=500, min_out=-500)
         self.roll_controller = PDController(Kp=100, Kd=200, max_out=500, min_out=-500)
         self.pitch_controller = PDController(Kp=100, Kd=75, max_out=500, min_out=-500)
-        self.depth_controller = PDController(Kp=300, Kd=2000, max_out=2000, min_out=-2000)
-        self.marsh_controller = PDController(Kp=1000, Kd=2500, max_out=500, min_out=-500)
+        self.depth_controller = PDController(Kp=500, Kd=2000, max_out=500, min_out=-500)
+        self.marsh_controller = PDController(Kp=100, Kd=3000, max_out=500, min_out=-500)
         self.lag_controller = PDController(Kp=300, Kd=2000, max_out=500, min_out=-500)
 
         self.publisher_marker = self.create_publisher(String, '/stingray/topics/marker_debug', 1)
@@ -403,7 +403,7 @@ class SimulatorPerceptionNode(Node):
         V4 = (0.57 * Uy - 0.82 * Uz + 0.098 * Uteta + 0.18 * Ugamma) * 0.5
         V5 = (1.0 * Ux - 0.19 * Upsi)
 
-        return [max(-2000.0, min(2000.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
+        return [max(-500.0, min(500.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
     
     def bottom_detect_image_callback(self, msg):
         import time
@@ -412,15 +412,6 @@ class SimulatorPerceptionNode(Node):
         import cv2.aruco as aruco
         import numpy as np
         import math
-
-        # FPS
-        # self.fps_counter += 1
-        # now = time.time()
-        # if now - self.fps_last_print >= 1.0:
-        #     fps = self.fps_counter / (now - self.fps_last_print)
-        #     self.get_logger().info(f"FPS: {fps:.1f}")
-        #     self.fps_counter = 0
-        #     self.fps_last_print = now
 
         # Конвертация изображения
         if msg.encoding == 'rgb8':
@@ -490,15 +481,56 @@ class SimulatorPerceptionNode(Node):
 
             cv2.aruco.drawDetectedMarkers(cv_image, corners, ids)
 
-            # Управление
+            # ============================================================
+            # УПРАВЛЕНИЕ (сначала вычисляем Uz и mode)
+            # ============================================================
             current_time = time.time()
-            Upsi = self.control_yaw(90.0, self.filtered_yaw, current_time)
+            Upsi = self.control_yaw(0.0, self.filtered_yaw, current_time)
             Utetta = self.control_pitch(0.0, self.filtered_pitch, current_time)
             Ugamma = self.control_roll(0.0, self.filtered_roll, current_time)
-            Uz = self.control_depth(0.3, z, current_time)
             Ux = self.control_marsh(0.0, x, current_time)
             Uy = self.control_lag(0.0, y, current_time)
-            speeds = self.BFS_DRK(0, 0, Uz, 0, 0, 0)
+            
+            x_error = abs(x)
+            
+            if x_error < 0.05:
+                Uz = self.control_depth(0.3, z, current_time)
+                mode = "DESCENT"
+                self.get_logger().info(f"🔽 DESCENT: x_error={x_error:.3f}m < 0.05m, target Z=0.30m")
+            else:
+                Uz = self.control_depth(0, 0, current_time)
+                mode = "HOLD"
+                self.get_logger().info(f"⏸️ HOLD: x_error={x_error:.3f}m >= 0.05m, holding Z={z:.3f}m")
+            
+            speeds = self.BFS_DRK(Ux, 0, Uz, 0, 0, Upsi)
+
+            # ============================================================
+            # ЗАПИСЬ В ЛОГ (теперь mode и Uz определены)
+            # ============================================================
+            if not hasattr(self, 'data_log'):
+                self.data_log = []
+                self.data_start_time = time.time()
+
+            elapsed = time.time() - self.data_start_time
+            
+            log_entry = {
+                "time": round(elapsed, 3),
+                "x": round(float(x), 4),
+                "y": round(float(y), 4),
+                "z": round(float(z), 4),
+                "yaw": round(float(self.filtered_yaw), 2),
+                "mode": mode,
+                "Uz": round(float(Uz), 2)
+            }
+            self.data_log.append(log_entry)
+
+            # Сохраняем в файл
+            import os
+            log_path = '/simulator/aruco_data_log.json'
+            with open(log_path, 'w') as f:
+                json.dump(self.data_log, f, indent=2)
+
+            # Отправка на моторы
             self.get_logger().info(f"Motors: V0={speeds[0]:.1f}, V1={speeds[1]:.1f}, V2={speeds[2]:.1f}, V3={speeds[3]:.1f}, V4={speeds[4]:.1f}, V5={speeds[5]:.1f}")
             msg_motors = Actuators()
             msg_motors.velocity = [float(s) for s in speeds]

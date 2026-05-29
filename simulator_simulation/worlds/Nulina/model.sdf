@@ -14,10 +14,6 @@
             <izz>0.0</izz>
           </inertia>
         </inertial>
-        <!-- <velocity_damping>
-          <linear>0.3</linear>
-          <angular>0.3</angular>
-        </velocity_damping> -->
         <collision name="collision">
           <geometry>
             <box>
@@ -33,6 +29,9 @@
           </geometry>
         </visual>
 
+        
+      
+
       <sensor name="imu_sensor" type="imu">
           <always_on>1</always_on>
           <update_rate>10</update_rate>
@@ -44,7 +43,7 @@
         <box_type>visible_box</box_type>
         <pose>-0.10 0.08 0.0 1.5708 0 1.5708</pose>
         <camera>
-          <horizontal_fov>1.91986</horizontal_fov>
+          <horizontal_fov>1.92</horizontal_fov>
           <image>
             <width>1920</width>
             <height>1080</height>
@@ -91,7 +90,7 @@
     <link name="NULINA/base_link">
       <pose>0 0 0 0 0 0</pose>
       <inertial>
-        <pose>0.164 0 0 0 0 0</pose>
+        <pose>0.1635 0.0 0.0 0 0 0</pose>
         <mass>12</mass>
         <inertia>
           <ixx>0.036011</ixx>
@@ -102,10 +101,6 @@
           <izz>0.15367</izz>
         </inertia>
       </inertial>
-      <!-- <velocity_damping>
-        <linear>0.5</linear>
-        <angular>50.5</angular>
-      </velocity_damping> -->
       <visual name="visual_base_link">
         <geometry>
           <mesh>
@@ -127,7 +122,6 @@
     <link name="NULINA/VMA1">
       <pose>0.394 -0.010657 0.11254 0.57206 -0.45025 -2.2456</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma1"><geometry><mesh><uri>model://Nulina/meshes/VMA1.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma1"><geometry><mesh><uri>model://Nulina/meshes/VMA1.STL</uri></mesh></geometry></collision>
     </link>
@@ -141,7 +135,6 @@
     <link name="NULINA/VMA2">
       <pose>0.394 -0.049023 -0.085674 2.4918 0.38742 -2.3437</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma2"><geometry><mesh><uri>model://Nulina/meshes/VMA2.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma2"><geometry><mesh><uri>model://Nulina/meshes/VMA2.STL</uri></mesh></geometry></collision>
     </link>
@@ -155,7 +148,6 @@
     <link name="NULINA/VMA3">
       <pose>-0.047 0.03818 0.093266 3.0222 0.62088 -1.7086</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma3"><geometry><mesh><uri>model://Nulina/meshes/VMA3.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma3"><geometry><mesh><uri>model://Nulina/meshes/VMA3.STL</uri></mesh></geometry></collision>
     </link>
@@ -169,7 +161,6 @@
     <link name="NULINA/VMA4">
       <pose>-0.047 0.00044439 -0.11969 0.66553 1.1999 2.3639</pose>
       <inertial><mass>0.001</mass><inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma4"><geometry><mesh><uri>model://Nulina/meshes/VMA4.STL</uri></mesh></geometry><material><ambient>0.6 0.6 0.6 1</ambient></material></visual>
       <collision name="collision_vma4"><geometry><mesh><uri>model://Nulina/meshes/VMA4.STL</uri></mesh></geometry></collision>
     </link>
@@ -183,7 +174,6 @@
     <link name="NULINA/VMA5">
       <pose>0.17524 -0.00085 0.18999 1.5708 -1.4896 1.5708</pose>
       <inertial><mass>0.001</mass><inertia><ixx>2e-6</ixx><iyy>2e-6</iyy><izz>3e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma5"><geometry><mesh><uri>model://Nulina/meshes/VMA5.STL</uri></mesh></geometry><material><ambient>0.79216 0.81961 0.93333 1</ambient></material></visual>
       <collision name="collision_vma5"><geometry><mesh><uri>model://Nulina/meshes/VMA5.STL</uri></mesh></geometry></collision>
     </link>
@@ -197,7 +187,6 @@
     <link name="NULINA/VMA0">
       <pose>0.17524 -0.00085 -0.18999 1.5708 0.8797 1.5708</pose>
       <inertial><mass>0.001</mass><inertia><ixx>2e-6</ixx><iyy>2e-6</iyy><izz>3e-6</izz></inertia></inertial>
-      <velocity_damping><linear>0.1</linear><angular>0.1</angular></velocity_damping>
       <visual name="visual_vma6"><geometry><mesh><uri>model://Nulina/meshes/VMA6.STL</uri></mesh></geometry><material><ambient>1 1 1 1</ambient></material></visual>
       <collision name="collision_vma6"><geometry><mesh><uri>model://Nulina/meshes/VMA6.STL</uri></mesh></geometry></collision>
     </link>
@@ -206,6 +195,6 @@
       <pose>0 0 0 0 0 0</pose>
       <axis><xyz>0 0 1</xyz><limit><lower>-1e+16</lower><upper>1e+16</upper></limit></axis>
     </joint>
-    
+
   </model>
 </sdf>
