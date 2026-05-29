@@ -10,8 +10,6 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
-#include <QScatter3DSeries>
-#include <QScatterDataArray>
 #include <QMediaPlayer>
 #include <QPushButton>
 #include <QSlider>
@@ -33,7 +31,6 @@ public:
     ~Widget();
     QString folder = "Calib/";
     QStringList items;
-    QScatterDataArray data;
     int fileSize(QString folder);
     int k;
     int flagMarker = 0;
@@ -46,6 +43,7 @@ public:
     bool calibDone = false;
 
 private:
+    Widget3D *threeDWidget;
     QMediaPlayer *player;
     QGraphicsScene *scene1;
     QGraphicsPixmapItem *pitchRov;
@@ -55,9 +53,6 @@ private:
     QGraphicsPixmapItem *rollRov;
     QGraphicsPixmapItem *rollDial;
     QGraphicsTextItem *txtCurrentRoll;
-    int n = 1;
-    QScatter3DSeries *rovSeries = nullptr;
-    QScatter3DSeries *dsSeries = nullptr;
     QNetworkAccessManager *httpManager = nullptr;
     QTimer *httpTimer = nullptr;
     QLabel *streamLabel = nullptr;

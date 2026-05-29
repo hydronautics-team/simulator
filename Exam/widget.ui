@@ -43,28 +43,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="pageStep">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="tickPosition">
-      <enum>QSlider::NoTicks</enum>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1">
     <widget class="QGraphicsView" name="pitchView">
      <property name="sizePolicy">
@@ -97,7 +75,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="background">
@@ -123,7 +101,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="background">
@@ -140,7 +118,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="background">
@@ -157,7 +135,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="background">
@@ -174,7 +152,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="background">

@@ -16,7 +16,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -30,7 +29,6 @@ public:
     QGridLayout *gridLayout;
     QGraphicsView *rollView;
     QGraphicsView *pos3D;
-    QSlider *horizontalSlider;
     QGraphicsView *pitchView;
     QVBoxLayout *verticalLayout;
     QTableWidget *tableWidget;
@@ -69,20 +67,6 @@ public:
 
         gridLayout->addWidget(pos3D, 1, 1, 4, 2);
 
-        horizontalSlider = new QSlider(Widget);
-        horizontalSlider->setObjectName("horizontalSlider");
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(horizontalSlider->sizePolicy().hasHeightForWidth());
-        horizontalSlider->setSizePolicy(sizePolicy2);
-        horizontalSlider->setMaximum(100);
-        horizontalSlider->setPageStep(1);
-        horizontalSlider->setOrientation(Qt::Horizontal);
-        horizontalSlider->setTickPosition(QSlider::NoTicks);
-
-        gridLayout->addWidget(horizontalSlider, 1, 0, 1, 1);
-
         pitchView = new QGraphicsView(Widget);
         pitchView->setObjectName("pitchView");
         sizePolicy.setHeightForWidth(pitchView->sizePolicy().hasHeightForWidth());
@@ -98,7 +82,7 @@ public:
         if (tableWidget->columnCount() < 4)
             tableWidget->setColumnCount(4);
         QFont font;
-        font.setPointSize(14);
+        font.setPointSize(20);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         __qtablewidgetitem->setFont(font);
         __qtablewidgetitem->setBackground(QColor(26, 95, 180));
@@ -142,11 +126,11 @@ public:
         __qtablewidgetitem8->setBackground(brush2);
         tableWidget->setItem(0, 3, __qtablewidgetitem8);
         tableWidget->setObjectName("tableWidget");
-        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
-        tableWidget->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
+        tableWidget->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(tableWidget);
 
@@ -169,11 +153,11 @@ public:
 
         label = new QLabel(Widget);
         label->setObjectName("label");
-        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy3);
         QFont font1;
         font1.setPointSize(16);
         label->setFont(font1);

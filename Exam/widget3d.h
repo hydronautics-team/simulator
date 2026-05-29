@@ -21,5 +21,6 @@ public:
     QScatter3DSeries *pointROV;
     QScatter3DSeries *pointDS;
     QScatter3DSeries *directionLine;
+    QScatter3DSeries *directionSphere;
 };
 #endif

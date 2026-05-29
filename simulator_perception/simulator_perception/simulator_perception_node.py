@@ -69,7 +69,7 @@ def id_2_name(id_value):
     return ID_TO_NAME.get(id_value, str(id_value))
 
 class PDController:
-    def __init__(self, Kp, Kd, max_out=500.0, min_out=-500.0):
+    def __init__(self, Kp, Kd, max_out=2000.0, min_out=-2000.0):
         self.Kp = Kp
         self.Kd = Kd
         self.max_out = max_out
@@ -128,16 +128,29 @@ class SimulatorPerceptionNode(Node):
         self.yawCount = 0
         self.uvstate_buff = []
         self.bbox_buff = []
-        
-        self.yaw_controller = PDController(Kp=20, Kd=10, max_out=100, min_out=-100)
-        self.roll_controller = PDController(Kp=50, Kd=25, max_out=500, min_out=-500)
-        self.pitch_controller = PDController(Kp=50, Kd=25, max_out=500, min_out=-500)
-        self.depth_controller = PDController(Kp=170, Kd=120, max_out=800, min_out=-800)
-        self.marsh_controller = PDController(Kp=180, Kd=150, max_out=500, min_out=-50)
+
+        self.yaw_controller = PDController(Kp=25, Kd=100, max_out=2000, min_out=-2000)
+        self.roll_controller = PDController(Kp=100, Kd=200, max_out=500, min_out=-500)
+        self.pitch_controller = PDController(Kp=100, Kd=75, max_out=500, min_out=-500)
+        self.depth_controller = PDController(Kp=300, Kd=2000, max_out=2000, min_out=-2000)
+        self.marsh_controller = PDController(Kp=1000, Kd=2500, max_out=500, min_out=-500)
+        self.lag_controller = PDController(Kp=300, Kd=2000, max_out=500, min_out=-500)
 
         self.publisher_marker = self.create_publisher(String, '/stingray/topics/marker_debug', 1)
         self.publisher_processed_image = self.create_publisher(Image, '/stingray/topics/processed_image', 1)
 
+        self.filtered_roll = 0.0
+        self.filtered_pitch = 0.0
+        self.filtered_yaw = 0.0
+        self.alpha = 0.3
+        # FPS счётчик
+        import time
+        self.fps_counter = 0
+        self.fps_last_print = time.time()
+
+        # CvBridge
+        from cv_bridge import CvBridge
+        self.cv_bridge = CvBridge()     
         #self.srv_circle = self.create_service(Trigger, '/stingray/services/start_circle', self.start_circle_callback)
         #self.srv_stop_circle = self.create_service(Trigger, '/stingray/services/stop_circle', self.stop_circle_callback)
 
@@ -150,7 +163,7 @@ class SimulatorPerceptionNode(Node):
         
         self.subscription = self.create_subscription(Odometry, '/model/copter/odometry', self.odometry_callback, 1)
         
-        # изменено
+        
         self.subscription_detect_front = self.create_subscription(Detection2DArray, '/stingray/topics/front_camera', self.detect_callback, 1)
         self.subscription_detect_bottom = self.create_subscription(Detection2DArray, '/stingray/topics/bottom_camera/bottom_camera', self.bottom_detect_callback, 1)
 
@@ -365,6 +378,11 @@ class SimulatorPerceptionNode(Node):
             return 0.0
         return self.marsh_controller.update(target_marsh, current_marsh, current_time)
     
+    def control_lag(self, target_lag, current_lag, current_time):
+        if current_lag is None:
+            return 0.0
+        return self.marsh_controller.update(target_lag, current_lag, current_time)
+    
     def BFS_DRK(self, Ux, Uy, Uz, Uteta, Ugamma, Upsi):
         def to_float(x):
             if isinstance(x, (list, tuple)):
@@ -379,13 +397,13 @@ class SimulatorPerceptionNode(Node):
         Upsi = to_float(Upsi)
 
         V0 = (1.0 * Ux + 0.19 * Upsi)
-        V1 = (0.57 * Uy - 0.82 * Uz - 0.098 * Uteta + 0.18 * Ugamma) * 0.5
-        V2 = (-0.57 * Uy - 0.82 * Uz - 0.098 * Uteta - 0.18 * Ugamma) * 0.5
-        V3 = (-0.57 * Uy - 0.82 * Uz + 0.098 * Uteta + 0.18 * Ugamma) * 0.5
-        V4 = (0.57 * Uy - 0.82 * Uz + 0.098 * Uteta - 0.18 * Ugamma) * 0.5
+        V1 = (0.57 * Uy - 0.82 * Uz - 0.098 * Uteta - 0.18 * Ugamma) * 0.5
+        V2 = (-0.57 * Uy - 0.82 * Uz -0.098 * Uteta + 0.18 * Ugamma) * 0.5
+        V3 = (-0.57 * Uy - 0.82 * Uz + 0.098 * Uteta - 0.18 * Ugamma) * 0.5
+        V4 = (0.57 * Uy - 0.82 * Uz + 0.098 * Uteta + 0.18 * Ugamma) * 0.5
         V5 = (1.0 * Ux - 0.19 * Upsi)
 
-        return [max(-300.0, min(300.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
+        return [max(-2000.0, min(2000.0, v)) for v in [V0, V1, V2, V3, V4, V5]]
     
     def bottom_detect_image_callback(self, msg):
         import time
@@ -395,7 +413,14 @@ class SimulatorPerceptionNode(Node):
         import numpy as np
         import math
 
-        type = "MARKER NOT DETECTED"
+        # FPS
+        # self.fps_counter += 1
+        # now = time.time()
+        # if now - self.fps_last_print >= 1.0:
+        #     fps = self.fps_counter / (now - self.fps_last_print)
+        #     self.get_logger().info(f"FPS: {fps:.1f}")
+        #     self.fps_counter = 0
+        #     self.fps_last_print = now
 
         # Конвертация изображения
         if msg.encoding == 'rgb8':
@@ -405,6 +430,7 @@ class SimulatorPerceptionNode(Node):
             cv_image = np.frombuffer(msg.data, dtype=np.uint8).reshape(msg.height, msg.width, 3)
         else:
             return
+
         gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
         aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
         parameters = cv2.aruco.DetectorParameters_create()
@@ -412,14 +438,13 @@ class SimulatorPerceptionNode(Node):
 
         if ids is not None and len(ids) > 0:
             self.get_logger().info(f"DETECTED {len(ids)} marker(s)!")
-            camera_matrix = np.array([[554, 0, 320], [0, 554, 240], [0, 0, 1]], dtype=np.float32)
+            camera_matrix = np.array([[672, 0, 960], [0, 672, 540], [0, 0, 1]], dtype=np.float32)
             dist_coeffs = np.zeros((5, 1))
-            marker_length = 0.1  # 10 см
+            marker_length = 0.1
             rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(
                 corners, marker_length, camera_matrix, dist_coeffs
             )
             for i, marker_id in enumerate(ids):
-                type = "ArUco"
                 mid = marker_id[0] if isinstance(marker_id, np.ndarray) else marker_id
                 corner = corners[i][0]
                 center_x = np.mean(corner[:, 0])
@@ -430,65 +455,67 @@ class SimulatorPerceptionNode(Node):
                 self.get_logger().info(f"  Marker ID: {mid}")
                 self.get_logger().info(f"    Center: ({center_x:.1f}, {center_y:.1f}) px")
                 self.get_logger().info(f"    Pose: X={x:.3f}, Y={y:.3f}, Z={z:.3f} m")
+
                 cv2.drawFrameAxes(cv_image, camera_matrix, dist_coeffs, rvecs[i], tvecs[i], 0.05)
                 rvec = rvecs[i][0]
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
-                sy = math.sqrt(rotation_matrix[0, 0]**2 + rotation_matrix[1, 0]**2)
-                singular = sy < 1e-6
                 roll = math.atan2(rotation_matrix[2, 1], rotation_matrix[2, 2]) + math.pi
                 pitch = math.asin(-rotation_matrix[2, 0])
                 yaw = math.atan2(rotation_matrix[1, 0], rotation_matrix[0, 0])
                 if roll > math.pi:
                     roll -= 2 * math.pi
-                roll_deg = - math.degrees(roll)
-                pitch_deg = - math.degrees(pitch)
+                roll_deg = math.degrees(pitch)
+                pitch_deg = math.degrees(-roll)
                 yaw_deg = math.degrees(yaw)
-                self.get_logger().info(f"    Rotation (deg): Roll={pitch_deg:.1f}, Pitch={roll_deg:.1f}, Yaw={yaw_deg:.1f}")
-            
+
+                self.filtered_roll = self.alpha * roll_deg + (1 - self.alpha) * self.filtered_roll
+                self.filtered_pitch = self.alpha * pitch_deg + (1 - self.alpha) * self.filtered_pitch
+                self.filtered_yaw = self.alpha * yaw_deg + (1 - self.alpha) * self.filtered_yaw
+
+                self.get_logger().info(f"    Rotation (deg): Roll={self.filtered_roll:.1f}, Pitch={self.filtered_pitch:.1f}, Yaw={self.filtered_yaw:.1f}")
+
+                # Публикация данных маркера
                 marker_data = json.dumps({
                     "id": int(mid),
                     "x": round(float(x), 3),
                     "y": round(float(y), 3),
                     "z": round(float(z), 3),
-                    "roll": round(float(roll_deg), 1),
-                    "pitch": round(float(pitch_deg), 1),
-                    "yaw": round(float(yaw_deg), 1),
-                })  
+                    "roll": round(float(self.filtered_roll), 1),
+                    "pitch": round(float(self.filtered_pitch), 1),
+                    "yaw": round(float(self.filtered_yaw), 1),
+                })
                 msg_marker = String()
                 msg_marker.data = marker_data
                 self.publisher_marker.publish(msg_marker)
 
             cv2.aruco.drawDetectedMarkers(cv_image, corners, ids)
-            self.publisher_processed_image = self.create_publisher(Image, '/stingray/topics/processed_image', 1)
-            # ---------- УПРАВЛЕНИЕ (выполняется только при обнаружении маркера) ----------
+
+            # Управление
             current_time = time.time()
-            Utetta = self.control_pitch(0.0, pitch_deg, current_time)
-            Ugamma = self.control_roll(0.0, roll_deg, current_time)
-            Upsi = self.control_yaw(0.0, yaw_deg, current_time)
-            Uz = self.control_depth(0.7, z, current_time)
-            Ux = self.control_marsh(0.2, x, current_time)
-            # Отправка на моторы
-            speeds = self.BFS_DRK(Ux, 0.0, 0, 0, 0, 0)
+            Upsi = self.control_yaw(90.0, self.filtered_yaw, current_time)
+            Utetta = self.control_pitch(0.0, self.filtered_pitch, current_time)
+            Ugamma = self.control_roll(0.0, self.filtered_roll, current_time)
+            Uz = self.control_depth(0.3, z, current_time)
+            Ux = self.control_marsh(0.0, x, current_time)
+            Uy = self.control_lag(0.0, y, current_time)
+            speeds = self.BFS_DRK(0, 0, Uz, 0, 0, 0)
             self.get_logger().info(f"Motors: V0={speeds[0]:.1f}, V1={speeds[1]:.1f}, V2={speeds[2]:.1f}, V3={speeds[3]:.1f}, V4={speeds[4]:.1f}, V5={speeds[5]:.1f}")
             msg_motors = Actuators()
             msg_motors.velocity = [float(s) for s in speeds]
             self.publisherNulina.publish(msg_motors)
-            
 
         else:
             self.get_logger().info("No ArUco markers detected")
-            # Остановка моторов
             msg_motors = Actuators()
             msg_motors.velocity = [0.0] * 6
             self.publisherNulina.publish(msg_motors)
 
-        from cv_bridge import CvBridge
-        bridge = CvBridge()
-        processed_msg = bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
+        # Публикация обработанного изображения
+        processed_msg = self.cv_bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
         self.publisher_processed_image.publish(processed_msg)
-            
+
         self.get_logger().info("=== ArUco Detection Finished ===")
-        
+
     def detect_callback(self, msg):
         bboxes = self._process_detections(msg.detections, self.camera_info)
         self.publisher2.publish(bboxes)

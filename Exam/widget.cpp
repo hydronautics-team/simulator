@@ -30,14 +30,22 @@ Widget::Widget(QWidget *parent)
     circle->setPen(circlePen);
     scene1->addItem(circle);
     pitchDial = scene1->addPixmap(QPixmap("anglesPitch.png"));
-    pitchRov = scene1->addPixmap(QPixmap("pitchRov.png"));
+    pitchRov = scene1->addPixmap(QPixmap("pitch.png"));
     pitchDial->setTransform(QTransform::fromScale(0.5, 0.5));
-    pitchRov->setTransform(QTransform::fromScale(0.3, 0.3));
-    pitchRov->setPos(85, 200);
+    pitchRov->setTransform(QTransform::fromScale(0.45, 0.45));
+    pitchRov->setPos(50, 190);
+    QGraphicsEllipseItem *textBackground = new QGraphicsEllipseItem();
+    textBackground->setBrush(QBrush(QColor(98, 160, 234, 180)));
+    textBackground->setPen(QPen(Qt::darkGray, 1));
+    scene1->addItem(textBackground);
     txtCurrentPitch = scene1->addText(QString::number(a, 'f', 1) + "°", QFont("Calibri", 24));
-    txtCurrentPitch->setDefaultTextColor(QColor(0, 0, 0));
+    txtCurrentPitch->setDefaultTextColor(Qt::black);
+    QRectF textBounds = txtCurrentPitch->boundingRect();
+    textBackground->setRect(textBounds.adjusted(-15, -8, 15, 8));
+
     QTransform t;
     t.translate(pitchDial->pixmap().width()/4-20, pitchDial->pixmap().height()/4-22);
+    textBackground->setTransform(t);
     txtCurrentPitch->setTransform(t);
     pitchRov->setTransformOriginPoint(pitchRov->pixmap().width()/2, pitchRov->pixmap().height()/2);
 
@@ -55,10 +63,10 @@ Widget::Widget(QWidget *parent)
     circle1->setPen(circlePen1);
     scene2->addItem(circle1);
     rollDial = scene2->addPixmap(QPixmap("anglesRoll.png"));
-    rollRov = scene2->addPixmap(QPixmap("rollRov.png"));
+    rollRov = scene2->addPixmap(QPixmap("roll.png"));
     rollDial->setTransform(QTransform::fromScale(0.5,0.5));
-    rollRov->setTransform(QTransform::fromScale(0.4, 0.4));
-    rollRov->setPos(69, 155);
+    rollRov->setTransform(QTransform::fromScale(0.5, 0.5));
+    rollRov->setPos(60, 175);
     txtCurrentRoll = scene2->addText(QString::number(a, 'f', 1) + "°", QFont("Times New Roman", 24));
     txtCurrentRoll->setDefaultTextColor(Qt::black);
     QTransform t1;
@@ -66,7 +74,6 @@ Widget::Widget(QWidget *parent)
     txtCurrentRoll->setTransform(t1);
     rollRov->setTransformOriginPoint(rollRov->pixmap().width()/2, rollRov->pixmap().height()/2);
 
-    // 3D
     QWidget *parentContainer = pos3D->parentWidget();
     int index = gridLayout->indexOf(pos3D);
     int row, column, rowSpan, columnSpan;
@@ -74,17 +81,17 @@ Widget::Widget(QWidget *parent)
     pos3D->setStyleSheet("background-color: rgb(0, 102, 204); border-style: outset;"
                          " border-width: 2px; border-radius: 20px;"
                          " border-color: rgb(0, 0, 180);");
-    Widget3D *threeDWidget = new Widget3D(parentContainer);
+    threeDWidget = new Widget3D(parentContainer);  // Сохраняем как член класса
     gridLayout->addWidget(threeDWidget, row, column, rowSpan, columnSpan);
-    rovSeries = threeDWidget->pointROV;
-    dsSeries = threeDWidget->pointDS;
-    data << QVector3D(2.0f, 2.0f, 2.0f);
+
+    threeDWidget->updateROVPosition(1.0f, 1.0f, 1.0f, 0.0f);
+    threeDWidget->updateMarkerPosition(0.0f, 0.0f, 0.0f);
+
     QHeaderView* header = tableWidget->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     header->setStretchLastSection(false);
     QHeaderView* vHeader = tableWidget->verticalHeader();
     vHeader->setSectionResizeMode(QHeaderView::Stretch);
-    rovSeries->dataProxy()->resetArray(&data);
 
     Video->show();
 
@@ -98,7 +105,7 @@ Widget::Widget(QWidget *parent)
     streamLabel->setScaledContents(true);
     streamLabel->hide();
 
-    // ====== HTTP ДАННЫЕ + ВИДЕО ИЗ СИМУЛЯТОРА ======
+    // HTTP
     httpManager = new QNetworkAccessManager(this);
     httpTimer = new QTimer(this);
     connect(httpTimer, &QTimer::timeout, this, [this]() {
@@ -121,7 +128,7 @@ Widget::Widget(QWidget *parent)
                     item->setBackground(QColor(98, 160, 234, 255));
                     item->setForeground(QColor(255, 255, 255));
                     QFont font;
-                    font.setPointSize(16);
+                    font.setPointSize(24);
                     item->setFont(font);
                     tableWidget->setItem(row, col, item);
                 };
@@ -135,9 +142,10 @@ Widget::Widget(QWidget *parent)
                 txtCurrentRoll->setPlainText(QString::number(roll,'f',1)+"°");
                 pitchRov->setRotation(-pitch);
                 rollRov->setRotation(roll);
-                data.clear();
-                data << QVector3D(x, z, y);
-                if (rovSeries) rovSeries->dataProxy()->resetArray(&data);
+
+                if (threeDWidget) {
+                    threeDWidget->updateROVPosition(x, z, y, yaw);
+                }
             }
             d->deleteLater();
         });

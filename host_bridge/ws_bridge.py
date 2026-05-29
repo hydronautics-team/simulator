@@ -25,8 +25,6 @@ class WsBridge(Node):
         self.bridge = CvBridge()
         self.create_subscription(Image, '/stingray/topics/processed_image', self.image_callback, 10)
         self.create_subscription(String, '/stingray/topics/marker_debug', self.marker_callback, 10)
-        from stingray_interfaces.msg import UVState
-        self.create_subscription(UVState, '/stingray/topics/uv_state', self.uvstate_callback, 10)
         self.get_logger().info("HTTP Bridge запущен (MJPEG stream)")
 
     def marker_callback(self, msg):
@@ -34,18 +32,6 @@ class WsBridge(Node):
         with data_lock:
             latest_marker = json.loads(msg.data)
 
-    def uvstate_callback(self, msg):
-        global latest_data, latest_data_ts
-        with data_lock:
-            latest_data = {
-                'depth': round(msg.depth, 3),
-                'yaw': round(msg.yaw, 2),
-                'roll': round(msg.roll, 2),
-                'pitch': round(msg.pitch, 2),
-                'surge_accel': round(msg.surge_accel, 3),
-                'sway_accel': round(msg.sway_accel, 3),
-            }
-            latest_data_ts = time.time()
 
     def image_callback(self, msg):
         global latest_frame, latest_frame_ts

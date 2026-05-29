@@ -41,6 +41,9 @@ echo "Контейнер ${CONTAINER_NAME} не найден. Создаём и 
 
 docker run -it --rm \
     --name "${CONTAINER_NAME}" \
+    --gpus all \
+    -e __NV_PRIME_RENDER_OFFLOAD=1 \
+    -e __GLX_VENDOR_LIBRARY_NAME=nvidia \
     --workdir /simulator \
     --mount type=bind,source="${HOST_WS}",target=/simulator \
     --mount type=bind,source="/etc/timezone",target="/etc/timezone" \
@@ -50,12 +53,4 @@ docker run -it --rm \
     -e DISPLAY="${DISPLAY:-}" \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     hydronautics/simulator:sauvc-ros-humble \
-    bash -c "source /opt/ros/humble/setup.bash && \
-        source /stingray/install/setup.bash && \
-        source /additional_packages/install/setup.bash && \
-        cd /simulator && \
-        rm -rf build install log && \
-        colcon build && \
-        source /simulator/install/setup.bash && \
-        ros2 launch simulator_launch sim.launch.py
-    "
+    bash -c "source /opt/ros/humble/setup.bash && cd /simulator && rm -rf build install log && colcon build --packages-select simulator_launch simulator_description simulator_simulation simulator_gazebo_plugins stingray_interfaces simulator_perception && source /simulator/install/setup.bash && ros2 launch simulator_launch sim.launch.py"

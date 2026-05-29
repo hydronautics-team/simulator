@@ -39,7 +39,7 @@
       <grid>false</grid>  
       <fog>
         <type>linear</type>
-        <density>0.9</density>
+        <density>1.0</density>
         <color>1 0.5 0.5 1</color>
       </fog>
     </scene>
@@ -69,7 +69,7 @@
 
     <model name="copter">
       <self_collide>false</self_collide>
-      <pose>36 0.7 0.8 -1.5708 0 1.5708</pose>
+      <pose>36 0.5 1.5 -1.5708 0 1.5708</pose>
       
       <include merge="true">
         <uri>copter/model.sdf</uri>
@@ -77,7 +77,7 @@
     </model>    
     
     <model name="aruco_marker_1">
-      <pose>36 0.9 0.005 0 0 0</pose>
+      <pose>36 0.7 0.005 0 0 0</pose>
       <include merge="true">
         <uri>aruco_marker/model.sdf</uri>
       </include>
