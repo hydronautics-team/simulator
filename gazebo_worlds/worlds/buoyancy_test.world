@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+  Test world for the UnderwaterObjectPlugin integration test.
+
+  The buoyancy test body (descriptions/models/buoyancy_body) is included
+  directly in the world so that its gz-sim system plugin is loaded together
+  with the world (models created at runtime through the create service do not
+  load their system plugins).
+
+  Water surface is at z = 0, the orange sea floor is at z = -100.
+-->
+<sdf version="1.9">
+  <world name="empty_underwater">
+    <gravity>0 0 -9.81</gravity>
+    <physics name="default_physics" default="true" type="dartsim">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+
+    <include>
+      <uri>model://ocean_surface</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://sea_floor</uri>
+      <pose>0 0 -100 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://buoyancy_body</uri>
+      <pose>0 0 -20 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

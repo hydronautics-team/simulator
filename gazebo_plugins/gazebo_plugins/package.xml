@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package format="3">
+  <name>gazebo_plugins</name>
+  <version>0.0.1</version>
+  <description>
+    Gazebo Sim plugins for buoyancy and hydrodynamics of underwater bodies
+    (gz-sim system plugin + ROS 2 bridge, ros_gz_sim stack).
+  </description>
+  
+  <maintainer email="ha.rg@yandex.ru">Nikitok</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ignition-gazebo6</depend>
+  <depend>ignition-msgs8</depend>
+  <depend>ignition-transport11</depend>
+
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>launch</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>rclpy</test_depend>
+  <test_depend>std_msgs</test_depend>
+  <test_depend>geometry_msgs</test_depend>
+  <test_depend>tf2_msgs</test_depend>
+  <test_depend>ros_gz_bridge</test_depend>
+  <test_depend>ros_gz_sim</test_depend>
+  <test_depend>gazebo_worlds</test_depend>
+  <test_depend>descriptions</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

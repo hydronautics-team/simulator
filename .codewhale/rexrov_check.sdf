@@ -1,0 +1,466 @@
+<sdf version='1.9'>
+  <model name='rexrov'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1862.8699999999999</mass>
+        <inertia>
+          <ixx>525.38999999999999</ixx>
+          <ixy>1.4399999999999999</ixy>
+          <ixz>33.409999999999997</ixz>
+          <iyy>794.20000000000005</iyy>
+          <iyz>2.6000000000000001</iyz>
+          <izz>691.23000000000002</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 -0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2.56 1.5 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_1'>
+        <pose>0 0 0.6 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2.56 1.5 0.4</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_2'>
+        <pose>-0.2 0.7 -0.15 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2.2 0.1 1.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_3'>
+        <pose>-0.2 -0.7 -0.15 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2.2 0.1 1.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>meshes/RexROV_no_props.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='thruster_0_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.890895 0.334385 0.528822 0 -1.3007937037 -0.9286895608999994</pose>
+      <parent>base_link</parent>
+      <child>thruster_0</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_0'>
+      <pose relative_to='thruster_0_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_0_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_1_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.890895 -0.334385 0.528822 0 -1.3007937037 0.9286895608999994</pose>
+      <parent>base_link</parent>
+      <child>thruster_1</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_1'>
+      <pose relative_to='thruster_1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_1_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.890895 0.334385 0.528822 -3.141592653589793 -1.300794157289794 -2.212903092689793</pose>
+      <parent>base_link</parent>
+      <child>thruster_2</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_2'>
+      <pose relative_to='thruster_2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_2_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_3_joint' type='revolute'>
+      <pose relative_to='base_link'>0.890895 -0.334385 0.528822 3.141592653589793 -1.300794157289794 2.212903092689793</pose>
+      <parent>base_link</parent>
+      <child>thruster_3</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_3'>
+      <pose relative_to='thruster_3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_3_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_4_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.412125 0.5054149999999999 0.129 0 0 0.7853980499999998</pose>
+      <parent>base_link</parent>
+      <child>thruster_4</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_4'>
+      <pose relative_to='thruster_4_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_4_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_5_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.412125 -0.5054149999999999 0.129 0 0 -0.7853980499999998</pose>
+      <parent>base_link</parent>
+      <child>thruster_5</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_5'>
+      <pose relative_to='thruster_5_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_5_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_6_joint' type='revolute'>
+      <pose relative_to='base_link'>0.412125 0.5054149999999999 0.129 0 0 2.35619415</pose>
+      <parent>base_link</parent>
+      <child>thruster_6</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_6'>
+      <pose relative_to='thruster_6_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_6_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='thruster_7_joint' type='revolute'>
+      <pose relative_to='base_link'>0.412125 -0.5054149999999999 0.129 0 0 -2.35619415</pose>
+      <parent>base_link</parent>
+      <child>thruster_7</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='thruster_7'>
+      <pose relative_to='thruster_7_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>1e-08</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-08</iyy>
+          <iyz>0</iyz>
+          <izz>1e-08</izz>
+        </inertia>
+      </inertial>
+      <visual name='thruster_7_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.059999999999999998</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <plugin name='simulator_gazebo_plugins::RexrovThrusterSystem' filename='libRexrovThrusterSystem.so'>
+      <cmd_topic>/model/rexrov/cmd_vel</cmd_topic>
+      <joint_prefix>thruster_</joint_prefix>
+      <force_gain>1500</force_gain>
+      <torque_gain>1000</torque_gain>
+      <time_constant>0.05</time_constant>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_0_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_1_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_2_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_3_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_4_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_5_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_6_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+    <plugin name='ignition::gazebo::systems::Thruster' filename='ignition-gazebo-thruster-system'>
+      <joint_name>thruster_7_joint</joint_name>
+      <thrust_coefficient>0.004422</thrust_coefficient>
+      <fluid_density>1000</fluid_density>
+      <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+  </model>
+</sdf>

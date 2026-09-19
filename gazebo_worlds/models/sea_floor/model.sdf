@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!-- Orange seafloor plane (collision + visual). -->
+<sdf version="1.9">
+  <model name="sea_floor">
+    <static>true</static>
+    <link name="floor_link">
+      <visual name="floor_visual">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2000 2000</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>0.85 0.45 0.10 1.0</ambient>
+          <diffuse>0.85 0.45 0.10 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+        </material>
+      </visual>
+      <collision name="floor_collision">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2000 2000</size>
+          </plane>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

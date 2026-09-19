@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<!--
+  Minimal buoyancy test body with two thrusters.
+
+  The full RexROV description (meshes, thrusters, fins, sensors, manipulators)
+  has been replaced by a primitive sphere whose dynamics are governed by the
+  underwater object plugin (buoyancy / restoring force) plus two cube shaped
+  thrusters driven by the thruster plugin.
+
+  Primitive-shape formulas used to pick the parameters below
+  (fully submerged object, world-frame z up):
+
+    volume            V       = (4/3) * pi * r^3
+    displaced mass    m_f     = fluid_density * V
+    buoyancy force    F_b     = fluid_density * g * V      (Archimedes)
+
+  NOTE on fluid_density: the BuoyancyModel of libunderwater_object.so models
+  the restoring (net) force of a NEUTRALLY buoyant body, i.e. it derives the
+  body mass as m = fluid_density * V. The fluid density below is therefore
+  computed from the mass and the volume, and changing the mass is enough to
+  keep the body neutrally buoyant.
+
+  Defaults: r = 0.5 m -> V = 0.5236 m^3; m = 500 kg
+            -> fluid_density = m / V = 954.93 kg/m^3 (neutral buoyancy)
+
+  Remember to update the inertia when changing mass/radius:
+    solid sphere inertia  I = (2/5) * m * r^2
+
+  Thrusters: two cubes (0.2 m) attached to the sides of the sphere at
+  y = +-(r + 0.1) = +-0.6 m, both pushing along the body x axis. Equal rotor
+  speeds move the body forward, opposite speeds rotate it about z, because
+  every thruster applies its thrust at a point offset from the centre of
+  gravity (tau = (application_point - center_of_mass) x thrust).
+-->
+
+<robot name="ball" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="debug" default="0"/>
+  <xacro:arg name="namespace" default="ball"/>
+
+  <!-- ${...} expressions resolve xacro properties, not args: expose the args
+       below as properties so that link names and plugin params can use them -->
+  <xacro:property name="namespace" value="$(arg namespace)"/>
+
+  <!-- Body: solid sphere, r = 0.5 m -->
+  <xacro:property name="radius" value="0.5"/>
+  <!-- V = (4/3)*pi*r^3 = (4/3)*pi*0.125 = 0.5235987756 -->
+  <xacro:property name="volume" value="0.5235987755982988"/>
+  <!-- Total mass of the vehicle (sphere + thrusters) -->
+  <xacro:property name="mass" value="500.0"/>
+
+  <!-- Thrusters: cubes on the sides of the sphere -->
+  <xacro:property name="thruster_size" value="0.2"/>
+  <xacro:property name="thruster_mass" value="5.0"/>
+  <!-- solid cube inertia: I = m*(a^2 + a^2)/12 -->
+  <xacro:property name="thruster_inertia"
+                  value="${thruster_mass * 2.0 * thruster_size * thruster_size / 12.0}"/>
+  <!-- centre of each cube: just outside the sphere surface -->
+  <xacro:property name="thruster_offset_y" value="${radius + thruster_size / 2.0}"/>
+  <!-- thrust of one thruster: F = rotorConstant * |w| * w
+       (0.01 -> 100 N at 100 rad/s, 2742 N at 5000 rpm) -->
+  <xacro:property name="thruster_rotor_constant" value="0.01"/>
+  <!-- Limits must not clip the teleop throttle: 5000 rpm = 523.6 rad/s and
+       gives 0.01 * 523.6^2 = 2742 N, so both limits sit above that point. -->
+  <xacro:property name="thruster_clamp_max" value="550.0"/>
+  <xacro:property name="thruster_thrust_max" value="3000.0"/>
+
+  <!-- Fluid properties: neutral buoyancy, see the note above -->
+  <xacro:property name="fluid_density" value="${mass / volume}"/>
+  <!-- added mass of a sphere: 2/3*rho*pi*r^3 = 0.5 * m per linear axis -->
+  <xacro:property name="added_mass" value="${mass / 2.0}"/>
+  <!-- quadratic damping of a sphere: 0.5*rho*Cd*A (Cd ~ 0.5) and a small
+       rotational term -->
+  <xacro:property name="quadratic_damping_linear"
+                  value="${0.5 * fluid_density * 0.5 * 3.141592653589793 * radius * radius}"/>
+  <xacro:property name="quadratic_damping_angular" value="20.0"/>
+
+  <!-- The sphere alone, without the two thrusters -->
+  <xacro:property name="hull_mass" value="${mass - 2.0 * thruster_mass}"/>
+  <xacro:property name="hull_inertia"
+                  value="${0.4 * hull_mass * radius * radius}"/>
+
+  <link name="${namespace}/base_link">
+    <inertial>
+      <mass value="${hull_mass}"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${hull_inertia}" ixy="0.0" ixz="0.0"
+               iyy="${hull_inertia}" iyz="0.0" izz="${hull_inertia}"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="${radius}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="${radius}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Thruster 1: left side of the sphere -->
+  <link name="${namespace}/thruster_left">
+    <inertial>
+      <mass value="${thruster_mass}"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${thruster_inertia}" ixy="0.0" ixz="0.0"
+               iyy="${thruster_inertia}" iyz="0.0" izz="${thruster_inertia}"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${thruster_size} ${thruster_size} ${thruster_size}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${thruster_size} ${thruster_size} ${thruster_size}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${namespace}/thruster_left_joint" type="fixed">
+    <parent link="${namespace}/base_link"/>
+    <child link="${namespace}/thruster_left"/>
+    <origin xyz="0 ${thruster_offset_y} 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Thruster 2: right side of the sphere -->
+  <link name="${namespace}/thruster_right">
+    <inertial>
+      <mass value="${thruster_mass}"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${thruster_inertia}" ixy="0.0" ixz="0.0"
+               iyy="${thruster_inertia}" iyz="0.0" izz="${thruster_inertia}"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${thruster_size} ${thruster_size} ${thruster_size}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${thruster_size} ${thruster_size} ${thruster_size}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="${namespace}/thruster_right_joint" type="fixed">
+    <parent link="${namespace}/base_link"/>
+    <child link="${namespace}/thruster_right"/>
+    <origin xyz="0 ${-thruster_offset_y} 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Buoyancy and hydrodynamics of the body -->
+  <gazebo>
+    <!-- The plugin name is the name registered by the library (see
+         IGNITION_ADD_PLUGIN_ALIAS), not a free form instance label. -->
+    <plugin name="underwater_object" filename="libunderwater_object.so">
+      <link_name>${namespace}/base_link</link_name>
+      <debug>$(arg debug)</debug>
+
+      <fluid_density>${fluid_density}</fluid_density>
+      <volume>${volume}</volume>
+      <!-- The sphere is homogeneous and the thrusters are symmetric, so the
+           centre of gravity coincides with the centre of buoyancy -->
+      <center_of_buoyancy>0 0 0</center_of_buoyancy>
+      <center_of_mass>0 0 0</center_of_mass>
+
+      <!-- Total mass matrix M = M_RB + M_A. The physics engine already
+           applies the rigid body inertia of the links, so only the added
+           mass of the sphere is configured here (as in
+           models/buoyancy_body/model.sdf). -->
+      <added_mass>${added_mass} 0 0 0 0 0
+                   0 ${added_mass} 0 0 0 0
+                   0 0 ${added_mass} 0 0 0
+                   0 0 0 0 0 0
+                   0 0 0 0 0 0
+                   0 0 0 0 0 0</added_mass>
+      <linear_damping>0 0 0 0 0 0</linear_damping>
+      <quadratic_damping>${quadratic_damping_linear}
+                         ${quadratic_damping_linear}
+                         ${quadratic_damping_linear}
+                         ${quadratic_damping_angular}
+                         ${quadratic_damping_angular}
+                         ${quadratic_damping_angular}</quadratic_damping>
+    </plugin>
+
+    <!-- Thruster 1: pushes along +x from the left side of the sphere -->
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <debug>$(arg debug)</debug>
+      <thruster_id>0</thruster_id>
+      <thruster_axis>1 0 0</thruster_axis>
+      <application_point>0 ${thruster_offset_y} 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics>
+        <type>ZeroOrder</type>
+      </dynamics>
+      <conversion>
+        <type>Basic</type>
+        <rotorConstant>${thruster_rotor_constant}</rotorConstant>
+      </conversion>
+    </plugin>
+
+    <!-- Thruster 2: pushes along +x from the right side of the sphere.
+         Equal commands on both thrusters move the body forward, opposite
+         commands rotate it about z. -->
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <debug>$(arg debug)</debug>
+      <thruster_id>1</thruster_id>
+      <thruster_axis>1 0 0</thruster_axis>
+      <application_point>0 ${-thruster_offset_y} 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics>
+        <type>ZeroOrder</type>
+      </dynamics>
+      <conversion>
+        <type>Basic</type>
+        <rotorConstant>${thruster_rotor_constant}</rotorConstant>
+      </conversion>
+    </plugin>
+  </gazebo>
+</robot>

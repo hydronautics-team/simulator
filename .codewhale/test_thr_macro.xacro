@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="d2r" value="0.01745329"/>
+  <xacro:macro name="rexrov_thruster" params="id x y z r p y">
+    <link name="thruster_${id}">
+      <inertial>
+        <mass value="0.001"/>
+        <inertia ixx="0.00000001" ixy="0.0" ixz="0.0"
+                 iyy="0.00000001" iyz="0.0"
+                 izz="0.00000001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.06" length="0.15"/>
+        </geometry>
+        
+          
+        
+      </visual>
+    </link>
+    <joint name="thruster_${id}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="thruster_${id}"/>
+      <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${y}"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+  </xacro:macro>
+  <xacro:rexrov_thruster id="2" x="0.890895" y="0.334385" z="0.528822"
+    r="${0*d2r}" p="${-105.47*d2r}" y="${53.21*d2r}"/>
+</robot>

@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!--
+  Buoyancy test body for Gazebo Sim (ros_gz_sim stack).
+
+  Same primitive sphere as robots/rexrov_default.xacro, but as an SDF model
+  spawnable in gz sim through `ros2 run ros_gz_sim create`.
+
+  Body parameters (see the xacro for the formulas):
+    radius r = 0.5 m, volume V = (4/3)*pi*r^3 = 0.5236 m^3,
+    mass m = 500 kg < fluid_density * V = 1028 * 0.5236 = 538.26 kg
+    -> slightly positively buoyant in sea water.
+
+  NOTE: This model is spawned in Gazebo Sim and uses the local gz-sim system
+  plugin libunderwater_object.so (package gazebo_plugins) for
+  buoyancy and damping. The old Gazebo Classic plugin is preserved in
+  gazebo_plugins/uuv_gazebo_plugins/legacy_classic/ and does not run in gz sim.
+-->
+<sdf version="1.9">
+  <model name="ball">
+    <link name="base_link">
+      <inertial>
+        <mass>500.0</mass>
+        <inertia>
+          <ixx>50.0</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>50.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>50.0</izz>
+        </inertia>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Local gz-sim plugin: Archimedes (slices) + Fossen hydrodynamics -->
+    <plugin filename="libunderwater_object.so"
+            name="underwater_object">
+      <link_name>base_link</link_name>
+      <!-- Neutral buoyancy: rho = m / V = 500 / 0.5236 = 954.93 kg/m^3 -->
+      <fluid_density>954.9296585513721</fluid_density>
+      <volume>0.5235987755982988</volume>
+      <radius>0.5</radius>
+      <slices>200</slices>
+      <!-- Added mass: sphere, 2/3*rho*pi*r^3 = 250 kg per linear axis -->
+      <added_mass>250 0 0 0 0 0
+                   0 250 0 0 0 0
+                   0 0 250 0 0 0
+                   0 0 0 0 0 0
+                   0 0 0 0 0 0
+                   0 0 0 0 0 0</added_mass>
+      <linear_damping>0 0 0 0 0 0</linear_damping>
+      <quadratic_damping>200 200 200 20 20 20</quadratic_damping>
+      <!-- Periodic horizontal excitation: disabled by default (teleop is the
+           main control channel). Set e.g. 500 for a 5 s ON / 5 s OFF test. -->
+      <horizontal_force_amplitude>0</horizontal_force_amplitude>
+      <horizontal_force_period>5</horizontal_force_period>
+      <!-- Teleop cmd_vel: velocity mode (twist = desired velocity; zero
+           twist actively brakes the body to a stop). Use cmd_mode "force"
+           for a direct body-frame force/torque command instead. -->
+      <cmd_mode>velocity</cmd_mode>
+      <cmd_velocity_gain>1.0</cmd_velocity_gain>
+      <cmd_vel_kp>600</cmd_vel_kp>
+      <cmd_ang_kp>100</cmd_ang_kp>
+      <cmd_force_gain>500</cmd_force_gain>
+      <cmd_torque_gain>100</cmd_torque_gain>
+      <cmd_timeout>0.5</cmd_timeout>
+      <debug>1</debug>
+    </plugin>
+  </model>
+</sdf>

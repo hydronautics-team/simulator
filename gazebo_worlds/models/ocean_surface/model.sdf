@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- Bluish, transparent ocean surface (visual only, no collision). -->
+<sdf version="1.9">
+  <model name="ocean_surface">
+    <static>true</static>
+    <link name="surface_link">
+      <visual name="surface_visual">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2000 2000</size>
+          </plane>
+        </geometry>
+        <material>
+          <ambient>0.15 0.45 0.90 1.0</ambient>
+          <diffuse>0.15 0.45 0.90 1.0</diffuse>
+          <specular>0.4 0.5 0.6 1.0</specular>
+          <transparency>0.65</transparency>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

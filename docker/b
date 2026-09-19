@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker build -t hydronautics/simulator:sauvc-ros-humble -f Dockerfile --push ../../

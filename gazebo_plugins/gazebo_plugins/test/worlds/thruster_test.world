@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<!--
+  Test world for the ThrusterPlugin integration test.
+
+  Four identical free-floating probes (mass 10 kg, I = 1 kg m^2 on every axis)
+  in a gravity free world, each driven by its own thruster:
+
+    probe_no_arm     application point 0     -> force only
+    probe_arm        application point 0.5   -> force + moment about the CoG
+    probe_arm_cog    arm 0.5, CoG 0.25       -> half of the moment of probe_arm
+    probe_clamped    application point 0, clamp_max 0.5 -> quarter of the thrust
+
+  Every thruster pushes along +y with rotorConstant = 1, so a rotor speed w
+  gives F = |w| w and the moment tau = (arm - CoG) x F. The probes carry no
+  collision geometry, so they never touch each other.
+-->
+<sdf version="1.9">
+  <world name="thruster_probe">
+    <physics name="default_physics" default="true" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <gravity>0 0 0</gravity>
+
+    <model name="probe_no_arm">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.0</iyy>
+            <iyz>0</iyz>
+            <izz>1.0</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><sphere><radius>0.05</radius></sphere></geometry>
+        </visual>
+      </link>
+      <plugin filename="libthruster.so" name="thruster">
+        <link_name>base_link</link_name>
+        <thruster_id>0</thruster_id>
+        <thruster_axis>0 1 0</thruster_axis>
+        <application_point>0 0 0</application_point>
+        <center_of_mass>0 0 0</center_of_mass>
+        <dynamics><type>ZeroOrder</type></dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>1.0</rotorConstant>
+        </conversion>
+      </plugin>
+    </model>
+
+    <model name="probe_arm">
+      <pose>20 0 0 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.0</iyy>
+            <iyz>0</iyz>
+            <izz>1.0</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><sphere><radius>0.05</radius></sphere></geometry>
+        </visual>
+      </link>
+      <plugin filename="libthruster.so" name="thruster">
+        <link_name>base_link</link_name>
+        <thruster_id>0</thruster_id>
+        <thruster_axis>0 1 0</thruster_axis>
+        <application_point>0.5 0 0</application_point>
+        <center_of_mass>0 0 0</center_of_mass>
+        <dynamics><type>ZeroOrder</type></dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>1.0</rotorConstant>
+        </conversion>
+      </plugin>
+    </model>
+
+    <model name="probe_arm_cog">
+      <pose>40 0 0 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.0</iyy>
+            <iyz>0</iyz>
+            <izz>1.0</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><sphere><radius>0.05</radius></sphere></geometry>
+        </visual>
+      </link>
+      <plugin filename="libthruster.so" name="thruster">
+        <link_name>base_link</link_name>
+        <thruster_id>0</thruster_id>
+        <thruster_axis>0 1 0</thruster_axis>
+        <application_point>0.5 0 0</application_point>
+        <center_of_mass>0.25 0 0</center_of_mass>
+        <dynamics><type>ZeroOrder</type></dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>1.0</rotorConstant>
+        </conversion>
+      </plugin>
+    </model>
+
+    <model name="probe_clamped">
+      <pose>60 0 0 0 0 0</pose>
+      <link name="base_link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>1.0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.0</iyy>
+            <iyz>0</iyz>
+            <izz>1.0</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry><sphere><radius>0.05</radius></sphere></geometry>
+        </visual>
+      </link>
+      <plugin filename="libthruster.so" name="thruster">
+        <link_name>base_link</link_name>
+        <thruster_id>0</thruster_id>
+        <thruster_axis>0 1 0</thruster_axis>
+        <application_point>0 0 0</application_point>
+        <center_of_mass>0 0 0</center_of_mass>
+        <clamp_max>0.5</clamp_max>
+        <dynamics><type>ZeroOrder</type></dynamics>
+        <conversion>
+          <type>Basic</type>
+          <rotorConstant>1.0</rotorConstant>
+        </conversion>
+      </plugin>
+    </model>
+  </world>
+</sdf>

@@ -1,2 +1,0 @@
-string topic_name
-bool enable
