@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 buoyancy_test authors.
+# Copyright (c) 2026 simulator authors.
 #
 # Integration test for the ThrusterPlugin (facade over the propeller dynamics
 # and the thrust conversion):

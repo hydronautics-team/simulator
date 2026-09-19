@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 buoyancy_test authors.
+# Copyright (c) 2026 simulator authors.
 #
 # Spawn the buoyancy test robot into a running Gazebo Sim world.
 #

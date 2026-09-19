@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <package format="3">
-    <name>buoyancy_test</name>
+    <name>simulator</name>
     <version>0.0.1</version>
-    <description>Testing buoyancy plugin project</description>
+    <description>Simulator metapackage</description>
 
     <maintainer email="ha.rg@yandex.ru">Nikitok</maintainer>
 

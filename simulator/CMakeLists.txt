@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(buoyancy_test)
+project(simulator)
 
 find_package(ament_cmake REQUIRED)
 

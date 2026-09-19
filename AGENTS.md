@@ -8,8 +8,8 @@ ROS 2 Humble + Gazebo Sim (Ignition Fortress, gz-sim 6) workspace for testing an
 - `gazebo_plugins/gazebo_plugins/legacy_classic/` — former standalone plugin, kept for reference only, NOT built (see CMakeLists note).
 - `gazebo_plugins/uuv_gazebo_ros_plugins{,_msgs}/` and the whole `uuv_gazebo_plugins/` tree — vendored UUV Simulator reference code, all COLCON_IGNOREd and NOT built. Do not edit; if code looks duplicated, the `gazebo_plugins/gazebo_plugins` version is the one that matters.
 - `descriptions/` — robot description (`robots/ball.xacro`), spawn launch file, keyboard teleop, pytest suite.
-- `gazebo_worlds/` — `worlds/{buoyancy_test,empty_underwater}.world`, models `ocean_surface` and `sea_floor`.
-- `buoyancy_test/` — empty meta package (dependencies only).
+- `gazebo_worlds/` — `worlds/{default,empty_underwater}.world`, models `ocean_surface` and `sea_floor`.
+- `simulator/` — empty meta package (dependencies only).
 - `build/`, `install/`, `log/` — colcon artifacts, COLCON_IGNOREd.
 - Root-level `HydrodynamicModel.cpp` is a stray copy and differs from the real source in `gazebo_plugins/gazebo_plugins/src/`. Root-level `*.txt`, `*.pid`, `*.log` (f1.txt, g0.txt, bridge_f2.log, teleop.log, bf2.pid, ...) are experiment scratch, not source.
 
@@ -38,7 +38,7 @@ Thruster control via gz topics bridged to ROS 2 (`thrusters:=true`): `/ball/thru
 
 ## Gotchas
 
-- Models spawned at runtime through the `create` service do NOT load their gz-sim system plugins. That is why `buoyancy_test.world` embeds the `buoyancy_body` model directly, and why the spawn launch uses `ros_gz_sim create -string <xacro>` (plugin blocks survive URDF→SDF conversion).
+- Models spawned at runtime through the `create` service do NOT load their gz-sim system plugins. That is why `default.world` embeds the `buoyancy_body` model directly, and why the spawn launch uses `ros_gz_sim create -string <xacro>` (plugin blocks survive URDF→SDF conversion).
 - `ball.xacro` is the single source of truth for the robot. Link names are namespace-prefixed (`<name>/base_link`); the spawn entity name must equal the xacro `namespace` arg or the plugin topics won't match.
 - The buoyancy model implements *neutral* buoyancy: fluid density is derived as m/V, so changing mass keeps the body neutrally buoyant (explained in the xacro header).
 - Launch files and scripts carry long header docstrings documenting usage/physics — keep them in sync when changing behavior.

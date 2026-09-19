@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 buoyancy_test authors.
+# Copyright (c) 2026 simulator authors.
 #
 # Unit tests for the ball keyboard teleop: the rpm accumulator and the
 # consistency between the teleop throttle and the thruster limits configured in

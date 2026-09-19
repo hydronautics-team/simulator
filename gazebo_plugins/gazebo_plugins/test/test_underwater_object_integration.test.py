@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2026 buoyancy_test authors.
+# Copyright (c) 2026 simulator authors.
 #
 # Integration test for the UnderwaterObjectPlugin:
 #   * loads the underwater world with the vehicle (ball);
@@ -30,7 +30,7 @@ POSE_TOPIC = '/world/' + WORLD_NAME + '/dynamic_pose/info'
 
 READY_TIMEOUT_S = 90.0
 
-# Default spawn height of the vehicle (see gazebo_worlds/buoyancy_test.world)
+# Default spawn height of the vehicle (see gazebo_worlds/default.world)
 SPAWN_Z = -20.0
 
 
@@ -42,7 +42,7 @@ def generate_test_description():
         get_package_share_directory('gazebo_worlds'), 'models')
     world_file = os.path.join(
         get_package_share_directory('gazebo_worlds'), 'worlds',
-        'buoyancy_test.world')
+        'default.world')
     resource_path = os.pathsep.join([descriptions_models, worlds_models])
 
     # The vehicle is included in the world file so that its system plugin is

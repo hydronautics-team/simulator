@@ -1,4 +1,4 @@
-// Copyright (c) 2026 buoyancy_test authors.
+// Copyright (c) 2026 simulator authors.
 //
 // Gazebo Sim (ros_gz_sim stack) System plugin for an underwater body:
 //   * buoyancy (Archimedes) with the body split into flat slices so that the
@@ -56,7 +56,7 @@
 #include <ignition/plugin/Register.hh>
 #include <ignition/transport/Node.hh>
 
-namespace buoyancy_test
+namespace simulator
 {
 namespace
 {
@@ -572,10 +572,10 @@ class UnderwaterObjectSystemPlugin
 }
 
 IGNITION_ADD_PLUGIN(
-    buoyancy_test::UnderwaterObjectSystemPlugin,
+    simulator::UnderwaterObjectSystemPlugin,
     ignition::gazebo::System,
-    buoyancy_test::UnderwaterObjectSystemPlugin::ISystemConfigure,
-    buoyancy_test::UnderwaterObjectSystemPlugin::ISystemPreUpdate)
+    simulator::UnderwaterObjectSystemPlugin::ISystemConfigure,
+    simulator::UnderwaterObjectSystemPlugin::ISystemPreUpdate)
 
 IGNITION_ADD_PLUGIN_ALIAS(
-    buoyancy_test::UnderwaterObjectSystemPlugin, "underwater_object_system")
+    simulator::UnderwaterObjectSystemPlugin, "underwater_object_system")
