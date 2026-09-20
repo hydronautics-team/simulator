@@ -10,8 +10,8 @@
 
 #include <eigen3/Eigen/Geometry>
 
-#include <ignition/gazebo/components/JointVelocityCmd.hh>
-#include <ignition/plugin/Register.hh>
+#include <gz/sim/components/JointVelocityCmd.hh>
+#include <gz/plugin/Register.hh>
 
 #include <PropellerDynamicsFactory.h>
 #include <ThrusterConverterFactory.h>
@@ -49,8 +49,8 @@ std::string BuildTopicPrefix(const std::string &_modelName, int _thrusterId) {
   return stream.str();
 }
 
-ignition::math::Vector3d ToIgnition(const Eigen::Vector3d &_vector) {
-  return ignition::math::Vector3d(_vector.x(), _vector.y(), _vector.z());
+gz::math::Vector3d ToGz(const Eigen::Vector3d &_vector) {
+  return gz::math::Vector3d(_vector.x(), _vector.y(), _vector.z());
 }
 
 // Reads an optional scalar tag, keeping the current value when absent.
@@ -66,7 +66,7 @@ double ReadEfficiency(const std::shared_ptr<const sdf::Element> &_sdf,
                       const std::string &_tag) {
   const double value = ReadDouble(_sdf, _tag, 1.0);
   if (value < 0.0 || value > 1.0) {
-    ignwarn << "[ThrusterPlugin] invalid " << _tag
+    gzwarn << "[ThrusterPlugin] invalid " << _tag
             << " (must be within [0, 1]), using 1.0" << std::endl;
     return 1.0;
   }
@@ -80,23 +80,23 @@ ThrusterPlugin::ThrusterPlugin() = default;
 ThrusterPlugin::~ThrusterPlugin() = default;
 
 void ThrusterPlugin::Configure(
-    const ignition::gazebo::Entity &_entity,
+    const gz::sim::Entity &_entity,
     const std::shared_ptr<const sdf::Element> &_sdf,
-    ignition::gazebo::EntityComponentManager &_ecm,
-    ignition::gazebo::EventManager &) {
-  this->m_model = ignition::gazebo::Model(_entity);
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::EventManager &) {
+  this->m_model = gz::sim::Model(_entity);
 
   std::string linkName = "base_link";
   if (_sdf->HasElement("link_name"))
     linkName = _sdf->Get<std::string>("link_name");
 
   const auto linkEntity = this->m_model.LinkByName(_ecm, linkName);
-  if (linkEntity == ignition::gazebo::kNullEntity) {
-    ignwarn << "[ThrusterPlugin] link '" << linkName << "' not found in model '"
+  if (linkEntity == gz::sim::kNullEntity) {
+    gzwarn << "[ThrusterPlugin] link '" << linkName << "' not found in model '"
             << this->m_model.Name(_ecm) << "'" << std::endl;
     return;
   }
-  this->m_link = ignition::gazebo::Link(linkEntity);
+  this->m_link = gz::sim::Link(linkEntity);
 
   // Gazebo creates components on demand: without these checks the physics
   // system does not report the link state and Link::WorldPose() keeps
@@ -106,26 +106,26 @@ void ThrusterPlugin::Configure(
 
   // ---- Propeller dynamics and thrust conversion (selected by SDF type) ----
   if (!_sdf->HasElement("dynamics")) {
-    ignwarn << "[ThrusterPlugin] '<dynamics>' element is missing" << std::endl;
+    gzwarn << "[ThrusterPlugin] '<dynamics>' element is missing" << std::endl;
     return;
   }
   this->m_propellerDynamics =
       PropellerDynamicsFactory::GetInstance().Create(
           *_sdf->FindElement("dynamics"));
   if (!this->m_propellerDynamics) {
-    ignwarn << "[ThrusterPlugin] could not create the propeller dynamics"
+    gzwarn << "[ThrusterPlugin] could not create the propeller dynamics"
             << std::endl;
     return;
   }
 
   if (!_sdf->HasElement("conversion")) {
-    ignwarn << "[ThrusterPlugin] '<conversion>' element is missing" << std::endl;
+    gzwarn << "[ThrusterPlugin] '<conversion>' element is missing" << std::endl;
     return;
   }
   this->m_converter = ThrusterConverterFactory::GetInstance().Create(
       *_sdf->FindElement("conversion"));
   if (!this->m_converter) {
-    ignwarn << "[ThrusterPlugin] could not create the thrust converter"
+    gzwarn << "[ThrusterPlugin] could not create the thrust converter"
             << std::endl;
     return;
   }
@@ -136,7 +136,7 @@ void ThrusterPlugin::Configure(
   if (axis.norm() > 0.0) {
     this->m_axis = axis.normalized();
   } else {
-    ignwarn << "[ThrusterPlugin] 'thruster_axis' is a zero vector, using the "
+    gzwarn << "[ThrusterPlugin] 'thruster_axis' is a zero vector, using the "
                "link x axis" << std::endl;
   }
   this->m_applicationPoint =
@@ -148,7 +148,7 @@ void ThrusterPlugin::Configure(
   this->m_clampMin = ReadDouble(_sdf, "clamp_min", this->m_clampMin);
   this->m_clampMax = ReadDouble(_sdf, "clamp_max", this->m_clampMax);
   if (this->m_clampMin >= this->m_clampMax) {
-    ignwarn << "[ThrusterPlugin] 'clamp_max' must be greater than 'clamp_min', "
+    gzwarn << "[ThrusterPlugin] 'clamp_max' must be greater than 'clamp_min', "
                "using the defaults" << std::endl;
     this->m_clampMin = std::numeric_limits<double>::lowest();
     this->m_clampMax = std::numeric_limits<double>::max();
@@ -157,7 +157,7 @@ void ThrusterPlugin::Configure(
   this->m_thrustMin = ReadDouble(_sdf, "thrust_min", this->m_thrustMin);
   this->m_thrustMax = ReadDouble(_sdf, "thrust_max", this->m_thrustMax);
   if (this->m_thrustMin >= this->m_thrustMax) {
-    ignwarn << "[ThrusterPlugin] 'thrust_max' must be greater than "
+    gzwarn << "[ThrusterPlugin] 'thrust_max' must be greater than "
                "'thrust_min', using the defaults" << std::endl;
     this->m_thrustMin = std::numeric_limits<double>::lowest();
     this->m_thrustMax = std::numeric_limits<double>::max();
@@ -171,8 +171,8 @@ void ThrusterPlugin::Configure(
   if (_sdf->HasElement("joint_name")) {
     const std::string jointName = _sdf->Get<std::string>("joint_name");
     this->m_jointEntity = this->m_model.JointByName(_ecm, jointName);
-    if (this->m_jointEntity == ignition::gazebo::kNullEntity)
-      ignwarn << "[ThrusterPlugin] joint '" << jointName
+    if (this->m_jointEntity == gz::sim::kNullEntity)
+      gzwarn << "[ThrusterPlugin] joint '" << jointName
               << "' not found, the rotor will not be animated" << std::endl;
   }
 
@@ -186,14 +186,14 @@ void ThrusterPlugin::Configure(
   const std::string modelName = this->m_model.Name(_ecm);
   const std::string topicPrefix = BuildTopicPrefix(modelName, thrusterId);
 
-  this->m_node = std::make_shared<ignition::transport::Node>();
+  this->m_node = std::make_shared<gz::transport::Node>();
 
   this->m_node->Subscribe(topicPrefix + "input", &ThrusterPlugin::OnCommand,
                           this);
   this->m_thrustPublisher =
-      this->m_node->Advertise<ignition::msgs::Vector3d>(topicPrefix + "thrust");
+      this->m_node->Advertise<gz::msgs::Vector3d>(topicPrefix + "thrust");
 
-  ignmsg << "[ThrusterPlugin] attached to link '" << linkName << "' of model '"
+  gzmsg << "[ThrusterPlugin] attached to link '" << linkName << "' of model '"
          << modelName << "', axis ("
          << this->m_axis.transpose() << "), application point ("
          << this->m_applicationPoint.transpose() << "), centre of gravity ("
@@ -201,7 +201,7 @@ void ThrusterPlugin::Configure(
          << topicPrefix << "input'" << std::endl;
 }
 
-void ThrusterPlugin::OnCommand(const ignition::msgs::Double &_msg) {
+void ThrusterPlugin::OnCommand(const gz::msgs::Double &_msg) {
   this->m_command.store(_msg.data());
 }
 
@@ -227,9 +227,9 @@ ThrusterPlugin::ThrusterState ThrusterPlugin::Evaluate(double _timeSeconds) {
   return state;
 }
 
-void ThrusterPlugin::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
-                               ignition::gazebo::EntityComponentManager &_ecm) {
-  if (this->m_link.Entity() == ignition::gazebo::kNullEntity ||
+void ThrusterPlugin::PreUpdate(const gz::sim::UpdateInfo &_info,
+                               gz::sim::EntityComponentManager &_ecm) {
+  if (this->m_link.Entity() == gz::sim::kNullEntity ||
       !this->m_propellerDynamics || !this->m_converter)
     return;
 
@@ -257,13 +257,13 @@ void ThrusterPlugin::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
 
   // Explicit accumulation: several thrusters (and the buoyancy plugin) write
   // to the same link in the same step.
-  AddWorldWrench(_ecm, this->m_link.Entity(), ToIgnition(forceWorld),
-                 ToIgnition(torqueWorld));
+  AddWorldWrench(_ecm, this->m_link.Entity(), ToGz(forceWorld),
+                 ToGz(torqueWorld));
 
   // Optionally spin the rotor joint so that the propeller follows the
   // dynamics (visualization only, no reaction on the body).
-  if (this->m_jointEntity != ignition::gazebo::kNullEntity) {
-    namespace components = ignition::gazebo::components;
+  if (this->m_jointEntity != gz::sim::kNullEntity) {
+    namespace components = gz::sim::components;
     if (!_ecm.Component<components::JointVelocityCmd>(this->m_jointEntity)) {
       _ecm.CreateComponent(
           this->m_jointEntity,
@@ -276,7 +276,7 @@ void ThrusterPlugin::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
 
   // Publish the world frame thrust force for monitoring.
   if (this->m_thrustPublisher.HasConnections()) {
-    ignition::msgs::Vector3d message;
+    gz::msgs::Vector3d message;
     message.set_x(forceWorld.x());
     message.set_y(forceWorld.y());
     message.set_z(forceWorld.z());
@@ -284,14 +284,14 @@ void ThrusterPlugin::PreUpdate(const ignition::gazebo::UpdateInfo &_info,
   }
 
   if (this->m_debugMode && ++this->m_debugCounter % 100 == 0)
-    ignmsg << "[ThrusterPlugin][debug] t=" << _info.simTime.count()
+    gzmsg << "[ThrusterPlugin][debug] t=" << _info.simTime.count()
            << " ns, command=" << this->m_command.load() << ", thrust=" << thrust
            << ", F_body=(" << forceBody.transpose() << "), M_body=("
            << torqueBody.transpose() << ")" << std::endl;
 }
 
-IGNITION_ADD_PLUGIN(ThrusterPlugin, ignition::gazebo::System,
+GZ_ADD_PLUGIN(ThrusterPlugin, gz::sim::System,
                     ThrusterPlugin::ISystemConfigure,
                     ThrusterPlugin::ISystemPreUpdate)
 
-IGNITION_ADD_PLUGIN_ALIAS(ThrusterPlugin, "thruster")
+GZ_ADD_PLUGIN_ALIAS(ThrusterPlugin, "thruster")

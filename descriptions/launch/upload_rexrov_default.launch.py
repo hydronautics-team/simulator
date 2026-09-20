@@ -5,8 +5,8 @@
 #
 # The robot is described by ../robots/ball.xacro (a sphere with two cube
 # thrusters) and that xacro is the single source of truth for the model: it is
-# expanded when the launch file runs and the resulting URDF is handed to
-# `ros_gz_sim create -string`, which converts it to SDF. Link names and plugin
+# expanded when the launch file runs and the resulting URDF is handed to the
+# `create` node of ros_gz_sim, which converts it to SDF. Link names and plugin
 # blocks survive the conversion, so the spawn always matches the current
 # versions of libunderwater_object.so and libthruster.so.
 #
@@ -16,7 +16,7 @@
 # Control: libthruster.so listens on the gz topics
 #   /<name>/thrusters/id_0/input   (left thruster,  rotor speed in rad/s)
 #   /<name>/thrusters/id_1/input   (right thruster, rotor speed in rad/s)
-# (ignition.msgs.Double; thrust = rotorConstant * |w| * w) and publishes the
+# (gz.msgs.Double; thrust = rotorConstant * |w| * w) and publishes the
 # world frame thrust on /<name>/thrusters/id_<id>/thrust. With thrusters:=true
 # those topics are bridged to ROS 2, so the robot can be driven with e.g.
 #   ros2 topic pub -r 10 /ball/thrusters/id_0/input \
@@ -44,10 +44,11 @@
 import pathlib
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, LogInfo
-from launch.actions import OpaqueFunction
+from launch.actions import DeclareLaunchArgument, LogInfo
+from launch.actions import OpaqueFunction, SetEnvironmentVariable
 from launch.substitutions import Command, LaunchConfiguration as Lc
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 # Robot description and default entity name (works from source and installed
 # share trees: <package>/launch/<this file> -> <package>)
@@ -73,12 +74,15 @@ def launch_setup(context, *args, **kwargs):
     world = Lc('world').perform(context)
     xacro_file = Lc('xacro').perform(context)
     name = Lc('name').perform(context)
-    x = Lc('x').perform(context)
-    y = Lc('y').perform(context)
-    z = Lc('z').perform(context)
-    roll = Lc('roll').perform(context)
-    pitch = Lc('pitch').perform(context)
-    yaw = Lc('yaw').perform(context)
+    # The create node declares the pose parameters as doubles, so convert the
+    # launch arguments here (a string would be written to the params file as a
+    # YAML string and rejected with InvalidParameterTypeException).
+    x = float(Lc('x').perform(context))
+    y = float(Lc('y').perform(context))
+    z = float(Lc('z').perform(context))
+    roll = float(Lc('roll').perform(context))
+    pitch = float(Lc('pitch').perform(context))
+    yaw = float(Lc('yaw').perform(context))
     verbose = to_bool(Lc('verbose').perform(context))
     debug = to_bool(Lc('debug').perform(context))
     thrusters = to_bool(Lc('thrusters').perform(context))
@@ -91,19 +95,6 @@ def launch_setup(context, *args, **kwargs):
     # model and as the entity name in the world.
     model = Command(['xacro ', xacro_file, ' namespace:=', name])
 
-    cmd = [
-        'ros2', 'run', 'ros_gz_sim', 'create',
-        '-world', world,
-        '-string', model,
-        '-name', name,
-        '-x', x,
-        '-y', y,
-        '-z', z,
-        '-R', roll,
-        '-P', pitch,
-        '-Y', yaw,
-    ]
-
     if debug:
         gzLogVerbosity = '4'
     elif verbose:
@@ -115,12 +106,33 @@ def launch_setup(context, *args, **kwargs):
     if verbose or debug:
         actions.append(LogInfo(
             msg='spawning %s from %s in world %s' % (name, xacro_file, world)))
-        actions.append(LogInfo(msg='cmd: ' + ' '.join(str(c) for c in cmd)))
 
-    actions.append(ExecuteProcess(
-        cmd=cmd,
+    actions.append(SetEnvironmentVariable('GZ_LOG_VERBOSITY', gzLogVerbosity))
+    # The create node of ros_gz_sim converts the xacro-expanded URDF into SDF
+    # and calls the /world/<world>/create service; plugin blocks survive the
+    # conversion. String parameters are wrapped in ParameterValue so that the
+    # URDF is not parsed as YAML (it has XML characters YAML cannot read).
+    # (The GzSpawnModel launch action is not used because it forwards None for
+    # every argument it was not given, which makes launch raise
+    # "'NoneType' object is not iterable".)
+    actions.append(Node(
+        package='ros_gz_sim',
+        executable='create',
         output='screen',
-        additional_env={'GZ_LOG_VERBOSITY': gzLogVerbosity},
+        parameters=[{
+            'world': ParameterValue(world, value_type=str),
+            'file': ParameterValue('', value_type=str),
+            'string': ParameterValue(model, value_type=str),
+            'topic': ParameterValue('', value_type=str),
+            'name': ParameterValue(name, value_type=str),
+            'allow_renaming': False,
+            'x': x,
+            'y': y,
+            'z': z,
+            'R': roll,
+            'P': pitch,
+            'Y': yaw,
+        }],
     ))
 
     # ROS 2 <-> gz bridge for the thrusters: rotor speed commands in, thrust out
@@ -129,9 +141,9 @@ def launch_setup(context, *args, **kwargs):
         for thruster_id in THRUSTER_IDS:
             prefix = '/%s/thrusters/id_%d' % (name, thruster_id)
             arguments.append(
-                prefix + '/input@std_msgs/msg/Float64]ignition.msgs.Double')
+                prefix + '/input@std_msgs/msg/Float64]gz.msgs.Double')
             arguments.append(
-                prefix + '/thrust@geometry_msgs/msg/Vector3[ignition.msgs.Vector3d')
+                prefix + '/thrust@geometry_msgs/msg/Vector3[gz.msgs.Vector3d')
         actions.append(Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',

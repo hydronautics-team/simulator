@@ -48,22 +48,20 @@ def generate_test_description():
     # The vehicle is included in the world file so that its system plugin is
     # loaded together with the world.
     simulator = ExecuteProcess(
-        cmd=['ign', 'gazebo', '-s', '-r', '-v', '3', world_file],
+        cmd=['gz', 'sim', '-s', '-r', '-v', '3', world_file],
         output='screen')
 
     bridges = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-            POSE_TOPIC + '@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            POSE_TOPIC + '@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
         ],
         output='screen')
 
     return launch.LaunchDescription([
         SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', plugin_lib),
-        SetEnvironmentVariable('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', plugin_lib),
         SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', resource_path),
-        SetEnvironmentVariable('IGN_GAZEBO_RESOURCE_PATH', resource_path),
         simulator,
         bridges,
         launch_testing.actions.ReadyToTest(),

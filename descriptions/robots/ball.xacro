@@ -159,7 +159,7 @@
   <!-- Buoyancy and hydrodynamics of the body -->
   <gazebo>
     <!-- The plugin name is the name registered by the library (see
-         IGNITION_ADD_PLUGIN_ALIAS), not a free form instance label. -->
+         GZ_ADD_PLUGIN_ALIAS), not a free form instance label. -->
     <plugin name="underwater_object" filename="libunderwater_object.so">
       <link_name>${namespace}/base_link</link_name>
       <debug>$(arg debug)</debug>

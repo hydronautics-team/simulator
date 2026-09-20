@@ -6,9 +6,9 @@
 #include <utility>
 #include <vector>
 
-#include <ignition/gazebo/components/Gravity.hh>
-#include <ignition/gazebo/components/World.hh>
-#include <ignition/plugin/Register.hh>
+#include <gz/sim/components/Gravity.hh>
+#include <gz/sim/components/World.hh>
+#include <gz/plugin/Register.hh>
 namespace {
 
 using Vector6d = Eigen::Matrix<double, 6, 1>;
@@ -76,24 +76,24 @@ UnderwaterObjectPlugin::UnderwaterObjectPlugin() = default;
 UnderwaterObjectPlugin::~UnderwaterObjectPlugin() = default;
 
 void UnderwaterObjectPlugin::Configure(
-    const ignition::gazebo::Entity &_entity,
+    const gz::sim::Entity &_entity,
     const std::shared_ptr<const sdf::Element> &_sdf,
-    ignition::gazebo::EntityComponentManager &_ecm,
-    ignition::gazebo::EventManager &) {
-  this->m_model = ignition::gazebo::Model(_entity);
+    gz::sim::EntityComponentManager &_ecm,
+    gz::sim::EventManager &) {
+  this->m_model = gz::sim::Model(_entity);
 
   std::string linkName = "base_link";
   if (_sdf->HasElement("link_name"))
     linkName = _sdf->Get<std::string>("link_name");
 
   const auto linkEntity = this->m_model.LinkByName(_ecm, linkName);
-  if (linkEntity == ignition::gazebo::kNullEntity) {
-    ignwarn << "[UnderwaterObjectPlugin] link '" << linkName
+  if (linkEntity == gz::sim::kNullEntity) {
+    gzwarn << "[UnderwaterObjectPlugin] link '" << linkName
             << "' not found in model '" << this->m_model.Name(_ecm) << "'"
             << std::endl;
     return;
   }
-  this->m_baseLink = ignition::gazebo::Link(linkEntity);
+  this->m_baseLink = gz::sim::Link(linkEntity);
 
   if (_sdf->HasElement("debug"))
     this->m_debugMode = _sdf->Get<bool>("debug");
@@ -114,9 +114,9 @@ void UnderwaterObjectPlugin::Configure(
   Eigen::Vector3d gravity(0.0, 0.0, -9.8);
   {
     const auto world = _ecm.EntityByComponents(
-        ignition::gazebo::components::World());
+        gz::sim::components::World());
     const auto gravityComp =
-        _ecm.Component<ignition::gazebo::components::Gravity>(world);
+        _ecm.Component<gz::sim::components::Gravity>(world);
     if (gravityComp)
       gravity = Eigen::Vector3d(gravityComp->Data().X(),
                                 gravityComp->Data().Y(),
@@ -154,7 +154,7 @@ void UnderwaterObjectPlugin::Configure(
   this->m_hydroModel = std::make_unique<HydrodynamicModel>(
       massMatrix, linearDamping, linearDampingForward, quadraticDamping);
 
-  ignmsg << "[UnderwaterObjectPlugin] attached to link '" << linkName
+  gzmsg << "[UnderwaterObjectPlugin] attached to link '" << linkName
          << "' of model '" << this->m_model.Name(_ecm) << "', volume "
          << volume << " m^3, rho " << fluidDensity
          << " kg/m^3, debug=" << (this->m_debugMode ? "on" : "off")
@@ -184,9 +184,9 @@ UnderwaterObjectPlugin::Vector6d UnderwaterObjectPlugin::ComputeAcceleration(
 }
 
 void UnderwaterObjectPlugin::PreUpdate(
-    const ignition::gazebo::UpdateInfo &_info,
-    ignition::gazebo::EntityComponentManager &_ecm) {
-  if (this->m_baseLink.Entity() == ignition::gazebo::kNullEntity ||
+    const gz::sim::UpdateInfo &_info,
+    gz::sim::EntityComponentManager &_ecm) {
+  if (this->m_baseLink.Entity() == gz::sim::kNullEntity ||
       !this->m_buoyancyModel || !this->m_hydroModel)
     return;
 
@@ -234,20 +234,20 @@ void UnderwaterObjectPlugin::PreUpdate(
   const Eigen::Vector3d worldForce = rotation * forceBody;
   const Eigen::Vector3d worldTorque = rotation * torqueBody;
   this->m_baseLink.AddWorldWrench(_ecm,
-      ignition::math::Vector3d(worldForce.x(), worldForce.y(),
-                               worldForce.z()),
-      ignition::math::Vector3d(worldTorque.x(), worldTorque.y(),
-                               worldTorque.z()));
+      gz::math::Vector3d(worldForce.x(), worldForce.y(),
+                         worldForce.z()),
+      gz::math::Vector3d(worldTorque.x(), worldTorque.y(),
+                         worldTorque.z()));
 
   if (this->m_debugMode && ++this->m_debugCounter % 100 == 0)
-    ignmsg << "[UnderwaterObjectPlugin][debug] t=" << _info.simTime.count()
+    gzmsg << "[UnderwaterObjectPlugin][debug] t=" << _info.simTime.count()
            << " ns, v_body=(" << bodyLinear.transpose() << "), F_body=("
            << forceBody.transpose() << "), M_body=(" << torqueBody.transpose()
            << ")" << std::endl;
 }
 
-IGNITION_ADD_PLUGIN(UnderwaterObjectPlugin, ignition::gazebo::System,
-                    UnderwaterObjectPlugin::ISystemConfigure,
-                    UnderwaterObjectPlugin::ISystemPreUpdate)
+GZ_ADD_PLUGIN(UnderwaterObjectPlugin, gz::sim::System,
+              UnderwaterObjectPlugin::ISystemConfigure,
+              UnderwaterObjectPlugin::ISystemPreUpdate)
 
-IGNITION_ADD_PLUGIN_ALIAS(UnderwaterObjectPlugin, "underwater_object")
+GZ_ADD_PLUGIN_ALIAS(UnderwaterObjectPlugin, "underwater_object")

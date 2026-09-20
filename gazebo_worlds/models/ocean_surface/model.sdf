@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
-<!-- Bluish, transparent ocean surface (visual only, no collision). -->
+<!-- Bluish, transparent ocean surface (visual only, no collision).
+     cast_shadows is off so the plane does not put the whole underwater scene
+     into the shadow of the sun. -->
 <sdf version="1.9">
   <model name="ocean_surface">
     <static>true</static>
     <link name="surface_link">
       <visual name="surface_visual">
+        <cast_shadows>false</cast_shadows>
+        <transparency>0.65</transparency>
         <geometry>
           <plane>
             <normal>0 0 1</normal>
@@ -15,7 +19,6 @@
           <ambient>0.15 0.45 0.90 1.0</ambient>
           <diffuse>0.15 0.45 0.90 1.0</diffuse>
           <specular>0.4 0.5 0.6 1.0</specular>
-          <transparency>0.65</transparency>
         </material>
       </visual>
     </link>

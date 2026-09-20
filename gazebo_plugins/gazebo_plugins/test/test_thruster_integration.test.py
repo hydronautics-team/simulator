@@ -94,23 +94,22 @@ def generate_test_description():
     # The probes are part of the world file, so their system plugins are loaded
     # together with the world.
     simulator = ExecuteProcess(
-        cmd=['ign', 'gazebo', '-s', '-r', '-v', '3', world_file],
+        cmd=['gz', 'sim', '-s', '-r', '-v', '3', world_file],
         output='screen')
 
     bridges = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-            POSE_TOPIC + '@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            POSE_TOPIC + '@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
         ] + [
-            input_topic(probe) + '@std_msgs/msg/Float64]ignition.msgs.Double'
+            input_topic(probe) + '@std_msgs/msg/Float64]gz.msgs.Double'
             for probe in PROBES
         ],
         output='screen')
 
     return launch.LaunchDescription([
         SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', plugin_lib),
-        SetEnvironmentVariable('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', plugin_lib),
         simulator,
         bridges,
         launch_testing.actions.ReadyToTest(),

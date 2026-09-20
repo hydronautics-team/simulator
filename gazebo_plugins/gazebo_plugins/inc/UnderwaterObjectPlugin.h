@@ -4,9 +4,9 @@
 
 #include <memory>
 
-#include <ignition/gazebo/Link.hh>
-#include <ignition/gazebo/Model.hh>
-#include <ignition/gazebo/System.hh>
+#include <gz/sim/Link.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/System.hh>
 
 #include <BuoyancyModel.h>
 #include <HydrodynamicModel.h>
@@ -14,9 +14,9 @@
 // Facade that combines the buoyancy and hydrodynamic models for a body.
 // The body state (pose and velocity) is read from the link components; the
 // filtered acceleration is derived numerically from that velocity.
-class UnderwaterObjectPlugin : public ignition::gazebo::System,
-                               public ignition::gazebo::ISystemConfigure,
-                               public ignition::gazebo::ISystemPreUpdate {
+class UnderwaterObjectPlugin : public gz::sim::System,
+                               public gz::sim::ISystemConfigure,
+                               public gz::sim::ISystemPreUpdate {
 public:
   using Vector6d = Eigen::Matrix<double, 6, 1>;
   using Matrix6d = Eigen::Matrix<double, 6, 6>;
@@ -24,21 +24,21 @@ public:
   UnderwaterObjectPlugin();
   ~UnderwaterObjectPlugin() override;
 
-  void Configure(const ignition::gazebo::Entity &_entity,
+  void Configure(const gz::sim::Entity &_entity,
                  const std::shared_ptr<const sdf::Element> &_sdf,
-                 ignition::gazebo::EntityComponentManager &_ecm,
-                 ignition::gazebo::EventManager &) override;
+                 gz::sim::EntityComponentManager &_ecm,
+                 gz::sim::EventManager &) override;
 
-  void PreUpdate(const ignition::gazebo::UpdateInfo &_info,
-                 ignition::gazebo::EntityComponentManager &_ecm) override;
+  void PreUpdate(const gz::sim::UpdateInfo &_info,
+                 gz::sim::EntityComponentManager &_ecm) override;
 
 private:
   // Numerical derivative of the body velocity with a low-pass filter
   Vector6d ComputeAcceleration(const Vector6d &_velocity, double _dtSeconds);
 
 private:
-  ignition::gazebo::Model m_model;
-  ignition::gazebo::Link m_baseLink;
+  gz::sim::Model m_model;
+  gz::sim::Link m_baseLink;
   bool m_debugMode{false};
   unsigned int m_debugCounter{0};
 

@@ -1,0 +1,13 @@
+.git
+build
+install
+log
+**/__pycache__
+**/*.pyc
+*.pid
+*.log
+HydrodynamicModel.cpp
+skills-lock.json
+Dockerfile
+docker-compose.yml
+.dockerignore

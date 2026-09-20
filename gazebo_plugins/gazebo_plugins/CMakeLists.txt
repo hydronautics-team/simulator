@@ -2,11 +2,16 @@ cmake_minimum_required(VERSION 3.5)
 project(gazebo_plugins)
 
 find_package(ament_cmake REQUIRED)
-# Gazebo Sim (ros_gz_sim stack)
-find_package(ignition-gazebo6 REQUIRED)
-find_package(ignition-transport11 REQUIRED)
-find_package(ignition-msgs8 REQUIRED)
-find_package(sdformat12 REQUIRED)
+# Gazebo Sim Noble, vendored by the ros_gz stack: the vendor packages export
+# unversioned CMake packages (gz-sim, gz-msgs, gz-transport, sdformat).
+find_package(gz_sim_vendor REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz_msgs_vendor REQUIRED)
+find_package(gz-msgs REQUIRED)
+find_package(gz_transport_vendor REQUIRED)
+find_package(gz-transport REQUIRED)
+find_package(sdformat_vendor REQUIRED)
+find_package(sdformat REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 # ROS 2
@@ -42,7 +47,7 @@ add_library(propeller OBJECT
 target_include_directories(propeller PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>)
 target_compile_features(propeller PUBLIC cxx_std_17)
-target_link_libraries(propeller PUBLIC sdformat12::sdformat12)
+target_link_libraries(propeller PUBLIC sdformat::core)
 set_target_properties(propeller PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 add_library(thruster_converter OBJECT
@@ -51,7 +56,7 @@ add_library(thruster_converter OBJECT
 target_include_directories(thruster_converter PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>)
 target_compile_features(thruster_converter PUBLIC cxx_std_17)
-target_link_libraries(thruster_converter PUBLIC sdformat12::sdformat12)
+target_link_libraries(thruster_converter PUBLIC sdformat::core)
 set_target_properties(thruster_converter PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
 
@@ -69,9 +74,9 @@ target_include_directories(underwater_object PRIVATE
 target_link_libraries(underwater_object PRIVATE
   buoyancy_model
   hydrodynamic_model
-  ignition-gazebo6::ignition-gazebo6
-  ignition-transport11::ignition-transport11
-  ignition-msgs8::ignition-msgs8)
+  gz-sim::core
+  gz-transport::core
+  gz-msgs::core)
 
 # Thruster facade: propeller dynamics + thrust conversion (gz sim), plugin
 # name "thruster" (library libthruster.so)
@@ -83,11 +88,11 @@ target_include_directories(thruster PRIVATE
 target_link_libraries(thruster PRIVATE
   propeller
   thruster_converter
-  sdformat12::sdformat12
+  sdformat::core
   Eigen3::Eigen
-  ignition-gazebo6::ignition-gazebo6
-  ignition-transport11::ignition-transport11
-  ignition-msgs8::ignition-msgs8)
+  gz-sim::core
+  gz-transport::core
+  gz-msgs::core)
 
 # The plugin and its model libraries share the same install location, so the
 # objects are linked straight into the plugins.
@@ -100,7 +105,10 @@ install(TARGETS underwater_object thruster
   DESTINATION lib/${PROJECT_NAME})
 
 ament_export_dependencies(ament_cmake)
-ament_export_dependencies(ignition-gazebo6)
+ament_export_dependencies(gz_sim_vendor)
+ament_export_dependencies(gz_msgs_vendor)
+ament_export_dependencies(gz_transport_vendor)
+ament_export_dependencies(sdformat_vendor)
 ament_export_libraries(underwater_object thruster)
 
 # Make the spawned world find the system plugins after `source install/setup.bash`

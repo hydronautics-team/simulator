@@ -7,13 +7,13 @@
 
 #include <eigen3/Eigen/Core>
 
-#include <ignition/gazebo/Entity.hh>
-#include <ignition/gazebo/Link.hh>
-#include <ignition/gazebo/Model.hh>
-#include <ignition/gazebo/System.hh>
-#include <ignition/msgs/double.pb.h>
-#include <ignition/msgs/vector3d.pb.h>
-#include <ignition/transport/Node.hh>
+#include <gz/sim/Entity.hh>
+#include <gz/sim/Link.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/System.hh>
+#include <gz/msgs/double.pb.h>
+#include <gz/msgs/vector3d.pb.h>
+#include <gz/transport/Node.hh>
 
 #include <IPropellerDynamics.h>
 #include <IThrusterConverter.h>
@@ -60,27 +60,27 @@
 //   </plugin>
 //
 // The rotor speed command is received on the legacy topic
-// "/<model>/thrusters/id_<thruster_id>/input" (ignition.msgs.Double, field
+// "/<model>/thrusters/id_<thruster_id>/input" (gz.msgs.Double, field
 // `data`); the resulting thrust is published as a world frame force on
-// "/<model>/thrusters/id_<thruster_id>/thrust" (ignition.msgs.Vector3d).
-class ThrusterPlugin : public ignition::gazebo::System,
-                       public ignition::gazebo::ISystemConfigure,
-                       public ignition::gazebo::ISystemPreUpdate {
+// "/<model>/thrusters/id_<thruster_id>/thrust" (gz.msgs.Vector3d).
+class ThrusterPlugin : public gz::sim::System,
+                       public gz::sim::ISystemConfigure,
+                       public gz::sim::ISystemPreUpdate {
 public:
   ThrusterPlugin();
   ~ThrusterPlugin() override;
 
-  void Configure(const ignition::gazebo::Entity &_entity,
+  void Configure(const gz::sim::Entity &_entity,
                  const std::shared_ptr<const sdf::Element> &_sdf,
-                 ignition::gazebo::EntityComponentManager &_ecm,
-                 ignition::gazebo::EventManager &) override;
+                 gz::sim::EntityComponentManager &_ecm,
+                 gz::sim::EventManager &) override;
 
-  void PreUpdate(const ignition::gazebo::UpdateInfo &_info,
-                 ignition::gazebo::EntityComponentManager &_ecm) override;
+  void PreUpdate(const gz::sim::UpdateInfo &_info,
+                 gz::sim::EntityComponentManager &_ecm) override;
 
 private:
   // Callback of the input topic: stores the last rotor speed command.
-  void OnCommand(const ignition::msgs::Double &_msg);
+  void OnCommand(const gz::msgs::Double &_msg);
 
   // Runs the command through clamp -> gain -> dynamics -> conversion ->
   // thrust limits.
@@ -91,9 +91,9 @@ private:
   ThrusterState Evaluate(double _timeSeconds);
 
 private:
-  ignition::gazebo::Model m_model;
-  ignition::gazebo::Link m_link;
-  ignition::gazebo::Entity m_jointEntity{ignition::gazebo::kNullEntity};
+  gz::sim::Model m_model;
+  gz::sim::Link m_link;
+  gz::sim::Entity m_jointEntity{gz::sim::kNullEntity};
 
   // Models created once in Configure (via the SDF factories).
   std::unique_ptr<IPropellerDynamics> m_propellerDynamics;
@@ -113,8 +113,8 @@ private:
 
   // Runtime state.
   std::atomic<double> m_command{0.0};
-  std::shared_ptr<ignition::transport::Node> m_node;
-  ignition::transport::Node::Publisher m_thrustPublisher;
+  std::shared_ptr<gz::transport::Node> m_node;
+  gz::transport::Node::Publisher m_thrustPublisher;
   bool m_debugMode{false};
   unsigned int m_debugCounter{0};
 };

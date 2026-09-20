@@ -1,0 +1,69 @@
+# Development environment for the underwater simulator.
+#
+# The image built by the Dockerfile is used as the base; the live repo is
+# bind-mounted over the baked copy in /ws/src/simulator, so source edits are
+# picked up after `colcon build` inside the container.
+#
+# Graphics: the Gazebo Sim GUI is forwarded to the host display through the
+# X11 socket (DISPLAY + QT_X11_NO_MITSHM) and the host X authority file; if
+# the GUI cannot connect, allow local clients once on the host with
+# `xhost +local:root`. The DRI and ALSA devices are passed through as well.
+#
+# GPU: the NVIDIA GPU is passed through with `gpus: all`, which requires the
+# nvidia-container-toolkit to be configured for Docker on the host
+# (`sudo nvidia-ctk runtime configure --runtime=docker`, plus a CDI spec via
+# `sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml` when Docker
+# uses CDI). The toolkit injects the driver libraries and nvidia-smi into the
+# container only when it is started with GPU access. On hybrid (Optimus)
+# laptops, uncomment __NV_PRIME_RENDER_OFFLOAD if the GUI renders on the
+# wrong GPU.
+#
+# Usage:
+#   docker compose build
+#   docker compose up -d && docker compose exec simulator bash
+#   docker compose run --rm simulator \
+#       ros2 launch gazebo_worlds empty_underwater_world.launch.py
+#   docker compose run --rm simulator \
+#       ros2 launch descriptions upload_rexrov_default.launch.py
+#
+# The service uses host networking: gz-transport and ROS 2 DDS discover their
+# peers over the network, and separate `docker compose run` containers do not
+# see each other on the default bridge (the spawn would wait forever for the
+# /world/<name>/create service). Prefer running both launch files in one
+# container (`up -d` + `exec` in each terminal); host networking additionally
+# makes separate containers and host-side tools interoperate. Linux only.
+
+services:
+  simulator:
+    build: .
+    image: simulator:lyrical
+    network_mode: host
+    gpus: all
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/root/.Xauthority
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      # Load only the NVIDIA EGL vendor: without this, glvnd also loads Mesa's
+      # EGL, which probes the NVIDIA device nodes injected by the toolkit and
+      # logs "libEGL warning: ... driver (null) / failed to create dri2 screen".
+      # Comment out if EGL from another vendor is needed.
+      - __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json
+      # - __NV_PRIME_RENDER_OFFLOAD=1
+    devices:
+      # With the NVIDIA container toolkit the GPU device nodes are injected
+      # automatically; passing /dev/dri in addition only makes Mesa probe the
+      # NVIDIA render nodes and log "libEGL ... driver (null)" warnings.
+      # Uncomment it when the GPU is not provided by the toolkit.
+      # - /dev/dri:/dev/dri
+      - /dev/snd:/dev/snd
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:ro
+      - .:/ws/src/simulator
+    ipc: host
+    stdin_open: true
+    tty: true
+    working_dir: /ws
+    command: bash

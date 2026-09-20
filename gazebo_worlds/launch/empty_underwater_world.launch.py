@@ -37,11 +37,10 @@ PKG_DIR = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_WORLD = str(PKG_DIR / 'worlds' / 'empty_underwater.world')
 
 # Resource paths handed to gz sim so that model://sea_floor and model://ocean_surface
-# model://sun (Gazebo Classic models, if installed) can be resolved. The
-# existing value of the environment variable is kept and prepended.
+# can be resolved. The existing value of the environment variable is kept and
+# appended.
 _RESOURCE_DIRS = [
     str(PKG_DIR / 'models'),
-    '/usr/share/gazebo-11/models',  # provides model://sun when available
 ]
 GZ_RESOURCE_PATH = os.pathsep.join(
     [d for d in _RESOURCE_DIRS if pathlib.Path(d).is_dir()] +
@@ -67,7 +66,7 @@ def launch_setup(context, *args, **kwargs):
     world = Lc('world').perform(context)
     extra = Lc('extra_gz_args').perform(context)
 
-    # Build the command line for `ign gazebo`
+    # Build the command line for `gz sim`
     gz_args = []
     if not gui:
         # Run the server only (headless); implies no GUI even on a desktop
@@ -111,9 +110,8 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
     # Make the resource paths visible to the included gz_sim.launch.py, which
-    # merges them into GZ_SIM_RESOURCE_PATH / IGN_GAZEBO_RESOURCE_PATH.
+    # merges them into GZ_SIM_RESOURCE_PATH.
     set_gz_res = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', GZ_RESOURCE_PATH)
-    set_ign_res = SetEnvironmentVariable('IGN_GAZEBO_RESOURCE_PATH', GZ_RESOURCE_PATH)
 
     return LaunchDescription([
         DeclareLaunchArgument('gui', default_value='true',
@@ -129,10 +127,9 @@ def generate_launch_description():
                               description='World file to load'),
         DeclareLaunchArgument(
             'extra_gz_args', default_value='',
-            description='Extra arguments passed to `ign gazebo` '
+            description='Extra arguments passed to `gz sim` '
                         '(e.g. "--iterations 100")'),
 
         set_gz_res,
-        set_ign_res,
         OpaqueFunction(function=launch_setup),
     ])
