@@ -117,6 +117,14 @@ ros2 run descriptions ball_teleop.py --ros-args -p name:=ball
 ros2 topic pub -r 10 /ball/thrusters/id_0/input std_msgs/msg/Float64 "{data: 300.0}"
 ```
 
+Встроенный IMU робота (`gz-sim-imu-system`, см. `descriptions/robots/ball.xacro`)
+публикуется на gz-топике `/imu` и бриджится в ROS 2 как `sensor_msgs/Imu` на
+50 Гц:
+
+```bash
+ros2 topic echo /imu --once
+```
+
 ## Разработка
 
 Исходники репозитория смонтированы в контейнер как `/ws/src/simulator`; после

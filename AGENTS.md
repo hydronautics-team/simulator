@@ -42,7 +42,7 @@ ros2 launch descriptions upload_rexrov_default.launch.py         # spawn + teleo
 ros2 launch descriptions upload_rexrov_default.launch.py teleop:=false  # spawn only
 ```
 
-Thruster control via gz topics bridged to ROS 2 (`thrusters:=true`): `/ball/thrusters/id_0/input` (std_msgs Float64, rotor rad/s, thrust = rotorConstant * |w| * w) and `/ball/thrusters/id_0/thrust` (Vector3). Equal speeds = forward, opposite = yaw.
+Thruster control via gz topics bridged to ROS 2 (`thrusters:=true`): `/ball/thrusters/id_0/input` (std_msgs Float64, rotor rad/s, thrust = rotorConstant * |w| * w) and `/ball/thrusters/id_0/thrust` (Vector3). Equal speeds = forward, opposite = yaw. The robot also has a built-in IMU (`gz-sim-imu-system` in `ball.xacro`) publishing on gz `/imu`, bridged to ROS 2 as `sensor_msgs/Imu` by the spawn launch.
 
 ## Gotchas
 

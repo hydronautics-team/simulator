@@ -25,6 +25,9 @@
 # turn it, because each thruster pushes at y = +-0.6 m from the centre of
 # gravity (application_point / center_of_mass in the xacro).
 #
+# The built-in IMU of the robot (see ball.xacro) is published on the gz topic
+# /imu and is bridged to ROS 2 as sensor_msgs/Imu.
+#
 # Usage:
 #   ros2 launch descriptions upload_rexrov_default.launch.py                # ball
 #   ros2 launch descriptions upload_rexrov_default.launch.py name:=rov z:=-30
@@ -135,21 +138,22 @@ def launch_setup(context, *args, **kwargs):
         }],
     ))
 
-    # ROS 2 <-> gz bridge for the thrusters: rotor speed commands in, thrust out
+    # ROS 2 <-> gz bridge: the robot IMU is always bridged; the thruster
+    # command / thrust topics are added when thrusters:=true.
+    arguments = ['/imu@sensor_msgs/msg/Imu[gz.msgs.IMU']
     if thrusters:
-        arguments = []
         for thruster_id in THRUSTER_IDS:
             prefix = '/%s/thrusters/id_%d' % (name, thruster_id)
             arguments.append(
                 prefix + '/input@std_msgs/msg/Float64]gz.msgs.Double')
             arguments.append(
                 prefix + '/thrust@geometry_msgs/msg/Vector3[gz.msgs.Vector3d')
-        actions.append(Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            arguments=arguments,
-            output='screen',
-        ))
+    actions.append(Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=arguments,
+        output='screen',
+    ))
 
     # Keyboard teleop: reads the terminal of the launch process and drives the
     # thrusters through the bridge above. It can also be started on its own:

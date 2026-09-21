@@ -229,5 +229,23 @@
         <rotorConstant>${thruster_rotor_constant}</rotorConstant>
       </conversion>
     </plugin>
+
+    <!-- Built-in gz-sim IMU system: creates the IMU sensors of this model and
+         publishes them on their topics. The Sensors system is not needed (the
+         Imu system creates its own sensors, see the Gazebo "Sensors"
+         tutorial). -->
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+  </gazebo>
+
+  <!-- IMU on the body link: orientation, angular velocity and linear
+       acceleration on the gz topic /imu (bridged to ROS 2 by the spawn
+       launch file as sensor_msgs/Imu). -->
+  <gazebo reference="${namespace}/base_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>50</update_rate>
+      <visualize>false</visualize>
+      <topic>imu</topic>
+    </sensor>
   </gazebo>
 </robot>
