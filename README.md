@@ -125,6 +125,14 @@ ros2 topic pub -r 10 /ball/thrusters/id_0/input std_msgs/msg/Float64 "{data: 300
 ros2 topic echo /imu --once
 ```
 
+Передняя камера робота (`front_camera`, 640×480 @ 30 Гц, обзор 60°) идёт в ROS 2
+как `sensor_msgs/Image` на `/camera/front`, калибровка — `sensor_msgs/CameraInfo`
+на `/camera/front/camera_info`:
+
+```bash
+ros2 topic echo /camera/front --once
+```
+
 ## Разработка
 
 Исходники репозитория смонтированы в контейнер как `/ws/src/simulator`; после

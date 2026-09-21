@@ -26,7 +26,9 @@
 # gravity (application_point / center_of_mass in the xacro).
 #
 # The built-in IMU of the robot (see ball.xacro) is published on the gz topic
-# /imu and is bridged to ROS 2 as sensor_msgs/Imu.
+# /imu and is bridged to ROS 2 as sensor_msgs/Imu; the front camera is
+# published on /camera/front (sensor_msgs/Image) with the calibration on
+# /camera/front/camera_info (sensor_msgs/CameraInfo).
 #
 # Usage:
 #   ros2 launch descriptions upload_rexrov_default.launch.py                # ball
@@ -138,9 +140,13 @@ def launch_setup(context, *args, **kwargs):
         }],
     ))
 
-    # ROS 2 <-> gz bridge: the robot IMU is always bridged; the thruster
-    # command / thrust topics are added when thrusters:=true.
-    arguments = ['/imu@sensor_msgs/msg/Imu[gz.msgs.IMU']
+    # ROS 2 <-> gz bridge: the robot IMU and front camera are always bridged;
+    # the thruster command / thrust topics are added when thrusters:=true.
+    arguments = [
+        '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
+        '/camera/front@sensor_msgs/msg/Image[gz.msgs.Image',
+        '/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+    ]
     if thrusters:
         for thruster_id in THRUSTER_IDS:
             prefix = '/%s/thrusters/id_%d' % (name, thruster_id)
