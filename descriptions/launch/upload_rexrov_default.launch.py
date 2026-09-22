@@ -26,11 +26,11 @@
 # gravity (application_point / center_of_mass in the xacro).
 #
 # The built-in IMU of the robot (see ball.xacro) is published on the gz topic
-# /imu and is bridged to ROS 2 as sensor_msgs/Imu; the front camera is
-# published on /camera/front (sensor_msgs/Image) with the calibration on
-# /camera/front/camera_info (sensor_msgs/CameraInfo); the water pressure
-# sensor (libwater_pressure.so) is published on /<name>/sensors/pressure as
-# sensor_msgs/FluidPressure.
+# /<name>/sensors/imu and is bridged to ROS 2 as sensor_msgs/Imu; the front
+# camera is published on /<name>/sensors/camera/front (sensor_msgs/Image) with
+# the calibration on /<name>/sensors/camera/front/camera_info
+# (sensor_msgs/CameraInfo); the water pressure sensor (libwater_pressure.so) is
+# published on /<name>/sensors/pressure as sensor_msgs/FluidPressure.
 #
 # Usage:
 #   ros2 launch descriptions upload_rexrov_default.launch.py                # ball
@@ -146,9 +146,10 @@ def launch_setup(context, *args, **kwargs):
     # sensor are always bridged; the thruster command / thrust topics are
     # added when thrusters:=true.
     arguments = [
-        '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
-        '/camera/front@sensor_msgs/msg/Image[gz.msgs.Image',
-        '/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+        '/%s/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU' % name,
+        '/%s/sensors/camera/front@sensor_msgs/msg/Image[gz.msgs.Image' % name,
+        '/%s/sensors/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo'
+        % name,
         '/%s/sensors/pressure@sensor_msgs/msg/FluidPressure[gz.msgs.FluidPressure'
         % name,
     ]

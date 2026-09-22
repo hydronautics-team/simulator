@@ -118,19 +118,19 @@ ros2 topic pub -r 10 /ball/thrusters/id_0/input std_msgs/msg/Float64 "{data: 300
 ```
 
 Встроенный IMU робота (`gz-sim-imu-system`, см. `descriptions/robots/ball.xacro`)
-публикуется на gz-топике `/imu` и бриджится в ROS 2 как `sensor_msgs/Imu` на
-50 Гц:
+публикуется на gz-топике `/ball/sensors/imu` и бриджится в ROS 2 как
+`sensor_msgs/Imu` на 50 Гц:
 
 ```bash
-ros2 topic echo /imu --once
+ros2 topic echo /ball/sensors/imu --once
 ```
 
 Передняя камера робота (`front_camera`, 640×480 @ 30 Гц, обзор 60°) идёт в ROS 2
-как `sensor_msgs/Image` на `/camera/front`, калибровка — `sensor_msgs/CameraInfo`
-на `/camera/front/camera_info`:
+как `sensor_msgs/Image` на `/ball/sensors/camera/front`, калибровка —
+`sensor_msgs/CameraInfo` на `/ball/sensors/camera/front/camera_info`:
 
 ```bash
-ros2 topic echo /camera/front --once
+ros2 topic echo /ball/sensors/camera/front --once
 ```
 
 Датчик давления воды (`libwater_pressure.so`) публикует гидростатическое давление
