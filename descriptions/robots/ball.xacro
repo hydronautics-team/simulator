@@ -243,6 +243,20 @@
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
+
+    <!-- Water pressure (depth) sensor: hydrostatic pressure of the water
+         column, rho = 1028 kg/m^3 (real sea water, not the neutral-buoyancy
+         density used by the underwater object plugin above). Publishes
+         gz.msgs.FluidPressure on /<model>/sensors/pressure; depth is
+         (pressure - 101325) / (1028 * 9.80665). -->
+    <plugin name="water_pressure" filename="libwater_pressure.so">
+      <link_name>${namespace}/base_link</link_name>
+      <surface_z>0.0</surface_z>
+      <fluid_density>1028.0</fluid_density>
+      <update_rate>10</update_rate>
+      <noise_stddev>0.0</noise_stddev>
+      <debug>$(arg debug)</debug>
+    </plugin>
   </gazebo>
 
   <!-- IMU on the body link: orientation, angular velocity and linear

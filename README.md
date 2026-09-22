@@ -133,6 +133,14 @@ ros2 topic echo /imu --once
 ros2 topic echo /camera/front --once
 ```
 
+Датчик давления воды (`libwater_pressure.so`) публикует гидростатическое давление
+на `/ball/sensors/pressure` как `sensor_msgs/FluidPressure` (10 Гц, ρ = 1028 кг/м³).
+Глубина в метрах: `(fluid_pressure − 101325) / (1028 · 9.80665)`:
+
+```bash
+ros2 topic echo /ball/sensors/pressure --once
+```
+
 ## Разработка
 
 Исходники репозитория смонтированы в контейнер как `/ws/src/simulator`; после

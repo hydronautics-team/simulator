@@ -4,7 +4,7 @@ ROS 2 Lyrical + Gazebo Sim Noble (gz-sim 10) workspace for testing an underwater
 
 ## Layout — read this before touching anything
 
-- `gazebo_plugins/gazebo_plugins/` — the ACTIVE plugin package. Builds `libunderwater_object.so` (buoyancy + hydrodynamics, gz-sim system plugin name `underwater_object`) and `libthruster.so` (plugin name `thruster`). Sources in `src/`, headers in `inc/`. C++17.
+- `gazebo_plugins/gazebo_plugins/` — the ACTIVE plugin package. Builds `libunderwater_object.so` (buoyancy + hydrodynamics, gz-sim system plugin name `underwater_object`), `libthruster.so` (plugin name `thruster`) and `libwater_pressure.so` (water pressure / depth sensor, plugin name `water_pressure`). Sources in `src/`, headers in `inc/`. C++17.
 - `gazebo_plugins/gazebo_plugins/legacy_classic/` — former standalone plugin, kept for reference only, NOT built (see CMakeLists note).
 - `gazebo_plugins/uuv_gazebo_ros_plugins{,_msgs}/` and the whole `uuv_gazebo_plugins/` tree — vendored UUV Simulator reference code, all COLCON_IGNOREd and NOT built. Do not edit; if code looks duplicated, the `gazebo_plugins/gazebo_plugins` version is the one that matters.
 - `descriptions/` — robot description (`robots/ball.xacro`), spawn launch file, keyboard teleop, pytest suite.
@@ -42,7 +42,7 @@ ros2 launch descriptions upload_rexrov_default.launch.py         # spawn + teleo
 ros2 launch descriptions upload_rexrov_default.launch.py teleop:=false  # spawn only
 ```
 
-Thruster control via gz topics bridged to ROS 2 (`thrusters:=true`): `/ball/thrusters/id_0/input` (std_msgs Float64, rotor rad/s, thrust = rotorConstant * |w| * w) and `/ball/thrusters/id_0/thrust` (Vector3). Equal speeds = forward, opposite = yaw. The robot also has a built-in IMU (`gz-sim-imu-system` in `ball.xacro`) on gz `/imu` and a front camera (`gz-sim-sensors-system` + `<sensor type="camera">`), both bridged to ROS 2 by the spawn launch: `/imu` as `sensor_msgs/Imu`, `/camera/front` as `sensor_msgs/Image` with `/camera/front/camera_info` as `sensor_msgs/CameraInfo` (the camera_info topic is set explicitly because gz-sensors otherwise derives it by dropping the last path segment of the image topic).
+Thruster control via gz topics bridged to ROS 2 (`thrusters:=true`): `/ball/thrusters/id_0/input` (std_msgs Float64, rotor rad/s, thrust = rotorConstant * |w| * w) and `/ball/thrusters/id_0/thrust` (Vector3). Equal speeds = forward, opposite = yaw. The robot also has a built-in IMU (`gz-sim-imu-system` in `ball.xacro`) on gz `/imu`, a front camera (`gz-sim-sensors-system` + `<sensor type="camera">`) and a water pressure / depth sensor (`libwater_pressure.so`, hydrostatic P = P_atm + rho*g*depth), all bridged to ROS 2 by the spawn launch: `/imu` as `sensor_msgs/Imu`, `/camera/front` as `sensor_msgs/Image` with `/camera/front/camera_info` as `sensor_msgs/CameraInfo` (the camera_info topic is set explicitly because gz-sensors otherwise derives it by dropping the last path segment of the image topic), and `/<name>/sensors/pressure` as `sensor_msgs/FluidPressure`.
 
 ## Gotchas
 
