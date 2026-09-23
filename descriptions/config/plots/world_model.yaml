@@ -1,0 +1,12 @@
+# World model debugging: environment, dynamics, propeller thrusts.
+# {name} is replaced by the robot name launch argument.
+window_title: world model
+window_seconds: 60
+update_rate: 10
+topics:
+  - /{name}/thrusters/id_0/input/data
+  - /{name}/thrusters/id_1/input/data
+  - /{name}/thrusters/id_0/thrust/x
+  - /{name}/thrusters/id_1/thrust/x
+  - /{name}/thrusters/id_0/thrust/y
+  - /{name}/thrusters/id_1/thrust/y

@@ -11,7 +11,7 @@ find_package(ament_cmake REQUIRED)
 install(PROGRAMS scripts/ball_teleop.py
   DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY launch models robots
+install(DIRECTORY launch models robots config
   DESTINATION share/${PROJECT_NAME}
   PATTERN "*~"
   EXCLUDE)

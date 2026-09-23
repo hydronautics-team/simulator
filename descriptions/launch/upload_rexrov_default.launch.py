@@ -36,20 +36,29 @@
 #   ros2 launch descriptions upload_rexrov_default.launch.py                # ball
 #   ros2 launch descriptions upload_rexrov_default.launch.py name:=rov z:=-30
 #
-# teleop:=true (default) also starts the keyboard teleop node in this terminal:
-# w/s/a/d or the arrow keys drive the robot, space stops it and q quits. Every
-# key event adds step_rpm to the involved thrusters, so the robot keeps its
-# throttle after the keys are released and the opposite key removes it again.
-# The node publishes the resulting rotor speeds on the bridged thruster topics,
-# so it needs thrusters:=true as well; its own defaults are used unless
-# max_rpm / step_rpm are given here.
-#
-# Spawn only, drive from a second terminal:
-#   ros2 launch descriptions upload_rexrov_default.launch.py teleop:=false
+# The keyboard teleop is not part of this launch: start it in its own terminal
+# (it needs thrusters:=true, which is the default):
 #   ros2 run descriptions ball_teleop.py --ros-args -p name:=ball
+# w/s/a/d or the arrow keys drive the robot, space stops it and q quits; every
+# key event adds a step to the rotor speeds, so the robot keeps its throttle
+# after the keys are released.
+#
+# Debug tooling (only with debug:=true):
+#   * ground truth pose of the model on /<name>/debug/pose (PoseStamped,
+#     published by the debug-only PosePublisher plugin in ball.xacro);
+#   * in-scene marker arrow with the resultant thruster force
+#     (gazebo_worlds/scripts/debug_markers.py, rendered on /marker);
+#   * live matplotlib windows (gazebo_worlds/scripts/debug_plot.py, one
+#     subplot per topic) for the requested perspectives, e.g.
+#       ros2 launch descriptions upload_rexrov_default.launch.py \
+#           debug:=true perspectives:=world_model,odometry
+#     The plot configs live in descriptions/config/plots/*.yaml.
 
+import os
 import pathlib
 
+import yaml
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, LogInfo
 from launch.actions import OpaqueFunction, SetEnvironmentVariable
@@ -93,14 +102,16 @@ def launch_setup(context, *args, **kwargs):
     verbose = to_bool(Lc('verbose').perform(context))
     debug = to_bool(Lc('debug').perform(context))
     thrusters = to_bool(Lc('thrusters').perform(context))
-    teleop = to_bool(Lc('teleop').perform(context))
-    # Empty means "keep the default of the teleop node itself".
-    max_rpm = Lc('max_rpm').perform(context).strip()
-    step_rpm = Lc('step_rpm').perform(context).strip()
+    # Comma separated plot configs, e.g. perspectives:=world_model,odometry
+    perspectives = Lc('perspectives').perform(context).strip()
 
     # Expand the xacro now; the same name is used as the link prefix inside the
-    # model and as the entity name in the world.
-    model = Command(['xacro ', xacro_file, ' namespace:=', name])
+    # model and as the entity name in the world. The debug argument also gates
+    # the debug-only plugins inside the xacro (ground truth pose).
+    model = Command([
+        'xacro ', xacro_file, ' namespace:=', name,
+        ' debug:=', 'true' if debug else 'false',
+    ])
 
     if debug:
         gzLogVerbosity = '4'
@@ -160,6 +171,11 @@ def launch_setup(context, *args, **kwargs):
                 prefix + '/input@std_msgs/msg/Float64]gz.msgs.Double')
             arguments.append(
                 prefix + '/thrust@geometry_msgs/msg/Vector3[gz.msgs.Vector3d')
+    if debug:
+        # Ground truth pose published by the debug-only PosePublisher plugin
+        # (see ball.xacro); used by the debug markers and odometry plots.
+        arguments.append(
+            '/%s/debug/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose' % name)
     actions.append(Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -167,26 +183,59 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
     ))
 
-    # Keyboard teleop: reads the terminal of the launch process and drives the
-    # thrusters through the bridge above. It can also be started on its own:
-    #   ros2 run descriptions ball_teleop.py --ros-args -p name:=<name>
-    if teleop:
-        if not thrusters:
-            actions.append(LogInfo(
-                msg='teleop:=true needs thrusters:=true: the teleop node '
-                    'publishes on the bridged thruster topics'))
-        teleop_parameters = {'name': name}
-        if max_rpm:
-            teleop_parameters['max_rpm'] = float(max_rpm)
-        if step_rpm:
-            teleop_parameters['step_rpm'] = float(step_rpm)
+    # The keyboard teleop is deliberately not started here: run it separately
+    # (ros2 run descriptions ball_teleop.py --ros-args -p name:=<name>), so
+    # there is only one publisher of the thruster commands per robot.
+
+    # Debug tooling: everything below runs only with debug:=true.
+    #   * in-scene markers (resultant thrust arrow) from gazebo_worlds;
+    #   * live matplotlib windows for the requested perspectives, e.g.
+    #     perspectives:=world_model,odometry. Each perspective is a YAML file
+    #     in descriptions/config/plots/<perspective>.yaml with:
+    #       window_title, window_seconds, update_rate, topics: [topic/field...]
+    #     ({name} in the topic list is replaced by the robot name; every entry
+    #     gets its own subplot).
+    if debug:
         actions.append(Node(
-            package='descriptions',
-            executable='ball_teleop.py',
-            name='ball_teleop',
-            parameters=[teleop_parameters],
+            package='gazebo_worlds',
+            executable='debug_markers.py',
+            parameters=[{'name': name}],
             output='screen',
         ))
+
+        plots_dir = os.path.join(
+            get_package_share_directory('descriptions'), 'config', 'plots')
+        for perspective in [p.strip() for p in perspectives.split(',')]:
+            if not perspective:
+                continue
+            config_file = os.path.join(plots_dir, perspective + '.yaml')
+            if not os.path.isfile(config_file):
+                actions.append(LogInfo(
+                    msg='perspectives: no plot config %s, skipping'
+                        % config_file))
+                continue
+            with open(config_file, 'r') as handle:
+                config = yaml.safe_load(handle) or {}
+            topics = [str(topic).format(name=name)
+                      for topic in config.get('topics', [])]
+            if not topics:
+                actions.append(LogInfo(
+                    msg='perspectives: %s has no topics, skipping'
+                        % config_file))
+                continue
+            actions.append(Node(
+                package='gazebo_worlds',
+                executable='debug_plot.py',
+                name='debug_plot_%s' % perspective,
+                parameters=[{
+                    'topics': topics,
+                    'window_title': str(config.get('window_title',
+                                                   perspective)),
+                    'window_seconds': float(config.get('window_seconds', 60.0)),
+                    'update_rate': float(config.get('update_rate', 10.0)),
+                }],
+                output='screen',
+            ))
     return actions
 
 
@@ -211,25 +260,20 @@ def generate_launch_description():
         DeclareLaunchArgument('thrusters', default_value='true',
                               description='Bridge the thruster command / '
                                           'thrust topics to ROS 2'),
-        DeclareLaunchArgument('teleop', default_value='true',
-                              description='Start the keyboard teleop node '
-                                          '(needs a terminal and needs '
-                                          'thrusters:=true); set teleop:=false '
-                                          'to spawn only and run the node '
-                                          'separately with `ros2 run '
-                                          'descriptions ball_teleop.py`'),
-        DeclareLaunchArgument('max_rpm', default_value='',
-                              description='Full throttle of one thruster, in '
-                                          'rpm; empty keeps the default of '
-                                          'ball_teleop.py'),
-        DeclareLaunchArgument('step_rpm', default_value='',
-                              description='Rotor speed added by every key press, '
-                                          'in rpm; empty keeps the default of '
-                                          'ball_teleop.py'),
         DeclareLaunchArgument('verbose', default_value='false',
                               description='Verbose gz transport output'),
         DeclareLaunchArgument('debug', default_value='false',
-                              description='Debug gz transport output '
-                                          '(implies verbose)'),
+                              description='Start the debug tooling: gz debug '
+                                          'output, the ground truth pose '
+                                          'bridge, in-scene markers and the '
+                                          'matplotlib plot windows requested '
+                                          'with perspectives'),
+        DeclareLaunchArgument(
+            'perspectives', default_value='',
+            description='Comma separated plot configs to open when '
+                        'debug:=true, e.g. '
+                        'perspectives:=world_model,odometry (configs in '
+                        'descriptions/config/plots: world_model, odometry, '
+                        'mission)'),
         OpaqueFunction(function=launch_setup),
     ])

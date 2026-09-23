@@ -1,0 +1,20 @@
+# Odometry debugging: ground truth pose of the model (debug:=true) and the
+# IMU channels that a real state estimator would fuse.
+# {name} is replaced by the robot name launch argument.
+window_title: odometry
+window_seconds: 60
+update_rate: 10
+topics:
+  - /{name}/debug/pose/pose/position/x
+  - /{name}/debug/pose/pose/position/y
+  - /{name}/debug/pose/pose/position/z
+  - /{name}/debug/pose/pose/orientation/x
+  - /{name}/debug/pose/pose/orientation/y
+  - /{name}/debug/pose/pose/orientation/z
+  - /{name}/debug/pose/pose/orientation/w
+  - /{name}/sensors/imu/angular_velocity/x
+  - /{name}/sensors/imu/angular_velocity/y
+  - /{name}/sensors/imu/angular_velocity/z
+  - /{name}/sensors/imu/linear_acceleration/x
+  - /{name}/sensors/imu/linear_acceleration/y
+  - /{name}/sensors/imu/linear_acceleration/z

@@ -15,9 +15,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-cursor0 \
     mesa-utils \
     python3-colcon-common-extensions \
+    python3-matplotlib \
     python3-pytest \
+    python3-tk \
     ros-${ROS_DISTRO}-ament-cmake-gtest \
     ros-${ROS_DISTRO}-launch-testing-ament-cmake \
+    ros-${ROS_DISTRO}-rqt-image-view \
+    ros-${ROS_DISTRO}-rqt-plot \
     ros-${ROS_DISTRO}-xacro \
     && rm -rf /var/lib/apt/lists/*
 

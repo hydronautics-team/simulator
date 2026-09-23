@@ -1,0 +1,10 @@
+# Mission debugging: depth (pressure), heading rate and position.
+# {name} is replaced by the robot name launch argument.
+window_title: mission
+window_seconds: 60
+update_rate: 10
+topics:
+  - /{name}/sensors/pressure/fluid_pressure
+  - /{name}/sensors/imu/angular_velocity/z
+  - /{name}/debug/pose/pose/position/x
+  - /{name}/debug/pose/pose/position/y

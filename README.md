@@ -62,7 +62,7 @@ glxinfo -B | grep -i "OpenGL renderer"   # должно быть NVIDIA GeForce 
 
 ## Простейшая миссия: мир → робот → телеоп
 
-Нужно два терминала, оба — в одном и том же контейнере:
+Нужно три терминала, все — в одном и том же контейнере:
 
 ```bash
 docker compose exec simulator bash
@@ -74,16 +74,21 @@ docker compose exec simulator bash
 ros2 launch gazebo_worlds empty_underwater_world.launch.py
 ```
 
-**Терминал 2 — робот и телеоп.** Спавним шар-аппарат и запускаем клавиатурный
-телеоп; команда читает клавиатуру этого же терминала:
+**Терминал 2 — робот.** Спавним шар-аппарат (телеоп в этот запуск не входит):
 
 ```bash
-docker compose exec simulator bash
 ros2 launch descriptions upload_rexrov_default.launch.py
 ```
 
 По умолчанию робот появляется на глубине `z=-20` (камера стартует у поверхности,
 поэтому для быстрой проверки удобно `z:=-2.0`), имя — `ball`.
+
+**Терминал 3 — телеоп.** Клавиатурное управление отдельным процессом; команда
+читает клавиатуру этого терминала:
+
+```bash
+ros2 run descriptions ball_teleop.py --ros-args -p name:=ball
+```
 
 Управление (`w/a/s/d` или стрелки, пробел — стоп, `q` — выход):
 
@@ -101,15 +106,8 @@ ros2 launch descriptions upload_rexrov_default.launch.py
 `max_rpm` (по умолчанию 1500 rpm). Тяга = `rotorConstant * |w| * w`, так что
 одинаковые скорости — вперёд, противоположные — вращение.
 
-**Спавн и телеоп по отдельности** (полезно для своих скриптов):
-
-```bash
-# только спавн, без телеопа
-ros2 launch descriptions upload_rexrov_default.launch.py teleop:=false
-
-# телеоп отдельным процессом
-ros2 run descriptions ball_teleop.py --ros-args -p name:=ball
-```
+Параметры телеопа (`max_rpm`, `step_rpm`) задаются через `--ros-args -p`,
+например `-p max_rpm:=2000 -p step_rpm:=250`.
 
 Ручная команда движителю (скорость ротора в rad/s, `std_msgs/Float64`):
 
@@ -140,6 +138,61 @@ ros2 topic echo /ball/sensors/camera/front --once
 ```bash
 ros2 topic echo /ball/sensors/pressure --once
 ```
+
+## Отладка
+
+Вся отладочная обвязка включается **только** аргументом `debug:=true` у спавна:
+
+```bash
+ros2 launch descriptions upload_rexrov_default.launch.py \
+    debug:=true perspectives:=world_model,odometry
+```
+
+Что запускается:
+
+- **Маркеры в сцене** (`gazebo_worlds/scripts/debug_markers.py`): стрелка
+  равнодействующей тяги из центра корпуса (длина = сила · `force_scale`,
+  по умолчанию 1 мм/Н). Публикуются на `/<name>/debug/marker` и зеркалятся в
+  `/marker`, который рендерит встроенный MarkerManager Gazebo
+- **Графики** (`gazebo_worlds/scripts/debug_plot.py`, matplotlib): на каждую
+  перспективу своё окно, внутри — по subplot'у на кривую.
+  `perspectives:=world_model,odometry` открывает оба окна (список — через запятую).
+  Окно прокручивается (колесо мыши или Page Up/Down, `q` — закрыть); при большом
+  числе кривых (например `odometry` с каналами IMU) subplot'ы раскладываются в две
+  колонки и листаются по вертикали
+- **Ground truth поза** на `/<name>/debug/pose` (`geometry_msgs/PoseStamped`)
+
+Наборы кривых — YAML-файлы в `descriptions/config/plots/`:
+
+| Набор | Что показывает |
+| --- | --- |
+| `world_model` | команды и тяги движителей (`/ball/thrusters/...`) |
+| `odometry` | мировая поза/ориентация робота (`/ball/debug/pose/...`) + каналы IMU (угловые скорости, ускорения) |
+| `mission` | глубина (`/ball/sensors/pressure`), скорость рыскания, позиция |
+
+Формат файла:
+
+```yaml
+# {name} подставляется как имя робота
+window_title: odometry
+window_seconds: 60      # горизонт времени на графике
+update_rate: 10         # частота перерисовки, Гц
+topics:                 # одна строка = один subplot
+  - /{name}/debug/pose/pose/position/x
+  - /{name}/sensors/pressure/fluid_pressure
+```
+
+Свой набор: скопируй любой файл, поменяй `topics` и запускай
+`perspectives:=<имя файла>`. Окна идут через X11 (backend TkAgg); без дисплея
+нода работает вхолостую (backend Agg) и только собирает данные.
+
+Просмотр камеры (CV-отладка):
+
+```bash
+rqt_image_view /ball/sensors/camera/front
+```
+
+Без `debug:=true` ни маркеры, ни окна графиков, ни debug-топики не запускаются.
 
 ## Разработка
 
@@ -176,3 +229,9 @@ colcon test-result --verbose
   `nvidia-smi`; `exec` и `restart` настройки GPU не подхватывают.
 - **Окно Gazebo не открывается** — на хосте `xhost +local:root`, проверить
   `echo $DISPLAY` и что смонтирован `/tmp/.X11-unix`.
+- **Графики идут «столбиками», значения скачут в ноль** — на топик пишут
+  несколько издателей: оставшийся телеоп/мост от прошлого запуска или второй
+  симулятор в том же ROS-домене (плоттер предупредит в логе: `topic ... has N
+  publishers`). Проверь `ros2 node list` и `ros2 topic info -v <топик>`,
+  перезапусти спавн/контейнер начисто. Для параллельных запусков используй
+  другой `ROS_DOMAIN_ID`, чтобы темы не смешивались.
