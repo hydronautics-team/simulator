@@ -20,69 +20,105 @@
     <include><uri>model://sea_floor</uri><pose>0 0 -10 0 0 0</pose></include>
     <include><uri>model://ocean_surface</uri><pose>0 0 0 0 0 0</pose></include>
 
-    <!-- First competition test object: a high-contrast 3 x 3 metre gate.
-         It starts outside the centre of the camera image (20 degrees left),
-         so the gate-search state must rotate before approaching it. -->
+    <!-- SAUVC navigation gate. The 1.5 m clear opening and 1.0 m useful
+         height follow the competition specification. Red striped markings
+         identify port and green striped markings identify starboard.
+         It starts outside the centre of the camera image, so the gate-search
+         state must rotate before approaching it. -->
     <model name="competition_gate">
       <static>true</static>
       <pose>8 6 -2 0 0 0</pose>
       <link name="gate">
-        <visual name="left_post">
-          <pose>0 1.5 0 0 0 0</pose>
-          <geometry><cylinder><radius>0.14</radius><length>3.2</length></cylinder></geometry>
-          <material>
-            <ambient>1 0.2 0.01 1</ambient><diffuse>1 0.28 0.01 1</diffuse>
-            <specular>0.25 0.25 0.25 1</specular>
-            <pbr><metal><roughness>0.55</roughness><metalness>0.0</metalness></metal></pbr>
-          </material>
+        <!-- Port post: red / white identification bands. -->
+        <visual name="port_red_lower">
+          <pose>0 0.85 -0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.8 0.01 0.01 1</ambient><diffuse>1 0.02 0.02 1</diffuse></material>
+        </visual>
+        <visual name="port_white_lower">
+          <pose>0 0.85 -0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.75 0.75 0.7 1</ambient><diffuse>0.95 0.95 0.9 1</diffuse></material>
+        </visual>
+        <visual name="port_red_middle">
+          <pose>0 0.85 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.8 0.01 0.01 1</ambient><diffuse>1 0.02 0.02 1</diffuse></material>
+        </visual>
+        <visual name="port_white_upper">
+          <pose>0 0.85 0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.75 0.75 0.7 1</ambient><diffuse>0.95 0.95 0.9 1</diffuse></material>
+        </visual>
+        <visual name="port_red_upper">
+          <pose>0 0.85 0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.8 0.01 0.01 1</ambient><diffuse>1 0.02 0.02 1</diffuse></material>
         </visual>
         <collision name="left_post_collision">
-          <pose>0 1.5 0 0 0 0</pose>
-          <geometry><cylinder><radius>0.14</radius><length>3.2</length></cylinder></geometry>
+          <pose>0 0.85 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>1.2</length></cylinder></geometry>
         </collision>
-        <visual name="right_post">
-          <pose>0 -1.5 0 0 0 0</pose>
-          <geometry><cylinder><radius>0.14</radius><length>3.2</length></cylinder></geometry>
-          <material>
-            <ambient>1 0.2 0.01 1</ambient><diffuse>1 0.28 0.01 1</diffuse>
-            <specular>0.25 0.25 0.25 1</specular>
-            <pbr><metal><roughness>0.55</roughness><metalness>0.0</metalness></metal></pbr>
-          </material>
+        <!-- Starboard post: green / white identification bands. -->
+        <visual name="starboard_green_lower">
+          <pose>0 -0.85 -0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.01 0.5 0.02 1</ambient><diffuse>0.02 0.85 0.03 1</diffuse></material>
+        </visual>
+        <visual name="starboard_white_lower">
+          <pose>0 -0.85 -0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.75 0.75 0.7 1</ambient><diffuse>0.95 0.95 0.9 1</diffuse></material>
+        </visual>
+        <visual name="starboard_green_middle">
+          <pose>0 -0.85 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.01 0.5 0.02 1</ambient><diffuse>0.02 0.85 0.03 1</diffuse></material>
+        </visual>
+        <visual name="starboard_white_upper">
+          <pose>0 -0.85 0.24 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.75 0.75 0.7 1</ambient><diffuse>0.95 0.95 0.9 1</diffuse></material>
+        </visual>
+        <visual name="starboard_green_upper">
+          <pose>0 -0.85 0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>0.24</length></cylinder></geometry>
+          <material><ambient>0.01 0.5 0.02 1</ambient><diffuse>0.02 0.85 0.03 1</diffuse></material>
         </visual>
         <collision name="right_post_collision">
-          <pose>0 -1.5 0 0 0 0</pose>
-          <geometry><cylinder><radius>0.14</radius><length>3.2</length></cylinder></geometry>
+          <pose>0 -0.85 0 0 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>1.2</length></cylinder></geometry>
         </collision>
         <visual name="top_bar">
-          <pose>0 0 1.5 1.57079632679 0 0</pose>
-          <geometry><cylinder><radius>0.16</radius><length>3.28</length></cylinder></geometry>
+          <pose>0 0 0.6 1.57079632679 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>1.9</length></cylinder></geometry>
           <material>
-            <ambient>1 0.72 0.01 1</ambient><diffuse>1 0.82 0.02 1</diffuse>
-            <specular>0.3 0.3 0.3 1</specular>
+            <ambient>0.75 0.75 0.7 1</ambient><diffuse>0.95 0.95 0.9 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
             <pbr><metal><roughness>0.5</roughness><metalness>0.0</metalness></metal></pbr>
           </material>
         </visual>
         <collision name="top_bar_collision">
-          <pose>0 0 1.5 1.57079632679 0 0</pose>
-          <geometry><cylinder><radius>0.16</radius><length>3.28</length></cylinder></geometry>
+          <pose>0 0 0.6 1.57079632679 0 0</pose>
+          <geometry><cylinder><radius>0.1</radius><length>1.9</length></cylinder></geometry>
         </collision>
         <visual name="left_foot">
-          <pose>0 1.5 -1.6 0 0 0</pose>
-          <geometry><box><size>1.2 0.5 0.12</size></box></geometry>
-          <material><ambient>0.85 0.18 0.01 1</ambient><diffuse>1 0.28 0.01 1</diffuse></material>
+          <pose>0 0.85 -0.63 0 0 0</pose>
+          <geometry><box><size>0.8 0.3 0.08</size></box></geometry>
+          <material><ambient>0.12 0.12 0.12 1</ambient><diffuse>0.2 0.2 0.2 1</diffuse></material>
         </visual>
         <collision name="left_foot_collision">
-          <pose>0 1.5 -1.6 0 0 0</pose>
-          <geometry><box><size>1.2 0.5 0.12</size></box></geometry>
+          <pose>0 0.85 -0.63 0 0 0</pose>
+          <geometry><box><size>0.8 0.3 0.08</size></box></geometry>
         </collision>
         <visual name="right_foot">
-          <pose>0 -1.5 -1.6 0 0 0</pose>
-          <geometry><box><size>1.2 0.5 0.12</size></box></geometry>
-          <material><ambient>0.85 0.18 0.01 1</ambient><diffuse>1 0.28 0.01 1</diffuse></material>
+          <pose>0 -0.85 -0.63 0 0 0</pose>
+          <geometry><box><size>0.8 0.3 0.08</size></box></geometry>
+          <material><ambient>0.12 0.12 0.12 1</ambient><diffuse>0.2 0.2 0.2 1</diffuse></material>
         </visual>
         <collision name="right_foot_collision">
-          <pose>0 -1.5 -1.6 0 0 0</pose>
-          <geometry><box><size>1.2 0.5 0.12</size></box></geometry>
+          <pose>0 -0.85 -0.63 0 0 0</pose>
+          <geometry><box><size>0.8 0.3 0.08</size></box></geometry>
         </collision>
       </link>
     </model>
