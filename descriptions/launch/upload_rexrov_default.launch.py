@@ -101,6 +101,7 @@ def launch_setup(context, *args, **kwargs):
     yaw = float(Lc('yaw').perform(context))
     verbose = to_bool(Lc('verbose').perform(context))
     debug = to_bool(Lc('debug').perform(context))
+    stingray_contract = to_bool(Lc('stingray_contract').perform(context))
     thrusters = to_bool(Lc('thrusters').perform(context))
     # Comma separated plot configs, e.g. perspectives:=world_model,odometry
     perspectives = Lc('perspectives').perform(context).strip()
@@ -108,10 +109,20 @@ def launch_setup(context, *args, **kwargs):
     # Expand the xacro now; the same name is used as the link prefix inside the
     # model and as the entity name in the world. The debug argument also gates
     # the debug-only plugins inside the xacro (ground truth pose).
+    contract_args = []
+    if stingray_contract:
+        contract_args = [
+            ' imu_topic:=/core/sensors/imu',
+            ' camera_topic:=/stingray/topics/camera/front',
+            ' camera_info_topic:=/stingray/topics/camera/front/camera_info',
+            ' pressure_topic:=/core/sensors/pressure',
+            ' ground_truth:=true',
+            ' ground_truth_topic:=/sim/ground_truth/pose',
+        ]
     model = Command([
         'xacro ', xacro_file, ' namespace:=', name,
         ' debug:=', 'true' if debug else 'false',
-    ])
+    ] + contract_args)
 
     if debug:
         gzLogVerbosity = '4'
@@ -156,22 +167,30 @@ def launch_setup(context, *args, **kwargs):
     # ROS 2 <-> gz bridge: the robot IMU, front camera and water pressure
     # sensor are always bridged; the thruster command / thrust topics are
     # added when thrusters:=true.
-    arguments = [
-        '/%s/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU' % name,
-        '/%s/sensors/camera/front@sensor_msgs/msg/Image[gz.msgs.Image' % name,
-        '/%s/sensors/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo'
-        % name,
-        '/%s/sensors/pressure@sensor_msgs/msg/FluidPressure[gz.msgs.FluidPressure'
-        % name,
-    ]
+    if stingray_contract:
+        arguments = [
+            '/core/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
+            '/stingray/topics/camera/front@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/stingray/topics/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/core/sensors/pressure@sensor_msgs/msg/FluidPressure[gz.msgs.FluidPressure',
+            '/sim/ground_truth/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose',
+        ]
+    else:
+        arguments = [
+            '/%s/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU' % name,
+            '/%s/sensors/camera/front@sensor_msgs/msg/Image[gz.msgs.Image' % name,
+            '/%s/sensors/camera/front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo' % name,
+            '/%s/sensors/pressure@sensor_msgs/msg/FluidPressure[gz.msgs.FluidPressure' % name,
+        ]
     if thrusters:
-        for thruster_id in THRUSTER_IDS:
+        thruster_ids = range(6) if stingray_contract else THRUSTER_IDS
+        for thruster_id in thruster_ids:
             prefix = '/%s/thrusters/id_%d' % (name, thruster_id)
             arguments.append(
                 prefix + '/input@std_msgs/msg/Float64]gz.msgs.Double')
             arguments.append(
                 prefix + '/thrust@geometry_msgs/msg/Vector3[gz.msgs.Vector3d')
-    if debug:
+    if debug and not stingray_contract:
         # Ground truth pose published by the debug-only PosePublisher plugin
         # (see ball.xacro); used by the debug markers and odometry plots.
         arguments.append(
@@ -268,6 +287,9 @@ def generate_launch_description():
                                           'bridge, in-scene markers and the '
                                           'matplotlib plot windows requested '
                                           'with perspectives'),
+        DeclareLaunchArgument(
+            'stingray_contract', default_value='false',
+            description='Expose sensors using the native Stingray ROS API'),
         DeclareLaunchArgument(
             'perspectives', default_value='',
             description='Comma separated plot configs to open when '

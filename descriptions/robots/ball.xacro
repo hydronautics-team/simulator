@@ -36,6 +36,12 @@
 <robot name="ball" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="debug" default="0"/>
   <xacro:arg name="namespace" default="ball"/>
+  <xacro:arg name="imu_topic" default="/$(arg namespace)/sensors/imu"/>
+  <xacro:arg name="camera_topic" default="/$(arg namespace)/sensors/camera/front"/>
+  <xacro:arg name="camera_info_topic" default="/$(arg namespace)/sensors/camera/front/camera_info"/>
+  <xacro:arg name="pressure_topic" default="/$(arg namespace)/sensors/pressure"/>
+  <xacro:arg name="ground_truth" default="0"/>
+  <xacro:arg name="ground_truth_topic" default="/$(arg namespace)/debug/pose"/>
 
   <!-- ${...} expressions resolve xacro properties, not args: expose the args
        below as properties so that link names and plugin params can use them -->
@@ -209,6 +215,55 @@
       </conversion>
     </plugin>
 
+    <!-- Four additional axes used by the Stingray-compatible controller.
+         IDs 2/3 provide sway and IDs 4/5 provide heave. Keeping them on the
+         base link avoids artificial mass while still applying the force at
+         the configured point. -->
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <thruster_id>2</thruster_id>
+      <thruster_axis>0 1 0</thruster_axis>
+      <application_point>0.35 0 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics><type>ZeroOrder</type></dynamics>
+      <conversion><type>Basic</type><rotorConstant>${thruster_rotor_constant}</rotorConstant></conversion>
+    </plugin>
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <thruster_id>3</thruster_id>
+      <thruster_axis>0 1 0</thruster_axis>
+      <application_point>-0.35 0 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics><type>ZeroOrder</type></dynamics>
+      <conversion><type>Basic</type><rotorConstant>${thruster_rotor_constant}</rotorConstant></conversion>
+    </plugin>
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <thruster_id>4</thruster_id>
+      <thruster_axis>0 0 1</thruster_axis>
+      <application_point>0 0.3 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics><type>ZeroOrder</type></dynamics>
+      <conversion><type>Basic</type><rotorConstant>${thruster_rotor_constant}</rotorConstant></conversion>
+    </plugin>
+    <plugin name="thruster" filename="libthruster.so">
+      <link_name>${namespace}/base_link</link_name>
+      <thruster_id>5</thruster_id>
+      <thruster_axis>0 0 1</thruster_axis>
+      <application_point>0 -0.3 0</application_point>
+      <center_of_mass>0 0 0</center_of_mass>
+      <clamp_max>${thruster_clamp_max}</clamp_max>
+      <thrust_max>${thruster_thrust_max}</thrust_max>
+      <dynamics><type>ZeroOrder</type></dynamics>
+      <conversion><type>Basic</type><rotorConstant>${thruster_rotor_constant}</rotorConstant></conversion>
+    </plugin>
+
     <!-- Thruster 2: pushes along +x from the right side of the sphere.
          Equal commands on both thrusters move the body forward, opposite
          commands rotate it about z. -->
@@ -250,7 +305,7 @@
          other pose type is disabled explicitly: by default the PosePublisher
          also publishes link poses, which would interleave local poses with
          the world frame model pose on the same topic. -->
-    <xacro:if value="$(arg debug)">
+    <xacro:if value="$(arg ground_truth)">
       <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
         <publish_model_pose>true</publish_model_pose>
         <publish_link_pose>false</publish_link_pose>
@@ -258,7 +313,7 @@
         <publish_collision_pose>false</publish_collision_pose>
         <publish_sensor_pose>false</publish_sensor_pose>
         <publish_nested_model_pose>false</publish_nested_model_pose>
-        <topic>/${namespace}/debug/pose</topic>
+        <topic>$(arg ground_truth_topic)</topic>
       </plugin>
     </xacro:if>
 
@@ -274,6 +329,7 @@
       <update_rate>10</update_rate>
       <noise_stddev>0.0</noise_stddev>
       <debug>$(arg debug)</debug>
+      <topic>$(arg pressure_topic)</topic>
     </plugin>
   </gazebo>
 
@@ -285,7 +341,7 @@
       <always_on>1</always_on>
       <update_rate>50</update_rate>
       <visualize>false</visualize>
-      <topic>/${namespace}/sensors/imu</topic>
+      <topic>$(arg imu_topic)</topic>
     </sensor>
 
     <!-- Front camera (640x480 @ 30 Hz, 60 deg horizontal FOV) looking along
@@ -298,7 +354,7 @@
       <always_on>1</always_on>
       <update_rate>30</update_rate>
       <visualize>true</visualize>
-      <topic>/${namespace}/sensors/camera/front</topic>
+      <topic>$(arg camera_topic)</topic>
       <camera>
         <horizontal_fov>1.0471975511965976</horizontal_fov>
         <image>
@@ -314,7 +370,7 @@
              the image topic and appends /camera_info, which would put it on
              /<namespace>/sensors/camera/camera_info instead of
              /<namespace>/sensors/camera/front/camera_info. -->
-        <camera_info_topic>/${namespace}/sensors/camera/front/camera_info</camera_info_topic>
+        <camera_info_topic>$(arg camera_info_topic)</camera_info_topic>
       </camera>
     </sensor>
   </gazebo>
