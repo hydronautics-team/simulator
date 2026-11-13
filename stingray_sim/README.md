@@ -1,6 +1,6 @@
-# Stingray-compatible SAUVC simulation
+# Stingray-compatible simulation
 
-This package exposes the simulator using the same ROS API as `stingray_core`.
+This package exposes any supported world using the same ROS API as `stingray_core`.
 No remapping is required by mission, planning or object-detection nodes.
 
 Build and run inside the simulator container:
@@ -8,7 +8,7 @@ Build and run inside the simulator container:
 ```bash
 colcon build --symlink-install
 source install/setup.bash
-ros2 launch stingray_sim sauvc_2027.launch.py
+ros2 launch stingray_sim stingray_world.launch.py
 ```
 
 Or run the host helper (it uses `ROS_DOMAIN_ID=1`, like `welt_auv`):

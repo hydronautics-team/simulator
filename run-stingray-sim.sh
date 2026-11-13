@@ -16,7 +16,7 @@ fi
 docker compose up -d simulator
 # Restarting kills any stale gz-sim process but preserves /ws/build and
 # /ws/install in the container, so a normal run does not rebuild the workspace.
-docker compose restart simulator >/dev/null
+docker compose restart -t 2 simulator >/dev/null
 
 if [[ "$rebuild" == "true" ]]; then
   docker compose exec simulator bash -lc \
@@ -28,4 +28,4 @@ elif ! docker compose exec -T simulator test -f /ws/install/stingray_sim/share/s
 fi
 
 docker compose exec -e ROS_DOMAIN_ID="$ros_domain_id" simulator bash -lc \
-  'cd /ws && source /opt/ros/lyrical/setup.bash && source install/setup.bash && ros2 launch stingray_sim sauvc_2027.launch.py gui:='"${SIM_GUI:-true}"
+  'cd /ws && source /opt/ros/lyrical/setup.bash && source install/setup.bash && ros2 launch stingray_sim stingray_world.launch.py gui:='"${SIM_GUI:-true}"
